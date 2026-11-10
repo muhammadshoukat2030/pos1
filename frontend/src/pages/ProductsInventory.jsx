@@ -2,6 +2,8 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import {
   Boxes,
+  Package,
+  TrendingUp,
   Plus,
   Search,
   Filter,
@@ -31,6 +33,7 @@ import { useTheme } from "../context/ThemeContext";
 import { useToast } from "../context/ToastContext";
 import { TableSkeleton } from "../components/LoadingSkeleton";
 import ConfirmModal from "../components/ConfirmModal";
+import { StatCard } from "../components/common";
 
 const UNIVERSAL_UNITS = [
   { value: "pcs", label: "Piece / pcs", isDecimal: false },
@@ -473,45 +476,45 @@ export default function ProductsInventory() {
   return (
     <div className="space-y-6 pb-16">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-xl sm:text-2xl font-black text-theme-textPrimary flex items-center gap-2.5">
-            <Boxes className="w-6 h-6 text-theme-primary" /> Products & Inventory Management
+          <h1 className="text-lg sm:text-xl font-bold text-theme-textPrimary flex items-center gap-2">
+            <Boxes className="w-5 h-5 text-emerald-700 dark:text-emerald-400" /> Products & Inventory Management
           </h1>
-          <p className="text-xs text-theme-textSecondary mt-0.5">
+          <p className="text-[11.5px] text-theme-textSecondary mt-0.5">
             Super Mart stock tracking, barcode management, and multi-unit pricing.
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-1.5">
           {/* Export CSV */}
           <button
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-bold text-xs shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition"
             title="Download full inventory CSV"
           >
-            <Download className="w-3.5 h-3.5 text-emerald-600" /> Export CSV
+            <Download className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Export CSV
           </button>
 
           {/* Import CSV */}
           <button
             type="button"
             onClick={() => setIsCsvModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-bold text-xs shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition"
             title="Bulk import products from CSV"
           >
-            <Upload className="w-3.5 h-3.5 text-blue-600" /> Import CSV
+            <Upload className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" /> Import CSV
           </button>
 
           {/* Barcode Stickers */}
           <button
             type="button"
             onClick={() => openBarcodeGenerator()}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-bold text-xs shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition"
             title="Generate printable Code128 barcode labels"
           >
-            <Barcode className="w-3.5 h-3.5 text-theme-primary" /> Barcode Stickers
+            <Barcode className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" /> Barcode Stickers
           </button>
 
           <button
@@ -522,7 +525,7 @@ export default function ProductsInventory() {
               setAdjustReason("");
               setIsStockModalOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-600 font-bold text-xs hover:bg-emerald-100 transition"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300 font-medium text-xs hover:bg-emerald-100 transition"
             title="Adjust inventory stock count"
           >
             <PlusCircle className="w-3.5 h-3.5" /> Adjust Stock
@@ -533,59 +536,71 @@ export default function ProductsInventory() {
               setRefundProduct(products[0] || null);
               setIsRefundModalOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/20 text-rose-600 font-bold text-xs hover:bg-rose-100 transition"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-300 font-medium text-xs hover:bg-rose-100 transition"
           >
             <Undo2 className="w-3.5 h-3.5" /> Company Refund
           </button>
 
           <button
             onClick={openAddProductModal}
-            className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-theme-primary hover:bg-theme-dark text-white font-bold text-xs shadow-md transition transform active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-xs shadow-2xs transition active:scale-95"
           >
-            <Plus className="w-4 h-4" /> Add Product
+            <Plus className="w-3.5 h-3.5" /> Add Product
           </button>
         </div>
       </div>
 
       {/* KPI Stats Strip */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
-          <span className="text-[11px] font-bold text-theme-textMuted uppercase">Total Catalog</span>
-          <h3 className="text-xl font-black text-theme-textPrimary mt-0.5">
-            {stats.totalProductsCount || products.length} Items
-          </h3>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 items-stretch">
+        <StatCard
+          title="Total Catalog"
+          value={`${stats.totalProductsCount || products.length} Items`}
+          icon={Boxes}
+          badgeText="Catalog"
+          badgeType="neutral"
+          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+          iconColor="text-emerald-700 dark:text-emerald-400"
+        />
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
-          <span className="text-[11px] font-bold text-theme-textMuted uppercase">Stock on Hand</span>
-          <h3 className="text-xl font-black text-theme-textPrimary mt-0.5">
-            {stats.totalRemaining || 0} Units
-          </h3>
-        </div>
+        <StatCard
+          title="Stock on Hand"
+          value={`${stats.totalRemaining || 0} Units`}
+          icon={Package}
+          badgeText="In Stock"
+          badgeType="success"
+          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+          iconColor="text-emerald-600 dark:text-emerald-400"
+        />
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
-          <span className="text-[11px] font-bold text-theme-textMuted uppercase">Inventory Value</span>
-          <h3 className="text-xl font-black text-emerald-600 mt-0.5">
-            {currency} {(stats.remainingValue || 0).toLocaleString()}
-          </h3>
-        </div>
+        <StatCard
+          title="Inventory Value"
+          value={`${currency} ${(stats.remainingValue || 0).toLocaleString()}`}
+          icon={TrendingUp}
+          badgeText="Valuation"
+          badgeType="success"
+          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+          iconColor="text-emerald-700 dark:text-emerald-400"
+        />
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
-          <span className="text-[11px] font-bold text-theme-textMuted uppercase">Low Stock Alerts</span>
-          <h3 className="text-xl font-black text-amber-500 mt-0.5">
-            {products.filter((p) => p.remaining <= (p.minStockAlert || 5)).length} Alerts
-          </h3>
-        </div>
+        <StatCard
+          title="Low Stock Alerts"
+          value={`${products.filter((p) => p.remaining <= (p.minStockAlert || 5)).length} Alerts`}
+          icon={AlertTriangle}
+          badgeText="Restock Needed"
+          badgeType="warning"
+          iconBg="bg-amber-500/10 dark:bg-amber-950/40"
+          iconColor="text-amber-600 dark:text-amber-400"
+        />
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-lg p-2.5 sm:p-3 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Category & Status Filters */}
-        <div className="flex flex-wrap items-center gap-2 w-full md:w-auto text-xs">
+        <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto text-xs">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-3 py-1.5 bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl font-semibold focus:outline-none"
+            className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg font-medium focus:outline-none"
           >
             <option value="all">All Categories</option>
             {categories.map((c, idx) => (
@@ -598,7 +613,7 @@ export default function ProductsInventory() {
           <select
             value={stockFilter}
             onChange={(e) => setStockFilter(e.target.value)}
-            className="px-3 py-1.5 bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl font-semibold focus:outline-none"
+            className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg font-medium focus:outline-none"
           >
             <option value="all">All Stock Status</option>
             <option value="in">In Stock Only</option>
@@ -607,9 +622,9 @@ export default function ProductsInventory() {
 
           <button
             onClick={() => setLowStockOnly(!lowStockOnly)}
-            className={`px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition ${
+            className={`px-2.5 py-1 rounded-lg font-medium flex items-center gap-1.5 transition ${
               lowStockOnly
-                ? "bg-amber-500 text-white shadow-sm"
+                ? "bg-amber-500 text-white shadow-2xs"
                 : "bg-black/5 dark:bg-white/5 text-theme-textSecondary hover:text-theme-textPrimary"
             }`}
           >
@@ -642,12 +657,12 @@ export default function ProductsInventory() {
       {loading ? (
         <TableSkeleton rows={8} cols={7} />
       ) : products.length === 0 ? (
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-12 text-center text-xs text-theme-textMuted">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-12 text-center text-xs text-theme-textMuted">
           <Boxes className="w-10 h-10 mx-auto mb-2 text-theme-textMuted opacity-40" />
           No products found. Click "+ Add Product" to create your first inventory item.
         </div>
       ) : (
-        <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -832,7 +847,7 @@ export default function ProductsInventory() {
       {/* 2. MODAL: ADD / EDIT PRODUCT */}
       {isProductModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-3xl p-6 max-w-xl w-full shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
+          <div className="bg-theme-card border border-theme-border rounded-xl p-4 sm:p-5 max-w-xl w-full shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <h3 className="font-extrabold text-base text-theme-textPrimary flex items-center gap-2">
                 <Boxes className="w-5 h-5 text-theme-primary" />
@@ -1064,7 +1079,7 @@ export default function ProductsInventory() {
               </div>
 
               {/* Multi-Unit Packaging / Bulk Conversions Section */}
-              <div className="border border-theme-border rounded-2xl p-3.5 bg-black/5 dark:bg-white/5 space-y-3">
+              <div className="border border-theme-border rounded-lg p-3.5 bg-black/5 dark:bg-white/5 space-y-3">
                 <div className="flex items-center justify-between">
                   <div>
                     <span className="font-bold text-theme-textPrimary block">Multi-Unit Packaging & Conversions</span>
@@ -1259,7 +1274,7 @@ export default function ProductsInventory() {
       {/* 3. MODAL: STOCK ADJUSTMENT */}
       {isStockModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-md w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-md w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <PlusCircle className="w-5 h-5 text-emerald-600" /> Stock Adjustment
@@ -1436,7 +1451,7 @@ export default function ProductsInventory() {
       {/* 4. MODAL: COMPANY / SUPPLIER REFUND */}
       {isRefundModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-sm w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-rose-600 flex items-center gap-2">
                 <Undo2 className="w-5 h-5" /> Company / Supplier Refund
@@ -1512,7 +1527,7 @@ export default function ProductsInventory() {
       {/* 5. MODAL: BARCODE STICKER & PRICE TAG GENERATOR */}
       {isBarcodeModalOpen && barcodeProduct && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-3xl w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-3xl w-full shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <Barcode className="w-5 h-5 text-theme-primary" /> Barcode Sticker & Price Tag Generator
@@ -1626,7 +1641,7 @@ export default function ProductsInventory() {
       {/* 6. MODAL: BULK CSV IMPORT */}
       {isCsvModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-lg w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-lg w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <FileSpreadsheet className="w-5 h-5 text-emerald-600" /> Bulk CSV Inventory Import

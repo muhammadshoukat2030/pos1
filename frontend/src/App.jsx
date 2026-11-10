@@ -25,7 +25,7 @@ function ProtectedRoute({ children, allowedRoles }) {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-900 text-white gap-3">
-        <div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-10 h-10 border-4 border-emerald-600 border-t-transparent rounded-full animate-spin" />
         <p className="text-sm text-slate-400 font-medium">Loading POS System...</p>
       </div>
     );
@@ -48,7 +48,7 @@ function PublicRoute({ children }) {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-900">
-        <div className="w-8 h-8 border-3 border-teal-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-3 border-emerald-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -90,6 +90,7 @@ export default function App() {
         <Route path="categories" element={<CategoryManagement />} />
         <Route path="brands" element={<BrandManagement />} />
         <Route path="ledger" element={<AccountingLedger />} />
+        <Route path="khata" element={<AccountingLedger />} />
         <Route path="reports" element={<Reports />} />
         <Route path="agents" element={<AgentsStaff />} />
         <Route path="dynamic-specs" element={<DynamicSpecs />} />

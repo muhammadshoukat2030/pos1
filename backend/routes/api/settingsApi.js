@@ -97,7 +97,7 @@ router.put("/", isLoggedIn, allowRoles("superadmin", "admin"), async (req, res) 
 router.post("/switch-theme", isLoggedIn, async (req, res) => {
   try {
     const { theme } = req.body;
-    const allowed = ["bizcare-teal", "eproduct-blue", "ixershop-navy", "slate-dark"];
+    const allowed = ["light", "dark", "bizcare-teal", "eproduct-blue", "ixershop-navy", "slate-dark"];
 
     if (!allowed.includes(theme)) {
       return res.status(400).json({ success: false, message: "Invalid theme name." });

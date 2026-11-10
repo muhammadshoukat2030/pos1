@@ -22,7 +22,7 @@ export default function DataTable({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-theme-card border border-theme-border rounded-2xl p-12 text-center text-xs text-theme-textMuted shadow-card">
+      <div className="bg-theme-card border border-theme-border rounded-lg p-12 text-center text-xs text-theme-textMuted shadow-card">
         <EmptyIcon className="w-10 h-10 mx-auto mb-2 text-theme-textMuted opacity-40" />
         <p className="font-semibold">{emptyMessage}</p>
       </div>
@@ -39,15 +39,15 @@ export default function DataTable({
   } = pagination || {};
 
   return (
-    <div className={`bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden ${className}`}>
+    <div className={`bg-theme-card border border-theme-border rounded-lg shadow-2xs overflow-hidden ${className}`}>
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs text-theme-textPrimary">
-          <thead className="bg-black/5 dark:bg-white/5 border-b border-theme-border text-[11px] font-bold text-theme-textSecondary uppercase tracking-wider">
+          <thead className="bg-black/5 dark:bg-white/5 border-b border-theme-border text-[11px] font-semibold text-theme-textSecondary uppercase tracking-wider">
             <tr>
               {columns.map((col, idx) => (
                 <th
                   key={col.key || idx}
-                  className={`p-3.5 ${
+                  className={`py-2 px-3 ${
                     col.align === "right"
                       ? "text-right"
                       : col.align === "center"
@@ -64,14 +64,14 @@ export default function DataTable({
             {data.map((row, rowIdx) => (
               <tr
                 key={keyExtractor(row, rowIdx)}
-                className="hover:bg-black/5 dark:hover:bg-white/5 transition duration-150"
+                className="hover:bg-emerald-500/[0.04] dark:hover:bg-emerald-500/[0.06] transition duration-150"
               >
                 {columns.map((col, colIdx) => (
                   <td
                     key={col.key || colIdx}
-                    className={`p-3.5 ${
+                    className={`py-2 px-3 text-xs ${
                       col.align === "right"
-                        ? "text-right"
+                        ? "text-right font-mono"
                         : col.align === "center"
                         ? "text-center"
                         : "text-left"
@@ -88,7 +88,7 @@ export default function DataTable({
 
       {/* Pagination Footer */}
       {pagination && (
-        <div className="px-5 py-3.5 border-t border-theme-border flex flex-col sm:flex-row items-center justify-between gap-3 text-xs bg-theme-bg/30">
+        <div className="px-3 py-2 border-t border-theme-border flex flex-col sm:flex-row items-center justify-between gap-2 text-xs bg-black/[0.02] dark:bg-white/[0.02]">
           <div className="flex items-center gap-3 text-theme-textSecondary">
             <span>
               Showing <strong className="text-theme-textPrimary">{totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1}</strong> to{" "}

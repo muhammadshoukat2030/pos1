@@ -612,6 +612,15 @@ export default function PosTerminal() {
 
     try {
       const idempotencyKey = `pos_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+      let effectiveCashReceived = 0;
+      if (paymentMethod === "Split Payment") {
+        effectiveCashReceived = parseFloat(splitCash) || 0;
+      } else if (paymentMethod === "AR Khata / Credit") {
+        effectiveCashReceived = parseFloat(cashReceived) || 0;
+      } else {
+        effectiveCashReceived = parseFloat(cashReceived) > 0 ? parseFloat(cashReceived) : grandTotal;
+      }
+
       const payload = {
         idempotencyKey,
         sales: cart.map((it) => ({
@@ -643,7 +652,7 @@ export default function PosTerminal() {
         subtotal,
         taxAmount,
         discountAmount: overallDiscount,
-        cashReceived: paymentMethod === "Split Payment" ? (parseFloat(splitCash) || 0) : (parseFloat(cashReceived) || grandTotal),
+        cashReceived: effectiveCashReceived,
         changeDue: paymentMethod === "Split Payment" ? 0 : changeDue,
         notes: orderNotes,
         heldBillId: recalledHeldBillId || null
@@ -991,7 +1000,7 @@ export default function PosTerminal() {
 
           {/* Highlighted Total Box */}
           <div className="md:col-span-3 flex items-center gap-1.5">
-            <div className="flex-1 bg-gradient-to-r from-emerald-600 to-teal-600 text-white rounded-lg px-2.5 py-1 text-right shadow-xs">
+            <div className="flex-1 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-lg px-2.5 py-1 text-right shadow-xs">
               <span className="text-[9px] font-bold uppercase tracking-wider block opacity-90 leading-tight">
                 Item Total
               </span>
@@ -1062,14 +1071,14 @@ export default function PosTerminal() {
                     <div
                       key={p._id}
                       onClick={() => !isOutOfStock && addItemToCart(p, 1)}
-                      className={`group relative bg-white dark:bg-slate-900 border border-[#E2E8F0] dark:border-slate-800 hover:border-emerald-500/50 rounded-[10px] py-1 px-1.5 shadow-[0_1px_4px_rgba(15,23,42,0.05)] hover:shadow-[0_3px_8px_rgba(15,23,42,0.09)] transition-all duration-150 flex flex-col justify-between select-none h-[115px] max-w-[128px] w-full mx-auto ${
+                      className={`group relative bg-theme-card border border-theme-border hover:border-emerald-500/50 rounded-[10px] py-1 px-1.5 shadow-[0_1px_4px_rgba(15,23,42,0.05)] hover:shadow-[0_3px_8px_rgba(15,23,42,0.09)] transition-all duration-150 flex flex-col justify-between select-none h-[115px] max-w-[128px] w-full mx-auto ${
                         isOutOfStock ? "opacity-60 cursor-not-allowed" : "cursor-pointer"
                       }`}
                     >
                       {/* Top Section */}
                       <div className="flex flex-col">
                         {/* 1. Product Image Container */}
-                        <div className="relative w-full h-[47px] rounded-md bg-slate-50 dark:bg-slate-800/40 overflow-hidden flex items-center justify-center p-0 m-0">
+                        <div className="relative w-full h-[47px] rounded-md bg-black/5 dark:bg-white/5 overflow-hidden flex items-center justify-center p-0 m-0">
                           <img
                             src={p.image || "/images/product-placeholder.svg"}
                             alt={p.itemName}
@@ -1116,8 +1125,8 @@ export default function PosTerminal() {
                       </div>
 
                       {/* 4. Stock Quantity/Unit (improved visibility, 8px, normal weight 400) and Add-to-Cart Button on ONE line */}
-                      <div className="flex items-center justify-between mt-1 pt-1 border-t border-slate-100 dark:border-slate-800/80 leading-none">
-                        <span className="text-[8px] font-normal text-slate-700 dark:text-slate-300 font-mono truncate">
+                      <div className="flex items-center justify-between mt-1 pt-1 border-t border-theme-border/60 leading-none">
+                        <span className="text-[8px] font-normal text-theme-textSecondary font-mono truncate">
                           {p.remaining} {p.unit || "pcs"}
                         </span>
                         <button
@@ -1220,7 +1229,7 @@ export default function PosTerminal() {
             {/* Cart Items List - Independently scrollable */}
             <div className="overflow-x-auto max-h-[35vh] sm:max-h-[38vh] overflow-y-auto scrollbar-thin">
               <table className="w-full text-left text-[11px]">
-                <thead className="bg-slate-100 dark:bg-slate-800 text-[9px] font-normal text-slate-600 dark:text-slate-400 uppercase tracking-wider sticky top-0 z-10 border-b border-black/[0.06] dark:border-white/[0.06] shadow-2xs">
+                <thead className="bg-black/5 dark:bg-white/5 text-[9px] font-normal text-theme-textSecondary uppercase tracking-wider sticky top-0 z-10 border-b border-theme-border shadow-2xs">
                   <tr>
                     <th className="py-1.5 px-2.5 text-left">Item</th>
                     {canViewCostPrice && (
@@ -1420,13 +1429,25 @@ export default function PosTerminal() {
                 <span className="flex items-center gap-1">
                   <User className="w-3 h-3 text-theme-primary" /> Customer Name
                 </span>
-                <button
-                  type="button"
-                  onClick={() => setIsCustomerModalOpen(true)}
-                  className="text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 text-[10px] font-bold cursor-pointer transition"
-                >
-                  <UserPlus className="w-3 h-3" /> + New Khata
-                </button>
+                <div className="flex items-center gap-2">
+                  {selectedCustomerId && (
+                    <button
+                      type="button"
+                      onClick={() => setIsKhataProfileOpen(true)}
+                      className="text-emerald-700 dark:text-emerald-400 hover:underline flex items-center gap-0.5 text-[10px] font-bold cursor-pointer transition"
+                      title="View Customer Khata Profile"
+                    >
+                      <Eye className="w-3 h-3" /> View Khata
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setIsCustomerModalOpen(true)}
+                    className="text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 text-[10px] font-bold cursor-pointer transition"
+                  >
+                    <UserPlus className="w-3 h-3" /> + New Khata
+                  </button>
+                </div>
               </div>
 
               {/* Customer Name Text Input */}
@@ -1529,7 +1550,7 @@ export default function PosTerminal() {
                         setSplitCash(cVal);
                         setSplitBank(Math.max(0, grandTotal - cVal));
                       }}
-                      className="w-full px-2 py-1 text-xs font-bold bg-white dark:bg-slate-900 border border-theme-border rounded-lg text-right font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-2 py-1 text-xs font-bold bg-theme-card border border-theme-border rounded-lg text-right font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none text-theme-textPrimary"
                     />
                   </div>
                   <div>
@@ -1541,7 +1562,7 @@ export default function PosTerminal() {
                       min="0"
                       value={splitBank}
                       onChange={(e) => setSplitBank(parseFloat(e.target.value) || 0)}
-                      className="w-full px-2 py-1 text-xs font-bold bg-white dark:bg-slate-900 border border-theme-border rounded-lg text-right font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                      className="w-full px-2 py-1 text-xs font-bold bg-theme-card border border-theme-border rounded-lg text-right font-mono focus:ring-1 focus:ring-emerald-500 focus:outline-none text-theme-textPrimary"
                     />
                   </div>
                 </div>
@@ -1549,7 +1570,7 @@ export default function PosTerminal() {
                   <select
                     value={splitProvider}
                     onChange={(e) => setSplitProvider(e.target.value)}
-                    className="w-full px-2 py-1 text-[11px] font-medium bg-white dark:bg-slate-900 border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none text-theme-textPrimary"
+                    className="w-full px-2 py-1 text-[11px] font-medium bg-theme-card border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none text-theme-textPrimary"
                   >
                     <option value="Card (POS Machine)">Card (POS Machine)</option>
                     <option value="EasyPaisa">EasyPaisa</option>
@@ -1584,7 +1605,7 @@ export default function PosTerminal() {
               </div>
 
               {/* Grand Total Banner */}
-              <div className="bg-gradient-to-r from-emerald-600 via-emerald-600 to-teal-700 text-white rounded-xl p-3 shadow-md shadow-emerald-700/15 flex items-center justify-between">
+              <div className="bg-gradient-to-r from-emerald-700 via-emerald-700 to-emerald-800 text-white rounded-xl p-3 shadow-md shadow-emerald-800/15 flex items-center justify-between">
                 <div>
                   <span className="text-[9px] font-bold uppercase tracking-wider block opacity-90 leading-tight">
                     Grand Total
@@ -1643,10 +1664,21 @@ export default function PosTerminal() {
                     </div>
                     <div>
                       <label className="text-[9px] font-bold text-theme-textMuted uppercase block mb-1 tracking-wider">
-                        Change Due
+                        {paymentMethod === "AR Khata / Credit" && cashReceived < grandTotal
+                          ? "Khata Due"
+                          : "Change Due"}
                       </label>
-                      <div className="w-full px-2.5 py-1.5 text-xs font-black text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 rounded-lg text-right font-mono flex items-center justify-end">
-                        {currency} {changeDue.toFixed(0)}
+                      <div
+                        className={`w-full px-2.5 py-1.5 text-xs font-black rounded-lg text-right font-mono flex items-center justify-end border ${
+                          paymentMethod === "AR Khata / Credit" && cashReceived < grandTotal
+                            ? "text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 border-rose-200 dark:border-rose-800"
+                            : "text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 border-emerald-200 dark:border-emerald-800"
+                        }`}
+                      >
+                        {currency}{" "}
+                        {paymentMethod === "AR Khata / Credit" && cashReceived < grandTotal
+                          ? balanceDue.toFixed(0)
+                          : changeDue.toFixed(0)}
                       </div>
                     </div>
                   </div>
@@ -1671,7 +1703,7 @@ export default function PosTerminal() {
                   type="button"
                   disabled={isSubmitting || cart.length === 0}
                   onClick={() => handleProcessSale("Completed", false)}
-                  className="py-1.5 px-2 rounded-lg bg-teal-600 hover:bg-teal-700 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs transition cursor-pointer shadow-xs text-center"
+                  className="py-1.5 px-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs transition cursor-pointer shadow-xs text-center"
                 >
                   {isSubmitting ? "Saving..." : "Save (F4)"}
                 </button>
@@ -1711,7 +1743,7 @@ export default function PosTerminal() {
             disabled={isSubmitting || cart.length === 0}
             className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 transition"
           >
-            <span className="text-teal-400 font-bold mr-1">F4</span> Save Order
+            <span className="text-emerald-400 font-bold mr-1">F4</span> Save Order
           </button>
           <button
             onClick={() => {
@@ -1720,7 +1752,7 @@ export default function PosTerminal() {
             }}
             className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
           >
-            <span className="text-blue-400 font-bold mr-1">F6</span> To AR Khata
+            <span className="text-emerald-400 font-bold mr-1">F6</span> To AR Khata
           </button>
           <button
             onClick={handleHoldBill}
@@ -1732,7 +1764,7 @@ export default function PosTerminal() {
             onClick={fetchHeldBills}
             className="px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 transition"
           >
-            <span className="text-purple-400 font-bold mr-1">F8</span> Recall Bill
+            <span className="text-emerald-400 font-bold mr-1">F8</span> Recall Bill
           </button>
           <button
             onClick={clearCart}
@@ -1750,7 +1782,7 @@ export default function PosTerminal() {
       {/* 5. MODAL: CREATE QUICK KHATA CUSTOMER */}
       {isCustomerModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-sm w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-theme-primary" /> + New Khata Customer
@@ -1820,7 +1852,7 @@ export default function PosTerminal() {
       {/* 6. MODAL: RECALL HELD BILLS */}
       {isHeldModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-lg w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-lg w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <PauseCircle className="w-5 h-5 text-amber-500" /> Held Bills ({heldBills.length})
@@ -1876,30 +1908,30 @@ export default function PosTerminal() {
       {/* 7. MODAL: 80MM THERMAL RECEIPT PRINT MODAL */}
       {isPrintModalOpen && printedBill && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-white text-slate-900 rounded-3xl p-5 max-w-sm w-full shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
-            <div className="flex items-center justify-between pb-2 border-b border-gray-200">
-              <span className="font-bold text-sm text-emerald-700 flex items-center gap-1.5">
+          <div className="bg-theme-card text-theme-textPrimary border border-theme-border rounded-xl p-4 sm:p-5 max-w-sm w-full shadow-2xl space-y-3.5 max-h-[90vh] flex flex-col">
+            <div className="flex items-center justify-between pb-2 border-b border-theme-border">
+              <span className="font-bold text-sm text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
                 <CheckCircle className="w-4 h-4" /> Bill Processed
               </span>
               <button
                 onClick={() => setIsPrintModalOpen(false)}
-                className="text-gray-400 hover:text-gray-700"
+                className="text-theme-textMuted hover:text-theme-textPrimary"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             {/* Receipt Preview Container */}
-            <div className="flex-1 overflow-y-auto border border-gray-200 rounded-xl p-2 bg-gray-50">
+            <div className="flex-1 overflow-y-auto border border-theme-border rounded-lg p-2 bg-theme-bg">
               <Receipt80mm ref={printRef} bill={printedBill} />
             </div>
 
             {/* Actions */}
-            <div className="flex items-center gap-2 pt-2 border-t border-gray-200">
+            <div className="flex items-center gap-2 pt-2 border-t border-theme-border">
               <button
                 type="button"
                 onClick={() => handleShareWhatsApp(printedBill)}
-                className="py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-xs font-bold border border-emerald-300 flex items-center justify-center gap-1.5 transition"
+                className="py-2 px-3 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold border border-emerald-500/20 flex items-center justify-center gap-1.5 transition"
                 title="Send Bill via WhatsApp"
               >
                 <Share2 className="w-3.5 h-3.5" /> WhatsApp
@@ -1907,14 +1939,14 @@ export default function PosTerminal() {
               <button
                 type="button"
                 onClick={() => setIsPrintModalOpen(false)}
-                className="flex-1 py-2 rounded-xl border border-gray-300 text-xs font-bold text-gray-700 hover:bg-gray-100"
+                className="flex-1 py-2 rounded-lg border border-theme-border text-xs font-semibold text-theme-textSecondary hover:bg-theme-bg transition"
               >
                 Close
               </button>
               <button
                 type="button"
                 onClick={() => window.print()}
-                className="flex-1 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md flex items-center justify-center gap-1.5"
+                className="flex-1 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-1.5 transition"
               >
                 <Printer className="w-4 h-4" /> Print (80mm)
               </button>
@@ -1922,6 +1954,14 @@ export default function PosTerminal() {
           </div>
         </div>
       )}
+
+      {/* 6. MODAL: COMPLETE CUSTOMER KHATA PROFILE */}
+      <CustomerKhataProfileModal
+        customerId={selectedCustomerId}
+        isOpen={isKhataProfileOpen}
+        onClose={() => setIsKhataProfileOpen(false)}
+        onPaymentRecorded={fetchData}
+      />
     </div>
   );
 }

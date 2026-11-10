@@ -226,7 +226,7 @@ export default function BatchManagement() {
       {/* Toast Alert */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold border transition transform duration-200 ${
+          className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3 text-sm font-bold border transition transform duration-200 ${
             toast.type === "success"
               ? "bg-emerald-600 text-white border-emerald-500 shadow-emerald-900/30"
               : toast.type === "error"
@@ -275,7 +275,7 @@ export default function BatchManagement() {
       </div>
 
       {/* Top Executive KPI Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-stretch">
         <StatCard
           title="Active Batches"
           value={activeBatchesCount}
@@ -313,8 +313,8 @@ export default function BatchManagement() {
           title="Total Batched Units"
           value={totalBatchUnits.toLocaleString()}
           icon={Boxes}
-          iconBg="bg-blue-500/10"
-          iconColor="text-blue-500"
+          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+          iconColor="text-emerald-700 dark:text-emerald-400"
           badgeText="Traceable Stock"
           badgeType="info"
           subtitle="Aggregate Tracked Lot Units"
@@ -323,7 +323,7 @@ export default function BatchManagement() {
 
       {/* Critical Expiry Alert Banner if Expired or Near Expiry Stock exists */}
       {(expiredCount > 0 || nearExpiryCount > 0) && (
-        <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-start sm:items-center justify-between gap-3">
+        <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
             <div className="text-xs text-amber-900 dark:text-amber-200">
@@ -346,7 +346,7 @@ export default function BatchManagement() {
       )}
 
       {/* Filters & Search Control Strip */}
-      <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Quick Filter Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full md:w-auto">
           <button
@@ -427,7 +427,7 @@ export default function BatchManagement() {
       </div>
 
       {/* Batches Data Table */}
-      <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+      <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead className="bg-black/5 dark:bg-white/5 text-theme-textMuted uppercase font-bold tracking-wider border-b border-theme-border">

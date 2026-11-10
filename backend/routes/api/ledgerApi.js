@@ -15,8 +15,8 @@ function escapeRegExp(string) {
   return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
-// GET /api/ledger/summary (Admin, Manager, Accountant)
-router.get("/summary", isLoggedIn, allowRoles("admin", "manager", "accountant"), async (req, res) => {
+// GET /api/ledger/summary
+router.get("/summary", isLoggedIn, allowRoles("admin", "manager", "accountant", "cashier", "worker"), async (req, res) => {
   try {
     const nowPKT = moment().tz(PKT_TIMEZONE);
     const startOfToday = nowPKT.clone().startOf("day").toDate();
@@ -419,8 +419,8 @@ router.post("/cash-transaction", isLoggedIn, allowRoles("admin", "manager", "acc
   return handleCashOut(req, res);
 });
 
-// GET /api/ledger/transactions (All Ledger Transactions - Admin, Manager, Accountant)
-router.get("/transactions", isLoggedIn, allowRoles("admin", "manager", "accountant"), async (req, res) => {
+// GET /api/ledger/transactions
+router.get("/transactions", isLoggedIn, allowRoles("admin", "manager", "accountant", "cashier", "worker"), async (req, res) => {
   try {
     const { type, from, to, customerId, supplierId, limit = 100 } = req.query;
     let query = {};
@@ -452,8 +452,8 @@ router.get("/transactions", isLoggedIn, allowRoles("admin", "manager", "accounta
   }
 });
 
-// GET /api/ledger/suppliers (Admin, Manager, Accountant)
-router.get("/suppliers", isLoggedIn, allowRoles("admin", "manager", "accountant"), async (req, res) => {
+// GET /api/ledger/suppliers
+router.get("/suppliers", isLoggedIn, allowRoles("admin", "manager", "accountant", "cashier", "worker"), async (req, res) => {
   try {
     const suppliers = await Supplier.find().sort({ balanceDue: -1, name: 1 }).lean();
     return res.json({ success: true, suppliers });

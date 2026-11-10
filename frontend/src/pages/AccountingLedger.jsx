@@ -16,7 +16,10 @@ import {
   Receipt,
   Share2,
   MessageSquare,
-  X
+  Eye,
+  X,
+  RefreshCw,
+  AlertCircle
 } from "lucide-react";
 import api from "../services/api";
 import { useTheme } from "../context/ThemeContext";
@@ -67,6 +70,7 @@ export default function AccountingLedger() {
   const [isKhataProfileOpen, setIsKhataProfileOpen] = useState(false);
   const [custSearch, setCustSearch] = useState("");
   const [custFilter, setCustFilter] = useState("all"); // 'all' | 'debtors'
+  const [error, setError] = useState(null);
 
   // Legacy Customer Statement Modal
   const [isStatementModalOpen, setIsStatementModalOpen] = useState(false);
@@ -76,18 +80,38 @@ export default function AccountingLedger() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [sumRes, custRes, supRes, transRes] = await Promise.all([
+      setError(null);
+      const [sumRes, custRes, supRes, transRes] = await Promise.allSettled([
         api.get("/ledger/summary"),
         api.get("/ledger/customers"),
         api.get("/ledger/suppliers"),
         api.get("/ledger/transactions")
       ]);
 
-      if (sumRes.data.success) setSummary(sumRes.data.summary || {});
-      if (custRes.data.success) setCustomers(custRes.data.customers || []);
-      if (supRes.data.success) setSuppliers(supRes.data.suppliers || []);
-      if (transRes.data.success) setTransactions(transRes.data.transactions || []);
+      if (sumRes.status === "fulfilled" && sumRes.value?.data?.success) {
+        setSummary(sumRes.value.data.summary || {});
+      }
+      if (custRes.status === "fulfilled" && custRes.value?.data?.success) {
+        setCustomers(Array.isArray(custRes.value.data.customers) ? custRes.value.data.customers : []);
+      }
+      if (supRes.status === "fulfilled" && supRes.value?.data?.success) {
+        setSuppliers(Array.isArray(supRes.value.data.suppliers) ? supRes.value.data.suppliers : []);
+      }
+      if (transRes.status === "fulfilled" && transRes.value?.data?.success) {
+        setTransactions(Array.isArray(transRes.value.data.transactions) ? transRes.value.data.transactions : []);
+      }
+
+      if (
+        sumRes.status === "rejected" &&
+        custRes.status === "rejected" &&
+        supRes.status === "rejected" &&
+        transRes.status === "rejected"
+      ) {
+        const msg = custRes.reason?.response?.data?.message || custRes.reason?.message || "Failed to load ledger records";
+        setError(msg);
+      }
     } catch (err) {
+      setError(err.message || "Failed to load ledger");
       showToast("Error loading ledger: " + err.message, "error");
     } finally {
       setLoading(false);
@@ -248,27 +272,70 @@ export default function AccountingLedger() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsExpenseModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/20 text-rose-600 font-bold text-xs hover:bg-rose-100 transition"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/20 text-rose-600 font-bold text-xs hover:bg-rose-100 transition cursor-pointer"
           >
             <ArrowUpRight className="w-4 h-4" /> Record Cash Expense
           </button>
           <button
             onClick={() => {
-              setSelectedCustomer(customers[0] || null);
-              setIsCashInModalOpen(true);
+              const firstCust = Array.isArray(customers) && customers.length > 0 ? customers[0] : null;
+              if (firstCust) {
+                setSelectedCustomer(firstCust);
+                setIsCashInModalOpen(true);
+              } else {
+                showToast("Please create a customer first before receiving Khata payments.", "info");
+              }
             }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition transform active:scale-95"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition transform active:scale-95 cursor-pointer"
           >
             <ArrowDownLeft className="w-4 h-4" /> Receive Khata Cash-In
           </button>
         </div>
       </div>
 
+      {/* Friendly Error Banner with Retry */}
+      {error && (
+        <div className="p-4 rounded-lg bg-rose-500/10 border border-rose-500/30 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="w-5 h-5 text-rose-600 dark:text-rose-400 flex-shrink-0" />
+            <div>
+              <p className="text-xs font-bold text-rose-800 dark:text-rose-300">
+                Notice: Could not load complete ledger records
+              </p>
+              <p className="text-[11px] text-rose-700/80 dark:text-rose-400/80 mt-0.5">
+                {error}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={fetchData}
+            className="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs shadow-xs transition cursor-pointer flex items-center gap-1.5"
+          >
+            <RefreshCw className="w-3.5 h-3.5" /> Retry
+          </button>
+        </div>
+      )}
+
+      {/* Loading State Skeleton */}
+      {loading && !customers.length && !Object.keys(summary).length ? (
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="h-24 rounded-lg bg-black/5 dark:bg-white/5 animate-pulse" />
+            ))}
+          </div>
+          <div className="bg-theme-card border border-theme-border rounded-lg p-4">
+            <TableSkeleton rows={6} columns={6} />
+          </div>
+        </div>
+      ) : (
+        <>
       {/* KPI Cards Strip */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-stretch">
         <StatCard
           title="Customer Khata (AR)"
-          value={`${currency} ${(summary.totalReceivable || 0).toLocaleString()}`}
+          value={`${currency} ${(summary?.totalReceivable || 0).toLocaleString()}`}
           icon={CreditCard}
           badgeText="Receivables"
           badgeType="warning"
@@ -279,7 +346,7 @@ export default function AccountingLedger() {
 
         <StatCard
           title="Supplier Payables (AP)"
-          value={`${currency} ${(summary.totalPayable || 0).toLocaleString()}`}
+          value={`${currency} ${(summary?.totalPayable || 0).toLocaleString()}`}
           icon={Building}
           badgeText="Payables"
           badgeType="danger"
@@ -290,7 +357,7 @@ export default function AccountingLedger() {
 
         <StatCard
           title="Today's Cash In"
-          value={`${currency} ${(summary.todayCashIn || 0).toLocaleString()}`}
+          value={`${currency} ${(summary?.todayCashIn || 0).toLocaleString()}`}
           icon={ArrowDownLeft}
           badgeText="Inflow"
           badgeType="success"
@@ -301,11 +368,11 @@ export default function AccountingLedger() {
 
         <StatCard
           title="Today's Cash Out"
-          value={`${currency} ${(summary.todayCashOut || 0).toLocaleString()}`}
+          value={`${currency} ${(summary?.todayCashOut || 0).toLocaleString()}`}
           icon={ArrowUpRight}
           badgeText="Outflow"
           badgeType="neutral"
-          iconBg="bg-slate-500/10 dark:bg-slate-800"
+          iconBg="bg-slate-500/10 dark:bg-white/5"
           iconColor="text-slate-600 dark:text-slate-300"
           subtitle="Expenses & vendor payments"
         />
@@ -314,17 +381,17 @@ export default function AccountingLedger() {
       {/* Tabs Switcher */}
       <div className="flex items-center gap-2 border-b border-theme-border pb-1">
         {[
-          { id: "customers", label: `Customer Khata (${customers.length})` },
-          { id: "transactions", label: `Ledger Log (${transactions.length})` },
-          { id: "suppliers", label: `Suppliers (${suppliers.length})` }
+          { id: "customers", label: `Customer Khata (${Array.isArray(customers) ? customers.length : 0})` },
+          { id: "transactions", label: `Ledger Log (${Array.isArray(transactions) ? transactions.length : 0})` },
+          { id: "suppliers", label: `Suppliers (${Array.isArray(suppliers) ? suppliers.length : 0})` }
         ].map((t) => (
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
               activeTab === t.id
-                ? "bg-theme-primary text-white shadow-sm"
-                : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5"
+                ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 dark:border-emerald-700/50 shadow-2xs"
+                : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 border border-transparent"
             }`}
           >
             {t.label}
@@ -334,7 +401,8 @@ export default function AccountingLedger() {
 
       {/* TAB 1: CUSTOMERS KHATA TABLE */}
       {activeTab === "customers" && (() => {
-        const filteredCustomers = customers.filter((c) => {
+        const custList = Array.isArray(customers) ? customers : [];
+        const filteredCustomers = custList.filter((c) => {
           if (custFilter === "debtors" && (c.currentBalance || 0) <= 0) {
             return false;
           }
@@ -349,7 +417,7 @@ export default function AccountingLedger() {
         return (
           <div className="space-y-3">
             {/* Search & Filter Bar */}
-            <div className="bg-theme-card border border-theme-border rounded-xl p-3 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="bg-theme-card border border-theme-border rounded-lg p-2.5 sm:p-3 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div className="relative flex-1 max-w-md">
                 <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-400 pointer-events-none" />
                 <input
@@ -397,7 +465,7 @@ export default function AccountingLedger() {
             </div>
 
             {/* Customers Table */}
-            <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+            <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -486,7 +554,7 @@ export default function AccountingLedger() {
 
       {/* TAB 2: TRANSACTIONS LOG */}
       {activeTab === "transactions" && (
-        <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -549,7 +617,7 @@ export default function AccountingLedger() {
             </button>
           </div>
 
-          <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+          <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -598,11 +666,13 @@ export default function AccountingLedger() {
           </div>
         </div>
       )}
+        </>
+      )}
 
       {/* MODAL 1: RECEIVE CASH IN */}
       {isCashInModalOpen && selectedCustomer && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-sm w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-emerald-600 flex items-center gap-2">
                 <ArrowDownLeft className="w-5 h-5" /> Receive Khata Cash-In
@@ -679,7 +749,7 @@ export default function AccountingLedger() {
       {/* MODAL 2: RECORD EXPENSE */}
       {isExpenseModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-sm w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-rose-600 flex items-center gap-2">
                 <ArrowUpRight className="w-5 h-5" /> Record Store Expense
@@ -753,7 +823,7 @@ export default function AccountingLedger() {
       {/* MODAL 3: CUSTOMER STATEMENT */}
       {isStatementModalOpen && customerStatement && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-3xl p-6 max-w-xl w-full shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+          <div className="bg-theme-card border border-theme-border rounded-xl p-4 sm:p-5 max-w-xl w-full shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <div>
                 <h3 className="font-extrabold text-lg text-theme-textPrimary flex items-center gap-2">

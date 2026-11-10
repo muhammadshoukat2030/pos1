@@ -3,84 +3,57 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   4-THEME CSS VARIABLES ENGINE
+   2-THEME ENGINE (LIGHT & DARK ONLY)
    ========================================================================== */
 
+/* 1. LIGHT THEME (Exact Bizniz Reference: Soft Off-White Canvas, Clean White Cards, Forest Green) */
 :root,
-[data-theme="bizcare-teal"] {
-  --primary-color: #0D9488;
-  --primary-dark: #0F766E;
-  --primary-light: #CCFBF1;
-  --header-gradient: linear-gradient(135deg, #0F766E 0%, #0D9488 50%, #14B8A6 100%);
-  --sidebar-bg: #FFFFFF;
-  --sidebar-text: #475569;
-  --sidebar-active-bg: #E6FFFA;
-  --sidebar-active-text: #0D9488;
-  --sidebar-border: #E2E8F0;
-  --body-bg: #F8FAFC;
-  --card-bg: #FFFFFF;
-  --card-border: #E2E8F0;
-  --text-primary: #0F172A;
-  --text-secondary: #64748B;
-  --text-muted: #94A3B8;
-  --kpi-ring-color: rgba(13, 148, 136, 0.08);
-}
-
-[data-theme="eproduct-blue"] {
-  --primary-color: #2563EB;
-  --primary-dark: #1D4ED8;
-  --primary-light: #DBEAFE;
-  --header-gradient: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #3B82F6 100%);
-  --sidebar-bg: #1D4ED8;
-  --sidebar-text: #BFDBFE;
-  --sidebar-active-bg: #FFFFFF;
-  --sidebar-active-text: #1D4ED8;
-  --sidebar-border: #1E40AF;
-  --body-bg: #F1F5F9;
-  --card-bg: #FFFFFF;
-  --card-border: #E2E8F0;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --kpi-ring-color: rgba(37, 99, 235, 0.08);
-}
-
+[data-theme="light"],
+[data-theme="bizcare-teal"],
+[data-theme="eproduct-blue"],
 [data-theme="ixershop-navy"] {
-  --primary-color: #0F172A;
-  --primary-dark: #020617;
-  --primary-light: #E2E8F0;
-  --header-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1E3A8A 100%);
-  --sidebar-bg: #0F172A;
-  --sidebar-text: #94A3B8;
-  --sidebar-active-bg: #2563EB;
-  --sidebar-active-text: #FFFFFF;
-  --sidebar-border: #1E293B;
-  --body-bg: #F8FAFC;
-  --card-bg: #FFFFFF;
-  --card-border: #E2E8F0;
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #94A3B8;
-  --kpi-ring-color: rgba(15, 23, 42, 0.06);
+  --primary-color: #065f46; /* Deep professional forest green */
+  --primary-dark: #044e3a;
+  --primary-light: #ecfdf5; /* Secondary Soft Light Green */
+  --header-gradient: linear-gradient(135deg, #065f46 0%, #047857 60%, #059669 100%);
+  --sidebar-bg: #FFFFFF; /* Pure white sidebar */
+  --sidebar-text: #475569;
+  --sidebar-active-bg: #ecfdf5; /* Soft green active menu background */
+  --sidebar-active-text: #065f46; /* Dark green text and icon */
+  --sidebar-hover-bg: #f0fdf4;
+  --sidebar-hover-text: #065f46;
+  --sidebar-border: #e2e8f0; /* Very light gray */
+  --body-bg: #f8fafc; /* Soft off-white / very light warm gray */
+  --card-bg: #FFFFFF; /* Clean white cards and panels */
+  --card-border: #e2e8f0; /* Very light gray borders */
+  --text-primary: #0f172a; /* Dark readable charcoal text */
+  --text-secondary: #64748b; /* Muted gray */
+  --text-muted: #94a3b8;
+  --kpi-ring-color: rgba(6, 95, 70, 0.08);
 }
 
-[data-theme="slate-dark"] {
-  --primary-color: #38BDF8;
-  --primary-dark: #0284C7;
-  --primary-light: #0C4A6E;
-  --header-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-  --sidebar-bg: #0B1120;
-  --sidebar-text: #94A3B8;
-  --sidebar-active-bg: #1E293B;
-  --sidebar-active-text: #38BDF8;
-  --sidebar-border: #1E293B;
-  --body-bg: #0F172A;
-  --card-bg: #1E293B;
-  --card-border: #334155;
-  --text-primary: #F8FAFC;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --kpi-ring-color: rgba(56, 189, 248, 0.08);
+/* 2. DARK THEME (Exact Bizniz Reference: Deep Dark Charcoal / Near-Black Green, Dark Charcoal-Green Panels) */
+[data-theme="dark"],
+[data-theme="slate-dark"],
+html.dark {
+  --primary-color: #10b981; /* Same professional green identity */
+  --primary-dark: #059669;
+  --primary-light: rgba(16, 185, 129, 0.15);
+  --header-gradient: linear-gradient(135deg, #09140f 0%, #0e241b 60%, #065f46 100%);
+  --sidebar-bg: #0d1a14; /* Slightly lighter dark green-charcoal */
+  --sidebar-text: #94a3b8;
+  --sidebar-active-bg: #133b2a; /* Dark green background */
+  --sidebar-active-text: #34d399; /* Clear readable text */
+  --sidebar-hover-bg: rgba(16, 185, 129, 0.10);
+  --sidebar-hover-text: #6ee7b7;
+  --sidebar-border: #142e23; /* Subtle dark gray-green border */
+  --body-bg: #09130e; /* Deep dark charcoal / near-black green */
+  --card-bg: #11241b; /* Dark charcoal-green surfaces */
+  --card-border: #19382c; /* Subtle dark gray-green borders */
+  --text-primary: #f8fafc; /* Soft white */
+  --text-secondary: #94a3b8; /* Muted gray */
+  --text-muted: #64748b;
+  --kpi-ring-color: rgba(16, 185, 129, 0.1);
 }
 
 /* Base Body Styles */
@@ -112,6 +85,24 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(150, 150, 150, 0.45);
+}
+
+/* Form Dropdowns & Option Dark Styling Across Browsers */
+[data-theme="dark"] select option,
+[data-theme="slate-dark"] select option,
+html.dark select option {
+  background-color: #11241b;
+  color: #f8fafc;
+}
+[data-theme="light"] select option {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+/* Universal Placeholder Contrast */
+::placeholder {
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 
 /* 80mm Thermal Receipt Print Rules */

@@ -199,7 +199,7 @@ export default function CategoryManagement() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-theme-border">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+          <div className="w-12 h-12 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
             <FolderTree className="w-6 h-6" />
           </div>
           <div>
@@ -234,7 +234,7 @@ export default function CategoryManagement() {
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Total Categories</span>
             <FolderTree className="w-5 h-5 text-indigo-500" />
@@ -243,7 +243,7 @@ export default function CategoryManagement() {
           <div className="text-[11px] text-theme-textMuted mt-1">Supermarket departments</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Active Categories</span>
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
@@ -252,18 +252,18 @@ export default function CategoryManagement() {
           <div className="text-[11px] text-theme-textMuted mt-1">Visible on POS Terminal</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Categorized Products</span>
-            <Package className="w-5 h-5 text-teal-500" />
+            <Package className="w-5 h-5 text-emerald-500" />
           </div>
-          <div className="text-2xl font-black mt-2 text-teal-600 dark:text-teal-400">
+          <div className="text-2xl font-black mt-2 text-emerald-600 dark:text-emerald-400">
             {stats.totalProductsLinked}
           </div>
           <div className="text-[11px] text-theme-textMuted mt-1">Total items classified</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Top Category</span>
             <Layers className="w-5 h-5 text-amber-500" />
@@ -278,7 +278,7 @@ export default function CategoryManagement() {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-theme-card border border-theme-border rounded-2xl p-3 shadow-card flex items-center gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-lg p-3 shadow-card flex items-center gap-3">
         <Search className="w-4 h-4 text-theme-textMuted ml-1 flex-shrink-0" />
         <input
           type="text"
@@ -298,7 +298,7 @@ export default function CategoryManagement() {
       </div>
 
       {/* Categories Table */}
-      <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+      <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-black/5 dark:bg-white/5 border-b border-theme-border text-xs uppercase font-extrabold text-theme-textMuted">
@@ -361,7 +361,7 @@ export default function CategoryManagement() {
                       <span
                         className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
                           c.productCount > 0
-                            ? "bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20"
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                             : "bg-slate-500/10 text-slate-500 border border-slate-500/20"
                         }`}
                       >
@@ -417,7 +417,7 @@ export default function CategoryManagement() {
       {/* Add / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <div className="flex items-center gap-2 font-bold text-base">
                 <FolderTree className="w-5 h-5 text-theme-primary" />

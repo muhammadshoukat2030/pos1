@@ -34,35 +34,19 @@ import {
 
 const THEME_OPTIONS = [
   {
-    id: "bizcare-teal",
-    name: "Bizcare Teal ERP",
-    desc: "Teal gradient header with executive dashboard aesthetic and clean rings.",
-    primary: "#0d9488",
-    headerBg: "from-teal-800 via-teal-700 to-teal-900",
-    badge: "Image 2 Style"
+    id: "light",
+    name: "Light Mode",
+    desc: "Soft off-white canvas, clean white cards, dark charcoal text, professional forest green accents, and subtle light borders.",
+    primary: "#065f46",
+    headerBg: "from-emerald-800 via-emerald-700 to-emerald-900",
+    badge: "Light Theme"
   },
   {
-    id: "eproduct-blue",
-    name: "eProduct Royal Blue",
-    desc: "Deep royal blue with signature white active pill cutout and floating rows.",
-    primary: "#2563eb",
-    headerBg: "from-blue-800 via-blue-700 to-indigo-900",
-    badge: "Image 1 Style"
-  },
-  {
-    id: "ixershop-navy",
-    name: "IXERSHOP Navy POS",
-    desc: "Dark navy high-speed cashier terminal with high-contrast shortcut bar.",
-    primary: "#0f172a",
-    headerBg: "from-slate-900 via-slate-850 to-slate-950",
-    badge: "Image 3 Style"
-  },
-  {
-    id: "slate-dark",
-    name: "Slate Dark Mode",
-    desc: "Sleek low-light night theme designed for reduced eye strain during long shifts.",
-    primary: "#3b82f6",
-    headerBg: "from-slate-950 via-slate-900 to-slate-950",
+    id: "dark",
+    name: "Dark Mode",
+    desc: "Deep dark charcoal / near-black green canvas, dark charcoal-green panels, soft white text, and emerald green accents.",
+    primary: "#10b981",
+    headerBg: "from-[#09130e] via-[#11241b] to-[#065f46]",
     badge: "Dark Theme"
   }
 ];
@@ -78,13 +62,13 @@ const BUSINESS_TYPES = [
 ];
 
 const ROLE_CONFIG = {
-  superadmin: { label: "Super Admin", color: "bg-purple-100 text-purple-800 border-purple-200" },
-  admin: { label: "Store Admin", color: "bg-blue-100 text-blue-800 border-blue-200" },
-  manager: { label: "Store Manager", color: "bg-teal-100 text-teal-800 border-teal-200" },
+  superadmin: { label: "Super Admin", color: "bg-slate-900 text-white border-slate-900" },
+  admin: { label: "Store Admin", color: "bg-emerald-800 text-white border-emerald-800" },
+  manager: { label: "Store Manager", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
   cashier: { label: "Cashier / Staff", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
   inventory: { label: "Inventory Staff", color: "bg-amber-100 text-amber-800 border-amber-200" },
-  accountant: { label: "Accountant", color: "bg-indigo-100 text-indigo-800 border-indigo-200" },
-  worker: { label: "Cashier (Legacy)", color: "bg-slate-100 text-slate-800 border-slate-200" }
+  accountant: { label: "Accountant", color: "bg-emerald-100 text-emerald-800 border-emerald-200" },
+  worker: { label: "Cashier (Legacy)", color: "bg-black/5 dark:bg-white/5 text-theme-textPrimary border-theme-border" }
 };
 
 export default function StoreSettings() {
@@ -115,7 +99,7 @@ export default function StoreSettings() {
     receiptShowDiscounts: true,
     receiptWidth: "80mm",
     defaultPosMode: "hybrid",
-    activeTheme: "bizcare-teal",
+    activeTheme: "light",
     logoUrl: "",
     backupSettings: {
       autoBackupEnabled: true,
@@ -399,13 +383,13 @@ export default function StoreSettings() {
   return (
     <div className="space-y-6 max-w-6xl mx-auto pb-12">
       {/* Header Bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-theme-card p-5 rounded-xl border border-theme-border shadow-xs">
         <div>
-          <h1 className="text-2xl font-bold text-slate-800 flex items-center gap-2.5">
-            <Settings className="text-teal-600" size={26} />
+          <h1 className="text-2xl font-bold text-theme-textPrimary flex items-center gap-2.5">
+            <Settings className="text-emerald-600" size={26} />
             Store Management & System Settings
           </h1>
-          <p className="text-slate-500 text-sm mt-0.5">
+          <p className="text-theme-textMuted text-sm mt-0.5">
             Store Profile, Thermal Slip Layout, Role-Based Access Control, Backups & Recovery, and Themes.
           </p>
         </div>
@@ -414,7 +398,7 @@ export default function StoreSettings() {
           <button
             onClick={handleSubmitSettings}
             disabled={saving}
-            className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-medium px-5 py-2.5 rounded-lg shadow-xs transition self-start md:self-auto cursor-pointer"
+            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-medium px-5 py-2.5 rounded-lg shadow-xs transition self-start md:self-auto cursor-pointer"
           >
             <Save size={18} />
             {saving ? "Saving Changes..." : "Save Settings"}
@@ -423,13 +407,13 @@ export default function StoreSettings() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-slate-200 bg-white px-3 pt-2 rounded-t-xl gap-2 overflow-x-auto shadow-2xs">
+      <div className="flex border-b border-theme-border bg-theme-card px-3 pt-2 rounded-t-xl gap-2 overflow-x-auto shadow-2xs">
         <button
           onClick={() => setActiveTab("store")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "store"
-              ? "border-teal-600 text-teal-700"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
           <Store size={18} />
@@ -440,8 +424,8 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("receipt")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "receipt"
-              ? "border-teal-600 text-teal-700"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
           <Receipt size={18} />
@@ -452,8 +436,8 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("rbac")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "rbac"
-              ? "border-teal-600 text-teal-700"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
           <Users size={18} />
@@ -464,8 +448,8 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("backup")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "backup"
-              ? "border-teal-600 text-teal-700"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
           <Database size={18} />
@@ -476,8 +460,8 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("theme")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "theme"
-              ? "border-teal-600 text-teal-700"
-              : "border-transparent text-slate-600 hover:text-slate-900"
+              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
           <Palette size={18} />
@@ -488,15 +472,15 @@ export default function StoreSettings() {
       {/* TAB 1: Store & Branding */}
       {activeTab === "store" && (
         <form onSubmit={handleSubmitSettings} className="space-y-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-            <div className="flex items-center gap-2.5 pb-3 mb-5 border-b border-slate-100">
-              <Store className="text-teal-600" size={20} />
-              <h2 className="text-base font-bold text-slate-800">Store Profile & Branding Identity</h2>
+          <div className="bg-theme-card p-6 rounded-xl border border-theme-border shadow-xs">
+            <div className="flex items-center gap-2.5 pb-3 mb-5 border-b border-theme-border">
+              <Store className="text-emerald-600" size={20} />
+              <h2 className="text-base font-bold text-theme-textPrimary">Store Profile & Branding Identity</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Store / Mart Name *
                 </label>
                 <input
@@ -505,12 +489,12 @@ export default function StoreSettings() {
                   value={formData.storeName}
                   onChange={(e) => handleChange("storeName", e.target.value)}
                   placeholder="e.g. Al-Madina Super Mart"
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-medium"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Tagline / Subtitle
                 </label>
                 <input
@@ -518,18 +502,18 @@ export default function StoreSettings() {
                   value={formData.tagline}
                   onChange={(e) => handleChange("tagline", e.target.value)}
                   placeholder="e.g. Quality Goods at Wholesale Rates"
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Business Vertical / Category
                 </label>
                 <select
                   value={formData.businessType}
                   onChange={(e) => handleChange("businessType", e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-theme-card"
                 >
                   {BUSINESS_TYPES.map((bt) => (
                     <option key={bt} value={bt}>
@@ -540,7 +524,7 @@ export default function StoreSettings() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Contact Phone / WhatsApp
                 </label>
                 <input
@@ -548,12 +532,12 @@ export default function StoreSettings() {
                   value={formData.phone}
                   onChange={(e) => handleChange("phone", e.target.value)}
                   placeholder="e.g. 0300-1234567"
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Store Logo URL (Optional)
                 </label>
                 <input
@@ -561,18 +545,18 @@ export default function StoreSettings() {
                   value={formData.logoUrl}
                   onChange={(e) => handleChange("logoUrl", e.target.value)}
                   placeholder="e.g. /images/store-logo.png"
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Default POS Layout
                 </label>
                 <select
                   value={formData.defaultPosMode}
                   onChange={(e) => handleChange("defaultPosMode", e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-theme-card"
                 >
                   <option value="hybrid">Hybrid (Barcode Bar + Grid Toggle)</option>
                   <option value="barcode">Barcode Fast Scan Only (Cashier)</option>
@@ -581,7 +565,7 @@ export default function StoreSettings() {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Store Physical Address (Printed on Receipts)
                 </label>
                 <input
@@ -589,21 +573,21 @@ export default function StoreSettings() {
                   value={formData.address}
                   onChange={(e) => handleChange("address", e.target.value)}
                   placeholder="e.g. Shop # 14-B, Commercial Market, Rawalpindi"
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                 />
               </div>
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-            <div className="flex items-center gap-2.5 pb-3 mb-5 border-b border-slate-100">
-              <Percent className="text-teal-600" size={20} />
-              <h2 className="text-base font-bold text-slate-800">Financial & Currency Standards</h2>
+          <div className="bg-theme-card p-6 rounded-xl border border-theme-border shadow-xs">
+            <div className="flex items-center gap-2.5 pb-3 mb-5 border-b border-theme-border">
+              <Percent className="text-emerald-600" size={20} />
+              <h2 className="text-base font-bold text-theme-textPrimary">Financial & Currency Standards</h2>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Currency Code
                 </label>
                 <input
@@ -611,12 +595,12 @@ export default function StoreSettings() {
                   value={formData.currency}
                   onChange={(e) => handleChange("currency", e.target.value)}
                   placeholder="PKR"
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono font-bold"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono font-bold"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Currency Symbol
                 </label>
                 <input
@@ -624,12 +608,12 @@ export default function StoreSettings() {
                   value={formData.currencySymbol}
                   onChange={(e) => handleChange("currencySymbol", e.target.value)}
                   placeholder="Rs."
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono font-bold"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono font-bold"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Default Sales Tax / GST (%)
                 </label>
                 <input
@@ -639,12 +623,12 @@ export default function StoreSettings() {
                   step="0.1"
                   value={formData.taxRate}
                   onChange={(e) => handleChange("taxRate", e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Operating Timezone
                 </label>
                 <input
@@ -652,7 +636,7 @@ export default function StoreSettings() {
                   value={formData.timezone}
                   onChange={(e) => handleChange("timezone", e.target.value)}
                   placeholder="Asia/Karachi"
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono text-xs"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono text-xs"
                 />
               </div>
             </div>
@@ -662,14 +646,14 @@ export default function StoreSettings() {
             <button
               type="button"
               onClick={fetchSettings}
-              className="flex items-center gap-1.5 px-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+              className="flex items-center gap-1.5 px-4 py-2 border border-theme-border rounded-lg text-sm text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 transition cursor-pointer"
             >
               <RotateCcw size={16} /> Reset
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-lg shadow-xs transition cursor-pointer"
+              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-lg shadow-xs transition cursor-pointer"
             >
               <Save size={18} />
               {saving ? "Saving Changes..." : "Save Settings"}
@@ -684,15 +668,15 @@ export default function StoreSettings() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
             {/* Form Settings */}
             <div className="lg:col-span-7 space-y-6">
-              <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-                <div className="flex items-center gap-2.5 pb-3 mb-5 border-b border-slate-100">
-                  <Printer className="text-teal-600" size={20} />
-                  <h2 className="text-base font-bold text-slate-800">Thermal Printer Specifications</h2>
+              <div className="bg-theme-card p-6 rounded-xl border border-theme-border shadow-xs">
+                <div className="flex items-center gap-2.5 pb-3 mb-5 border-b border-theme-border">
+                  <Printer className="text-emerald-600" size={20} />
+                  <h2 className="text-base font-bold text-theme-textPrimary">Thermal Printer Specifications</h2>
                 </div>
 
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                    <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                       Thermal Slip Paper Width
                     </label>
                     <div className="grid grid-cols-2 gap-4">
@@ -700,22 +684,22 @@ export default function StoreSettings() {
                         onClick={() => handleChange("receiptWidth", "80mm")}
                         className={`p-3 rounded-lg border-2 cursor-pointer transition flex items-center justify-between ${
                           formData.receiptWidth === "80mm"
-                            ? "border-teal-600 bg-teal-50/50 text-teal-900 font-bold"
-                            : "border-slate-200 hover:bg-slate-50 text-slate-700"
+                            ? "border-emerald-600 bg-emerald-50/50 text-emerald-900 font-bold"
+                            : "border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textSecondary"
                         }`}
                       >
                         <div>
                           <div className="text-sm">Standard 80mm</div>
-                          <div className="text-3xs text-slate-500 font-normal">Supermarkets & Marts (Default)</div>
+                          <div className="text-3xs text-theme-textMuted font-normal">Supermarkets & Marts (Default)</div>
                         </div>
-                        {formData.receiptWidth === "80mm" && <Check size={18} className="text-teal-600" />}
+                        {formData.receiptWidth === "80mm" && <Check size={18} className="text-emerald-600" />}
                       </div>
 
                       <div
                         onClick={() => handleChange("receiptWidth", "58mm")}
                         className={`p-3 rounded-lg border-2 cursor-pointer transition flex items-center justify-between ${
                           formData.receiptWidth === "58mm"
-                            ? "border-teal-600 bg-teal-50/50 text-teal-900 font-bold"
+                            ? "border-emerald-600 bg-emerald-50/50 text-emerald-900 font-bold"
                             : "border-slate-200 hover:bg-slate-50 text-slate-700"
                         }`}
                       >
@@ -723,7 +707,7 @@ export default function StoreSettings() {
                           <div className="text-sm">Compact 58mm</div>
                           <div className="text-3xs text-slate-500 font-normal">Mini Marts, Kiosks & Cafes</div>
                         </div>
-                        {formData.receiptWidth === "58mm" && <Check size={18} className="text-teal-600" />}
+                        {formData.receiptWidth === "58mm" && <Check size={18} className="text-emerald-600" />}
                       </div>
                     </div>
                   </div>
@@ -737,7 +721,7 @@ export default function StoreSettings() {
                       value={formData.receiptHeaderNotice}
                       onChange={(e) => handleChange("receiptHeaderNotice", e.target.value)}
                       placeholder="e.g. TAX INVOICE / CASH MEMO"
-                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 uppercase font-mono"
+                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase font-mono"
                     />
                   </div>
 
@@ -750,7 +734,7 @@ export default function StoreSettings() {
                       value={formData.receiptFooter}
                       onChange={(e) => handleChange("receiptFooter", e.target.value)}
                       placeholder="Thank You! Visit Again"
-                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-medium"
+                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-medium"
                     />
                   </div>
 
@@ -764,7 +748,7 @@ export default function StoreSettings() {
                       value={formData.urduFooterNotice}
                       onChange={(e) => handleChange("urduFooterNotice", e.target.value)}
                       placeholder="مال کی واپسی یا تبدیلی 3 دن کے اندر بل کے ساتھ ہو سکے گی"
-                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 text-right font-sans"
+                      className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 text-right font-sans"
                     />
                   </div>
 
@@ -779,7 +763,7 @@ export default function StoreSettings() {
                         type="checkbox"
                         checked={formData.receiptShowBarcode !== false}
                         onChange={(e) => handleChange("receiptShowBarcode", e.target.checked)}
-                        className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500"
+                        className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
                       />
                       <span className="text-sm text-slate-700">Print Scannable Code128 Barcode on Thermal Slips</span>
                     </label>
@@ -789,7 +773,7 @@ export default function StoreSettings() {
                         type="checkbox"
                         checked={formData.receiptShowTax !== false}
                         onChange={(e) => handleChange("receiptShowTax", e.target.checked)}
-                        className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500"
+                        className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
                       />
                       <span className="text-sm text-slate-700">Print Sales Tax / GST Line</span>
                     </label>
@@ -799,7 +783,7 @@ export default function StoreSettings() {
                         type="checkbox"
                         checked={formData.receiptShowDiscounts !== false}
                         onChange={(e) => handleChange("receiptShowDiscounts", e.target.checked)}
-                        className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500"
+                        className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
                       />
                       <span className="text-sm text-slate-700">Print Discount Breakdown Line</span>
                     </label>
@@ -903,7 +887,7 @@ export default function StoreSettings() {
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-lg shadow-xs transition cursor-pointer"
+              className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-medium px-6 py-2.5 rounded-lg shadow-xs transition cursor-pointer"
             >
               <Save size={18} />
               {saving ? "Saving Changes..." : "Save Thermal Settings"}
@@ -915,21 +899,21 @@ export default function StoreSettings() {
       {/* TAB 3: Staff & Role Permissions (RBAC) */}
       {activeTab === "rbac" && (
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-5 border-b border-slate-100">
+          <div className="bg-theme-card p-6 rounded-xl border border-theme-border shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-5 border-b border-theme-border">
               <div>
-                <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
-                  <Shield className="text-teal-600" size={20} />
+                <h2 className="text-base font-bold text-theme-textPrimary flex items-center gap-2">
+                  <Shield className="text-emerald-600" size={20} />
                   Role-Based Access Control (RBAC) & Staff Accounts
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-theme-textMuted mt-0.5">
                   Manage staff credentials, assigned branches, roles, and backend permissions.
                 </p>
               </div>
 
               <button
                 onClick={() => handleOpenUserModal()}
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white font-medium text-sm px-4 py-2 rounded-lg shadow-xs transition cursor-pointer"
+                className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2 rounded-lg shadow-xs transition cursor-pointer"
               >
                 <UserPlus size={16} />
                 Add Staff Member
@@ -938,18 +922,18 @@ export default function StoreSettings() {
 
             {/* Users Table */}
             {loadingUsers ? (
-              <div className="py-12 text-center text-slate-500">
-                <RefreshCw size={24} className="animate-spin mx-auto mb-2 text-teal-600" />
+              <div className="py-12 text-center text-theme-textMuted">
+                <RefreshCw size={24} className="animate-spin mx-auto mb-2 text-emerald-600" />
                 Loading staff accounts...
               </div>
             ) : users.length === 0 ? (
-              <div className="py-8 text-center text-slate-500 text-sm">
+              <div className="py-8 text-center text-theme-textMuted text-sm">
                 No users found.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-50 text-slate-600 uppercase text-3xs font-semibold tracking-wider border-b border-slate-200">
+                  <thead className="bg-black/5 dark:bg-white/5 text-theme-textSecondary uppercase text-3xs font-semibold tracking-wider border-b border-theme-border">
                     <tr>
                       <th className="py-3 px-4">Staff Member</th>
                       <th className="py-3 px-4">Role</th>
@@ -961,40 +945,40 @@ export default function StoreSettings() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {users.map((u) => {
-                      const roleMeta = ROLE_CONFIG[u.role] || { label: u.role, color: "bg-slate-100 text-slate-800" };
+                      const roleMeta = ROLE_CONFIG[u.role] || { label: u.role, color: "bg-black/5 dark:bg-white/5 text-theme-textPrimary" };
                       const isMe = currentUser?.id === u._id;
                       return (
-                        <tr key={u._id} className="hover:bg-slate-50/70 transition">
+                        <tr key={u._id} className="hover:bg-black/5 dark:hover:bg-white/5/70 transition">
                           <td className="py-3 px-4">
-                            <div className="font-semibold text-slate-800">{u.fullName || u.username}</div>
-                            <div className="text-xs text-slate-500 font-mono">@{u.username} {isMe && "(You)"}</div>
+                            <div className="font-semibold text-theme-textPrimary">{u.fullName || u.username}</div>
+                            <div className="text-xs text-theme-textMuted font-mono">@{u.username} {isMe && "(You)"}</div>
                           </td>
                           <td className="py-3 px-4">
                             <span className={`inline-block px-2.5 py-1 text-xs font-semibold rounded-full border ${roleMeta.color}`}>
                               {roleMeta.label}
                             </span>
                           </td>
-                          <td className="py-3 px-4 text-slate-700">
+                          <td className="py-3 px-4 text-theme-textSecondary">
                             {u.branchId ? (
                               <div className="font-medium">
                                 {u.branchId.name || "Assigned Branch"}
-                                <span className="text-slate-400 font-mono text-3xs ml-1">({u.branchId.code})</span>
+                                <span className="text-theme-textMuted font-mono text-3xs ml-1">({u.branchId.code})</span>
                               </div>
                             ) : (
-                              <span className="text-slate-400 text-xs italic">All Branches / Unassigned</span>
+                              <span className="text-theme-textMuted text-xs italic">All Branches / Unassigned</span>
                             )}
                           </td>
-                          <td className="py-3 px-4 text-xs text-slate-600">
+                          <td className="py-3 px-4 text-xs text-theme-textSecondary">
                             <div>{u.phone || "—"}</div>
-                            <div className="text-slate-400">{u.email || ""}</div>
+                            <div className="text-theme-textMuted">{u.email || ""}</div>
                           </td>
                           <td className="py-3 px-4">
                             {u.isActive !== false ? (
-                              <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded">
+                              <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded">
                                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Active
                               </span>
                             ) : (
-                              <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded">
+                              <span className="inline-flex items-center gap-1 text-xs font-semibold text-rose-700 dark:text-rose-400 bg-rose-50 dark:bg-rose-950/40 px-2 py-0.5 rounded">
                                 <span className="w-1.5 h-1.5 rounded-full bg-rose-500" /> Disabled
                               </span>
                             )}
@@ -1003,7 +987,7 @@ export default function StoreSettings() {
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={() => handleOpenUserModal(u)}
-                                className="p-1.5 text-slate-500 hover:text-teal-600 hover:bg-slate-100 rounded transition cursor-pointer"
+                                className="p-1.5 text-theme-textMuted hover:text-emerald-600 hover:bg-black/5 dark:bg-white/5 rounded transition cursor-pointer"
                                 title="Edit User"
                               >
                                 <Edit3 size={16} />
@@ -1011,7 +995,7 @@ export default function StoreSettings() {
                               {!isMe && (
                                 <button
                                   onClick={() => handleDeleteUser(u._id, u.username)}
-                                  className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition cursor-pointer"
+                                  className="p-1.5 text-theme-textMuted hover:text-rose-600 hover:bg-rose-50 rounded transition cursor-pointer"
                                   title="Delete User"
                                 >
                                   <Trash2 size={16} />
@@ -1029,34 +1013,34 @@ export default function StoreSettings() {
           </div>
 
           {/* Role Permissions Matrix Info Box */}
-          <div className="bg-slate-50 p-6 rounded-xl border border-slate-200">
-            <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider mb-3">
+          <div className="bg-black/5 dark:bg-white/5 p-6 rounded-xl border border-theme-border">
+            <h3 className="text-sm font-bold text-theme-textPrimary uppercase tracking-wider mb-3">
               Standard Permission Matrix by Role
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-              <div className="bg-white p-3.5 rounded-lg border border-slate-200 shadow-2xs">
-                <div className="font-bold text-purple-800 mb-1 flex items-center gap-1.5">
+              <div className="bg-theme-card p-3.5 rounded-lg border border-theme-border shadow-2xs">
+                <div className="font-bold text-emerald-800 mb-1 flex items-center gap-1.5">
                   <Shield size={14} /> Super Admin & Admin
                 </div>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-theme-textSecondary leading-relaxed">
                   Full system control. Can create/edit users, manage branch locations, void invoices, delete products, execute database backups & restorations.
                 </p>
               </div>
 
-              <div className="bg-white p-3.5 rounded-lg border border-slate-200 shadow-2xs">
-                <div className="font-bold text-teal-800 mb-1 flex items-center gap-1.5">
+              <div className="bg-theme-card p-3.5 rounded-lg border border-theme-border shadow-2xs">
+                <div className="font-bold text-emerald-800 mb-1 flex items-center gap-1.5">
                   <Shield size={14} /> Store Manager & Inventory Staff
                 </div>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-theme-textSecondary leading-relaxed">
                   Product catalog management, batch receiving (FEFO), stock adjustments, warehouse transfers, customer credit ledger, sales refunds & profit reports.
                 </p>
               </div>
 
-              <div className="bg-white p-3.5 rounded-lg border border-slate-200 shadow-2xs">
+              <div className="bg-theme-card p-3.5 rounded-lg border border-theme-border shadow-2xs">
                 <div className="font-bold text-emerald-800 mb-1 flex items-center gap-1.5">
                   <Shield size={14} /> Cashier & Staff
                 </div>
-                <p className="text-slate-600 leading-relaxed">
+                <p className="text-theme-textSecondary leading-relaxed">
                   POS terminal operation, barcode scanning, cart processing, split payments, hold bills, and daily shift summaries. Protected from deletions and refunds.
                 </p>
               </div>
@@ -1069,14 +1053,14 @@ export default function StoreSettings() {
       {activeTab === "backup" && (
         <div className="space-y-6">
           {/* Action & Automation Settings */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 mb-5 border-b border-slate-100">
+          <div className="bg-theme-card p-6 rounded-xl border border-theme-border shadow-xs">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 mb-5 border-b border-theme-border">
               <div>
-                <h2 className="text-base font-bold text-slate-800 flex items-center gap-2">
-                  <Database className="text-teal-600" size={20} />
+                <h2 className="text-base font-bold text-theme-textPrimary flex items-center gap-2">
+                  <Database className="text-emerald-600" size={20} />
                   Database Backups & Disaster Recovery
                 </h2>
-                <p className="text-xs text-slate-500 mt-0.5">
+                <p className="text-xs text-theme-textMuted mt-0.5">
                   Export snapshot archives of sales, products, batches, customer ledgers, and restore securely.
                 </p>
               </div>
@@ -1084,7 +1068,7 @@ export default function StoreSettings() {
               <button
                 onClick={handleCreateBackup}
                 disabled={creatingBackup}
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 disabled:opacity-50 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-xs transition cursor-pointer"
+                className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-medium text-sm px-5 py-2.5 rounded-lg shadow-xs transition cursor-pointer"
               >
                 <HardDrive size={18} />
                 {creatingBackup ? "Creating Snapshot..." : "Create Backup Snapshot Now"}
@@ -1092,9 +1076,9 @@ export default function StoreSettings() {
             </div>
 
             {/* Automation Configuration */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 bg-black/5 dark:bg-white/5 p-4 rounded-xl border border-theme-border">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-2">
                   Automated Backups
                 </label>
                 <label className="flex items-center gap-3 cursor-pointer">
@@ -1102,20 +1086,20 @@ export default function StoreSettings() {
                     type="checkbox"
                     checked={formData.backupSettings?.autoBackupEnabled !== false}
                     onChange={(e) => handleBackupSettingChange("autoBackupEnabled", e.target.checked)}
-                    className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500"
+                    className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
                   />
-                  <span className="text-sm font-medium text-slate-800">Enable Automated Snapshots</span>
+                  <span className="text-sm font-medium text-theme-textPrimary">Enable Automated Snapshots</span>
                 </label>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Backup Frequency
                 </label>
                 <select
                   value={formData.backupSettings?.backupFrequency || "daily"}
                   onChange={(e) => handleBackupSettingChange("backupFrequency", e.target.value)}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-theme-card"
                 >
                   <option value="daily">Daily Automated Snapshot</option>
                   <option value="weekly">Weekly Automated Snapshot</option>
@@ -1124,7 +1108,7 @@ export default function StoreSettings() {
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase tracking-wider mb-1">
                   Retention Window (Days)
                 </label>
                 <div className="flex items-center gap-2">
@@ -1134,7 +1118,7 @@ export default function StoreSettings() {
                     max="365"
                     value={formData.backupSettings?.retentionDays || 30}
                     onChange={(e) => handleBackupSettingChange("retentionDays", parseInt(e.target.value) || 30)}
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
+                    className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
                   />
                   <button
                     type="button"
@@ -1149,33 +1133,33 @@ export default function StoreSettings() {
           </div>
 
           {/* Snapshots Table */}
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-              <h3 className="text-sm font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2">
-                <FileText size={18} className="text-teal-600" />
+          <div className="bg-theme-card p-6 rounded-xl border border-theme-border shadow-xs">
+            <div className="flex items-center justify-between pb-3 mb-4 border-b border-theme-border">
+              <h3 className="text-sm font-bold text-theme-textPrimary uppercase tracking-wider flex items-center gap-2">
+                <FileText size={18} className="text-emerald-600" />
                 Available Snapshot Archives ({backups.length})
               </h3>
               <button
                 onClick={fetchBackups}
-                className="text-xs text-slate-500 hover:text-teal-600 flex items-center gap-1 cursor-pointer"
+                className="text-xs text-theme-textMuted hover:text-emerald-600 flex items-center gap-1 cursor-pointer"
               >
                 <RefreshCw size={14} /> Refresh
               </button>
             </div>
 
             {loadingBackups ? (
-              <div className="py-12 text-center text-slate-500">
-                <RefreshCw size={24} className="animate-spin mx-auto mb-2 text-teal-600" />
+              <div className="py-12 text-center text-theme-textMuted">
+                <RefreshCw size={24} className="animate-spin mx-auto mb-2 text-emerald-600" />
                 Loading backup history...
               </div>
             ) : backups.length === 0 ? (
-              <div className="py-10 text-center text-slate-500 text-sm">
+              <div className="py-10 text-center text-theme-textMuted text-sm">
                 No backup archives found. Click "Create Backup Snapshot Now" to create your first archive.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="bg-slate-50 text-slate-600 uppercase text-3xs font-semibold tracking-wider border-b border-slate-200">
+                  <thead className="bg-black/5 dark:bg-white/5 text-theme-textSecondary uppercase text-3xs font-semibold tracking-wider border-b border-theme-border">
                     <tr>
                       <th className="py-3 px-4">Backup Archive File</th>
                       <th className="py-3 px-4">Timestamp</th>
@@ -1186,41 +1170,41 @@ export default function StoreSettings() {
                   </thead>
                   <tbody className="divide-y divide-slate-100">
                     {backups.map((b) => (
-                      <tr key={b.filename} className="hover:bg-slate-50/70 transition">
+                      <tr key={b.filename} className="hover:bg-black/5 dark:hover:bg-white/5/70 transition">
                         <td className="py-3 px-4">
-                          <div className="font-semibold text-slate-800 font-mono text-xs">{b.filename}</div>
-                          <div className="text-3xs text-slate-500">Initiator: {b.initiator || "System"}</div>
+                          <div className="font-semibold text-theme-textPrimary font-mono text-xs">{b.filename}</div>
+                          <div className="text-3xs text-theme-textMuted">Initiator: {b.initiator || "System"}</div>
                         </td>
-                        <td className="py-3 px-4 text-xs text-slate-600">
+                        <td className="py-3 px-4 text-xs text-theme-textSecondary">
                           {b.createdAt ? new Date(b.createdAt).toLocaleString() : "—"}
                         </td>
                         <td className="py-3 px-4">
-                          <span className="inline-block px-2.5 py-0.5 bg-slate-100 text-slate-800 rounded font-mono text-xs font-semibold">
+                          <span className="inline-block px-2.5 py-0.5 bg-black/5 dark:bg-white/5 text-theme-textPrimary rounded font-mono text-xs font-semibold">
                             {b.totalRecords || 0} docs
                           </span>
                         </td>
-                        <td className="py-3 px-4 font-mono text-xs text-slate-600">
+                        <td className="py-3 px-4 font-mono text-xs text-theme-textSecondary">
                           {b.sizeFormatted || `${(b.sizeBytes / 1024).toFixed(1)} KB`}
                         </td>
                         <td className="py-3 px-4 text-right">
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => handleDownloadBackup(b.filename)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-teal-700 bg-teal-50 hover:bg-teal-100 rounded transition cursor-pointer"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/40 hover:bg-emerald-100 dark:hover:bg-emerald-900/40 rounded transition cursor-pointer"
                               title="Download JSON Archive"
                             >
                               <Download size={14} /> Download
                             </button>
                             <button
                               onClick={() => handleOpenRestore(b.filename)}
-                              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded transition cursor-pointer"
+                              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-900/40 rounded transition cursor-pointer"
                               title="Restore Database from this file"
                             >
                               <RotateCcw size={14} /> Restore
                             </button>
                             <button
                               onClick={() => handleDeleteBackup(b.filename)}
-                              className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition cursor-pointer"
+                              className="p-1 text-theme-textMuted hover:text-rose-600 hover:bg-rose-50 rounded transition cursor-pointer"
                               title="Delete Archive"
                             >
                               <Trash2 size={16} />
@@ -1240,15 +1224,15 @@ export default function StoreSettings() {
       {/* TAB 5: Themes & Styling */}
       {activeTab === "theme" && (
         <div className="space-y-6">
-          <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
-            <div className="flex items-center gap-2.5 pb-3 mb-4 border-b border-slate-100">
-              <Palette className="text-teal-600" size={20} />
-              <h2 className="text-base font-bold text-slate-800">
+          <div className="bg-theme-card p-6 rounded-xl border border-theme-border shadow-xs">
+            <div className="flex items-center gap-2.5 pb-3 mb-4 border-b border-theme-border">
+              <Palette className="text-emerald-600" size={20} />
+              <h2 className="text-base font-bold text-theme-textPrimary">
                 Active Visual Theme & Styling
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 max-w-2xl gap-4">
               {THEME_OPTIONS.map((t) => {
                 const isActive = theme === t.id;
                 return (
@@ -1257,12 +1241,12 @@ export default function StoreSettings() {
                     onClick={() => handleSelectTheme(t.id)}
                     className={`p-4 rounded-xl border-2 transition cursor-pointer relative flex flex-col justify-between ${
                       isActive
-                        ? "border-teal-600 bg-teal-50/50 shadow-md ring-2 ring-teal-500/20"
-                        : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
+                        ? "border-emerald-600 bg-emerald-500/10 shadow-md ring-2 ring-emerald-500/20"
+                        : "border-theme-border hover:border-emerald-500/40 hover:bg-black/5 dark:hover:bg-theme-card/5"
                     }`}
                   >
                     {isActive && (
-                      <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-teal-600 text-white flex items-center justify-center shadow-xs">
+                      <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-xs">
                         <Check size={14} strokeWidth={3} />
                       </div>
                     )}
@@ -1271,24 +1255,24 @@ export default function StoreSettings() {
                       <div
                         className={`h-12 w-full rounded-lg bg-gradient-to-r ${t.headerBg} mb-3 flex items-center px-3 shadow-inner`}
                       >
-                        <div className="w-4 h-4 rounded-full bg-white/30 mr-2" />
-                        <div className="w-16 h-2 rounded bg-white/40" />
+                        <div className="w-4 h-4 rounded-full bg-theme-card/30 mr-2" />
+                        <div className="w-16 h-2 rounded bg-theme-card/40" />
                       </div>
 
                       <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-bold text-sm text-slate-800">{t.name}</h4>
+                        <h4 className="font-bold text-sm text-theme-textPrimary">{t.name}</h4>
                       </div>
-                      <span className="inline-block px-2 py-0.5 text-3xs font-semibold uppercase bg-slate-100 text-slate-600 rounded mb-2">
+                      <span className="inline-block px-2 py-0.5 text-3xs font-semibold uppercase bg-black/5 dark:bg-theme-card/10 text-theme-textSecondary rounded mb-2">
                         {t.badge}
                       </span>
-                      <p className="text-xs text-slate-500 leading-relaxed">{t.desc}</p>
+                      <p className="text-xs text-theme-textSecondary leading-relaxed">{t.desc}</p>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                      <span className="text-slate-400">Primary Accent</span>
+                    <div className="mt-4 pt-3 border-t border-theme-border flex items-center justify-between text-xs">
+                      <span className="text-theme-textMuted">Primary Accent</span>
                       <div className="flex items-center gap-1.5 font-mono text-3xs">
                         <span
-                          className="w-3.5 h-3.5 rounded-full border border-slate-300 shadow-2xs"
+                          className="w-3.5 h-3.5 rounded-full border border-theme-border shadow-2xs"
                           style={{ backgroundColor: t.primary }}
                         />
                         <span>{t.primary}</span>
@@ -1305,16 +1289,16 @@ export default function StoreSettings() {
       {/* User RBAC Modal (Create / Edit) */}
       {userModalOpen && (
         <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-lg w-full p-6 shadow-xl border border-slate-200">
-            <h3 className="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100 flex items-center gap-2">
-              <Shield className="text-teal-600" size={20} />
+          <div className="bg-theme-card rounded-xl max-w-lg w-full p-6 shadow-xl border border-theme-border">
+            <h3 className="text-lg font-bold text-theme-textPrimary mb-4 pb-2 border-b border-theme-border flex items-center gap-2">
+              <Shield className="text-emerald-600" size={20} />
               {userForm.id ? "Edit Staff Account" : "Add New Staff Member"}
             </h3>
 
             <form onSubmit={handleSaveUser} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                     Username *
                   </label>
                   <input
@@ -1324,12 +1308,12 @@ export default function StoreSettings() {
                     value={userForm.username}
                     onChange={(e) => setUserForm({ ...userForm, username: e.target.value })}
                     placeholder="e.g. cashier1"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 disabled:bg-slate-100"
+                    className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-black/5 dark:bg-white/5"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                     Full Name
                   </label>
                   <input
@@ -1337,13 +1321,13 @@ export default function StoreSettings() {
                     value={userForm.fullName}
                     onChange={(e) => setUserForm({ ...userForm, fullName: e.target.value })}
                     placeholder="e.g. Muhammad Ali"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                   {userForm.id ? "New Password (Leave blank to keep current)" : "Password *"}
                 </label>
                 <input
@@ -1352,19 +1336,19 @@ export default function StoreSettings() {
                   value={userForm.password}
                   onChange={(e) => setUserForm({ ...userForm, password: e.target.value })}
                   placeholder={userForm.id ? "••••••••" : "Enter secure password"}
-                  className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 font-mono"
+                  className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 font-mono"
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                     System Role *
                   </label>
                   <select
                     value={userForm.role}
                     onChange={(e) => setUserForm({ ...userForm, role: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                    className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-theme-card"
                   >
                     <option value="cashier">Cashier / Staff (POS Only)</option>
                     <option value="inventory">Inventory Staff</option>
@@ -1378,13 +1362,13 @@ export default function StoreSettings() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                     Branch Assignment
                   </label>
                   <select
                     value={userForm.branchId}
                     onChange={(e) => setUserForm({ ...userForm, branchId: e.target.value })}
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white"
+                    className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-theme-card"
                   >
                     <option value="">Global / All Branches</option>
                     {branches.map((b) => (
@@ -1398,7 +1382,7 @@ export default function StoreSettings() {
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                     Email Address
                   </label>
                   <input
@@ -1406,12 +1390,12 @@ export default function StoreSettings() {
                     value={userForm.email}
                     onChange={(e) => setUserForm({ ...userForm, email: e.target.value })}
                     placeholder="staff@store.com"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+                  <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                     Phone / Mobile
                   </label>
                   <input
@@ -1419,7 +1403,7 @@ export default function StoreSettings() {
                     value={userForm.phone}
                     onChange={(e) => setUserForm({ ...userForm, phone: e.target.value })}
                     placeholder="0300-1234567"
-                    className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                   />
                 </div>
               </div>
@@ -1430,23 +1414,23 @@ export default function StoreSettings() {
                     type="checkbox"
                     checked={userForm.isActive}
                     onChange={(e) => setUserForm({ ...userForm, isActive: e.target.checked })}
-                    className="w-4 h-4 text-teal-600 rounded focus:ring-teal-500"
+                    className="w-4 h-4 text-emerald-600 rounded focus:ring-emerald-500"
                   />
-                  <span className="text-sm font-medium text-slate-800">Account is Active and Allowed to Login</span>
+                  <span className="text-sm font-medium text-theme-textPrimary">Account is Active and Allowed to Login</span>
                 </label>
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-theme-border">
                 <button
                   type="button"
                   onClick={() => setUserModalOpen(false)}
-                  className="px-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 transition cursor-pointer"
+                  className="px-4 py-2 border border-theme-border rounded-lg text-sm text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-lg shadow-xs transition cursor-pointer"
+                  className="px-5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-lg shadow-xs transition cursor-pointer"
                 >
                   {userForm.id ? "Update User" : "Create User"}
                 </button>
@@ -1459,14 +1443,14 @@ export default function StoreSettings() {
       {/* Restore Database Confirmation Modal */}
       {restoreModal.open && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-2xl border border-red-200">
+          <div className="bg-theme-card rounded-xl max-w-md w-full p-6 shadow-2xl border border-red-200">
             <div className="flex items-center gap-3 text-rose-600 mb-3">
               <AlertTriangle size={28} />
               <h3 className="text-lg font-bold">Confirm Database Restoration</h3>
             </div>
 
-            <p className="text-sm text-slate-700 leading-relaxed mb-4">
-              Restoring from <strong className="font-mono text-xs bg-slate-100 px-1 py-0.5 rounded">{restoreModal.filename}</strong> will overwrite current collections (sales, products, batches, customer ledgers) with this snapshot's state.
+            <p className="text-sm text-theme-textSecondary leading-relaxed mb-4">
+              Restoring from <strong className="font-mono text-xs bg-black/5 dark:bg-white/5 px-1 py-0.5 rounded">{restoreModal.filename}</strong> will overwrite current collections (sales, products, batches, customer ledgers) with this snapshot's state.
             </p>
 
             <div className="bg-rose-50 border border-rose-200 rounded-lg p-3 text-xs text-rose-800 mb-4">
@@ -1474,7 +1458,7 @@ export default function StoreSettings() {
             </div>
 
             <div className="mb-4">
-              <label className="block text-xs font-semibold text-slate-700 uppercase mb-1">
+              <label className="block text-xs font-semibold text-theme-textSecondary uppercase mb-1">
                 Type <strong className="text-rose-600">RESTORE</strong> to confirm:
               </label>
               <input
@@ -1482,16 +1466,16 @@ export default function StoreSettings() {
                 value={restoreModal.confirmText}
                 onChange={(e) => setRestoreModal({ ...restoreModal, confirmText: e.target.value })}
                 placeholder="RESTORE"
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg font-mono tracking-widest text-center uppercase focus:ring-2 focus:ring-rose-500 focus:outline-none"
+                className="w-full px-3 py-2 text-sm border border-theme-border rounded-lg font-mono tracking-widest text-center uppercase focus:ring-2 focus:ring-rose-500 focus:outline-none"
               />
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-theme-border">
               <button
                 type="button"
                 onClick={() => setRestoreModal({ open: false, filename: "", confirmText: "" })}
                 disabled={restoring}
-                className="px-4 py-2 border border-slate-300 rounded-lg text-sm text-slate-700 hover:bg-slate-50 cursor-pointer"
+                className="px-4 py-2 border border-theme-border rounded-lg text-sm text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 cursor-pointer"
               >
                 Cancel
               </button>

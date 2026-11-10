@@ -216,26 +216,26 @@ export default function AgentsStaff() {
 
       {/* KPI Stats Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Registered Agents</span>
           <h3 className="text-xl font-black text-theme-textPrimary mt-0.5">{stats.totalAgents || agents.length} Agents</h3>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Total Commission Earned</span>
           <h3 className="text-xl font-black text-theme-textPrimary mt-0.5">
             {currency} {(stats.totalCommission || 0).toLocaleString()}
           </h3>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Commission Paid</span>
           <h3 className="text-xl font-black text-emerald-600 mt-0.5">
             {currency} {(stats.totalPaid || 0).toLocaleString()}
           </h3>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Commission Payable</span>
           <h3 className="text-xl font-black text-amber-500 mt-0.5">
             {currency} {(stats.totalPayable || 0).toLocaleString()}
@@ -271,7 +271,7 @@ export default function AgentsStaff() {
 
       {/* TAB 1: AGENTS LIST */}
       {activeTab === "agents" && (
-        <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -341,7 +341,7 @@ export default function AgentsStaff() {
 
       {/* TAB 2: SYSTEM CASHIERS / USERS */}
       {activeTab === "users" && (
-        <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -365,8 +365,8 @@ export default function AgentsStaff() {
                       <span
                         className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
                           u.role === "admin"
-                            ? "bg-purple-100 text-purple-800 dark:bg-purple-950/40 dark:text-purple-300"
-                            : "bg-teal-100 text-teal-800 dark:bg-teal-950/40 dark:text-teal-300"
+                            ? "bg-emerald-800 text-white dark:bg-emerald-700 dark:text-white"
+                            : "bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
                         }`}
                       >
                         {u.role === "admin" ? "Admin" : "Cashier / Staff"}
@@ -398,7 +398,7 @@ export default function AgentsStaff() {
       {/* MODAL 1: REGISTER AGENT */}
       {isAgentModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-sm w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <UserPlus className="w-5 h-5 text-theme-primary" /> Register Sales Agent
@@ -467,7 +467,7 @@ export default function AgentsStaff() {
       {/* MODAL 2: CREATE CASHIER ACCOUNT */}
       {isUserModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-sm w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-theme-primary" /> + Create Terminal Account
@@ -537,7 +537,7 @@ export default function AgentsStaff() {
       {/* MODAL 3: AGENT COMMISSION ITEMS DETAILS */}
       {isAgentDetailsOpen && selectedAgent && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-3xl p-6 max-w-2xl w-full shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
+          <div className="bg-theme-card border border-theme-border rounded-xl p-4 sm:p-5 max-w-2xl w-full shadow-2xl space-y-4 max-h-[90vh] flex flex-col">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <div>
                 <h3 className="font-extrabold text-lg text-theme-textPrimary flex items-center gap-2">
@@ -625,7 +625,7 @@ export default function AgentsStaff() {
       {/* MODAL 4: PAY COMMISSION */}
       {isPayModalOpen && payItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-5 max-w-sm w-full shadow-2xl space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-5 max-w-sm w-full shadow-2xl space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <h3 className="font-bold text-base text-theme-textPrimary flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-emerald-600" /> Pay Agent Commission

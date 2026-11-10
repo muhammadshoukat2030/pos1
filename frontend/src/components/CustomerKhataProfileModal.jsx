@@ -188,11 +188,11 @@ export default function CustomerKhataProfileModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-theme-card border border-theme-border rounded-2xl w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
+      <div className="bg-theme-card border border-theme-border rounded-lg w-full max-w-4xl max-h-[92vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Header */}
         <div className="p-4 sm:p-5 border-b border-theme-border bg-black/[0.02] dark:bg-white/[0.02] flex items-center justify-between gap-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white shadow-md font-bold text-lg">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center text-white shadow-md font-bold text-lg">
               {customer?.name ? customer.name.charAt(0).toUpperCase() : <User className="w-5 h-5" />}
             </div>
             <div>
@@ -233,14 +233,14 @@ export default function CustomerKhataProfileModal({
             <button
               type="button"
               onClick={() => openReceivePayment()}
-              className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer active:scale-95"
+              className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer active:scale-95"
             >
               <ArrowDownLeft className="w-4 h-4" /> Receive Payment
             </button>
             <button
               type="button"
               onClick={handleWhatsAppReminder}
-              className="p-1.5 rounded-xl border border-emerald-300 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-emerald-600 transition cursor-pointer"
+              className="p-1.5 rounded-lg border border-emerald-300 dark:border-emerald-800 hover:bg-emerald-50 dark:hover:bg-emerald-950/30 text-emerald-600 transition cursor-pointer"
               title="Send WhatsApp Khata Reminder"
             >
               <MessageSquare className="w-4 h-4" />
@@ -248,7 +248,7 @@ export default function CustomerKhataProfileModal({
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 rounded-xl text-theme-textMuted hover:text-theme-textPrimary hover:bg-black/5 dark:hover:bg-white/5 transition cursor-pointer"
+              className="p-1.5 rounded-lg text-theme-textMuted hover:text-theme-textPrimary hover:bg-black/5 dark:hover:bg-white/5 transition cursor-pointer"
               title="Close modal"
             >
               <X className="w-5 h-5" />
@@ -263,42 +263,46 @@ export default function CustomerKhataProfileModal({
           ) : (
             <>
               {/* Account Summary Cards */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 items-stretch">
                 {/* 1. Total Bills */}
-                <div className="bg-black/[0.02] dark:bg-white/[0.02] border border-theme-border rounded-xl p-3 shadow-xs">
+                <div className="bg-black/[0.02] dark:bg-white/[0.02] border border-theme-border rounded-lg p-3 shadow-xs flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <span className="text-[10.5px] font-bold uppercase tracking-wider text-theme-textMuted">
                       Total Bills
                     </span>
-                    <Receipt className="w-4 h-4 text-blue-500" />
+                    <Receipt className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <div className="text-base sm:text-lg font-black text-theme-textPrimary mt-1">
-                    {currency} {(summary.totalBills || 0).toLocaleString()}
-                  </div>
-                  <div className="text-[10px] text-theme-textSecondary mt-0.5">
-                    Lifetime purchases
+                  <div className="mt-1">
+                    <div className="text-base sm:text-lg font-black text-theme-textPrimary">
+                      {currency} {(summary.totalBills || 0).toLocaleString()}
+                    </div>
+                    <div className="text-[10px] text-theme-textSecondary mt-0.5">
+                      Lifetime purchases
+                    </div>
                   </div>
                 </div>
 
                 {/* 2. Total Paid */}
-                <div className="bg-emerald-500/[0.04] dark:bg-emerald-500/[0.08] border border-emerald-500/20 rounded-xl p-3 shadow-xs">
+                <div className="bg-emerald-500/[0.04] dark:bg-emerald-500/[0.08] border border-emerald-500/20 rounded-lg p-3 shadow-xs flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <span className="text-[10.5px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                       Total Paid
                     </span>
                     <CheckCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <div className="text-base sm:text-lg font-black text-emerald-700 dark:text-emerald-400 mt-1">
-                    {currency} {(summary.totalPaid || 0).toLocaleString()}
-                  </div>
-                  <div className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 mt-0.5">
-                    Payments received
+                  <div className="mt-1">
+                    <div className="text-base sm:text-lg font-black text-emerald-700 dark:text-emerald-400">
+                      {currency} {(summary.totalPaid || 0).toLocaleString()}
+                    </div>
+                    <div className="text-[10px] text-emerald-600/80 dark:text-emerald-400/80 mt-0.5">
+                      Payments received
+                    </div>
                   </div>
                 </div>
 
                 {/* 3. Total Outstanding */}
                 <div
-                  className={`border rounded-xl p-3 shadow-xs ${
+                  className={`border rounded-lg p-3 shadow-xs flex flex-col justify-between ${
                     summary.totalOutstanding > 0
                       ? "bg-rose-500/[0.05] dark:bg-rose-500/[0.1] border-rose-500/30"
                       : "bg-black/[0.02] dark:bg-white/[0.02] border-theme-border"
@@ -318,31 +322,35 @@ export default function CustomerKhataProfileModal({
                       }`}
                     />
                   </div>
-                  <div
-                    className={`text-base sm:text-lg font-black mt-1 ${
-                      summary.totalOutstanding > 0 ? "text-rose-600 dark:text-rose-400" : "text-theme-textPrimary"
-                    }`}
-                  >
-                    {currency} {(summary.totalOutstanding || 0).toLocaleString()}
-                  </div>
-                  <div className="text-[10px] text-theme-textSecondary mt-0.5">
-                    Remaining balance owed
+                  <div className="mt-1">
+                    <div
+                      className={`text-base sm:text-lg font-black ${
+                        summary.totalOutstanding > 0 ? "text-rose-600 dark:text-rose-400" : "text-theme-textPrimary"
+                      }`}
+                    >
+                      {currency} {(summary.totalOutstanding || 0).toLocaleString()}
+                    </div>
+                    <div className="text-[10px] text-theme-textSecondary mt-0.5">
+                      Remaining balance owed
+                    </div>
                   </div>
                 </div>
 
                 {/* 4. Total Bills Count */}
-                <div className="bg-black/[0.02] dark:bg-white/[0.02] border border-theme-border rounded-xl p-3 shadow-xs">
+                <div className="bg-black/[0.02] dark:bg-white/[0.02] border border-theme-border rounded-lg p-3 shadow-xs flex flex-col justify-between">
                   <div className="flex items-center justify-between">
                     <span className="text-[10.5px] font-bold uppercase tracking-wider text-theme-textMuted">
                       Bills Count
                     </span>
-                    <Hash className="w-4 h-4 text-purple-500" />
+                    <Hash className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                   </div>
-                  <div className="text-base sm:text-lg font-black text-theme-textPrimary mt-1">
-                    {summary.totalBillsCount || 0}
-                  </div>
-                  <div className="text-[10px] text-theme-textSecondary mt-0.5">
-                    Total invoices created
+                  <div className="mt-1">
+                    <div className="text-base sm:text-lg font-black text-theme-textPrimary">
+                      {summary.totalBillsCount || 0}
+                    </div>
+                    <div className="text-[10px] text-theme-textSecondary mt-0.5">
+                      Total invoices created
+                    </div>
                   </div>
                 </div>
               </div>
@@ -352,7 +360,7 @@ export default function CustomerKhataProfileModal({
                 <button
                   type="button"
                   onClick={() => setActiveTab("bills")}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                     activeTab === "bills"
                       ? "bg-theme-primary text-white shadow-xs"
                       : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5"
@@ -363,7 +371,7 @@ export default function CustomerKhataProfileModal({
                 <button
                   type="button"
                   onClick={() => setActiveTab("payments")}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                     activeTab === "payments"
                       ? "bg-theme-primary text-white shadow-xs"
                       : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5"
@@ -374,7 +382,7 @@ export default function CustomerKhataProfileModal({
                 <button
                   type="button"
                   onClick={() => setActiveTab("ledger")}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
                     activeTab === "ledger"
                       ? "bg-theme-primary text-white shadow-xs"
                       : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5"
@@ -386,7 +394,7 @@ export default function CustomerKhataProfileModal({
 
               {/* TAB 1: BILLS HISTORY */}
               {activeTab === "bills" && (
-                <div className="border border-theme-border rounded-xl overflow-hidden shadow-xs">
+                <div className="border border-theme-border rounded-lg overflow-hidden shadow-xs">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-black/5 dark:bg-white/5 text-[10px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -475,7 +483,7 @@ export default function CustomerKhataProfileModal({
 
               {/* TAB 2: PAYMENTS HISTORY */}
               {activeTab === "payments" && (
-                <div className="border border-theme-border rounded-xl overflow-hidden shadow-xs">
+                <div className="border border-theme-border rounded-lg overflow-hidden shadow-xs">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-black/5 dark:bg-white/5 text-[10px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -530,7 +538,7 @@ export default function CustomerKhataProfileModal({
 
               {/* TAB 3: FULL LEDGER TRANSACTIONS */}
               {activeTab === "ledger" && (
-                <div className="border border-theme-border rounded-xl overflow-hidden shadow-xs">
+                <div className="border border-theme-border rounded-lg overflow-hidden shadow-xs">
                   <div className="overflow-x-auto">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-black/5 dark:bg-white/5 text-[10px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
@@ -603,7 +611,7 @@ export default function CustomerKhataProfileModal({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl bg-theme-primary text-white font-bold text-xs hover:opacity-90 transition cursor-pointer"
+            className="px-4 py-2 rounded-lg bg-theme-primary text-white font-bold text-xs hover:opacity-90 transition cursor-pointer"
           >
             Close
           </button>
@@ -613,7 +621,7 @@ export default function CustomerKhataProfileModal({
       {/* SUB-MODAL 1: VIEW BILL DETAILS */}
       {isBillDetailOpen && selectedBill && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl w-full max-w-2xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+          <div className="bg-theme-card border border-theme-border rounded-lg w-full max-w-2xl max-h-[88vh] flex flex-col shadow-2xl overflow-hidden">
             <div className="p-4 border-b border-theme-border flex items-center justify-between bg-black/[0.02] dark:bg-white/[0.02]">
               <div>
                 <h3 className="font-extrabold text-base text-theme-textPrimary flex items-center gap-2">
@@ -634,7 +642,7 @@ export default function CustomerKhataProfileModal({
 
             <div className="p-4 flex-1 overflow-y-auto space-y-4">
               {/* Bill Status & Amounts */}
-              <div className="grid grid-cols-3 gap-2 p-3 bg-black/5 dark:bg-white/5 rounded-xl border border-theme-border text-center">
+              <div className="grid grid-cols-3 gap-2 p-3 bg-black/5 dark:bg-white/5 rounded-lg border border-theme-border text-center">
                 <div>
                   <span className="text-[10px] text-theme-textMuted block font-bold uppercase">Grand Total</span>
                   <span className="text-sm font-black text-theme-textPrimary font-mono">
@@ -660,7 +668,7 @@ export default function CustomerKhataProfileModal({
                 <h4 className="text-xs font-bold text-theme-textPrimary uppercase tracking-wider mb-2">
                   Purchased Items ({selectedBill.salesItems?.length || 0})
                 </h4>
-                <div className="border border-theme-border rounded-xl overflow-hidden">
+                <div className="border border-theme-border rounded-lg overflow-hidden">
                   <table className="w-full text-left text-xs">
                     <thead className="bg-black/5 dark:bg-white/5 text-[10px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
                       <tr>
@@ -704,7 +712,7 @@ export default function CustomerKhataProfileModal({
                   <h4 className="text-xs font-bold text-theme-textPrimary uppercase tracking-wider mb-2">
                     Payment Transactions ({selectedBill.payments.length})
                   </h4>
-                  <div className="border border-theme-border rounded-xl overflow-hidden">
+                  <div className="border border-theme-border rounded-lg overflow-hidden">
                     <table className="w-full text-left text-xs">
                       <thead className="bg-black/5 dark:bg-white/5 text-[10px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
                         <tr>
@@ -742,7 +750,7 @@ export default function CustomerKhataProfileModal({
                     setIsBillDetailOpen(false);
                     openReceivePayment(selectedBill._id);
                   }}
-                  className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition cursor-pointer"
+                  className="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-md transition cursor-pointer"
                 >
                   Receive Payment Against This Bill
                 </button>
@@ -755,7 +763,7 @@ export default function CustomerKhataProfileModal({
               <button
                 type="button"
                 onClick={() => setIsBillDetailOpen(false)}
-                className="px-3.5 py-1.5 rounded-xl border border-theme-border text-xs font-semibold hover:bg-black/5"
+                className="px-3.5 py-1.5 rounded-lg border border-theme-border text-xs font-semibold hover:bg-black/5"
               >
                 Close
               </button>
@@ -767,7 +775,7 @@ export default function CustomerKhataProfileModal({
       {/* SUB-MODAL 2: RECEIVE PAYMENT */}
       {isPayModalOpen && (
         <div className="fixed inset-0 z-60 flex items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl w-full max-w-md shadow-2xl p-5 space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg w-full max-w-md shadow-2xl p-5 space-y-4">
             <div className="flex items-center justify-between border-b border-theme-border pb-3">
               <div>
                 <h3 className="font-extrabold text-base text-theme-textPrimary flex items-center gap-1.5">
@@ -788,7 +796,7 @@ export default function CustomerKhataProfileModal({
 
             <form onSubmit={handlePaymentSubmit} className="space-y-3.5">
               {/* Current Outstanding Display */}
-              <div className="p-2.5 bg-rose-500/[0.06] border border-rose-500/20 rounded-xl flex items-center justify-between text-xs">
+              <div className="p-2.5 bg-rose-500/[0.06] border border-rose-500/20 rounded-lg flex items-center justify-between text-xs">
                 <span className="font-bold text-rose-700 dark:text-rose-400">Total Outstanding Balance:</span>
                 <span className="font-black text-rose-700 dark:text-rose-400 text-sm font-mono">
                   {currency} {(summary.totalOutstanding || 0).toLocaleString()}
@@ -809,7 +817,7 @@ export default function CustomerKhataProfileModal({
                   value={payAmount}
                   onChange={(e) => setPayAmount(e.target.value)}
                   placeholder="e.g. 2000"
-                  className="w-full px-3 py-2 text-sm font-black text-emerald-600 bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:ring-1 focus:ring-emerald-500 focus:outline-none font-mono"
+                  className="w-full px-3 py-2 text-sm font-black text-emerald-600 bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none font-mono"
                 />
               </div>
 
@@ -828,7 +836,7 @@ export default function CustomerKhataProfileModal({
                       if (b) setPayAmount(b.outstandingAmount || "");
                     }
                   }}
-                  className="w-full px-3 py-2 text-xs font-semibold bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:ring-1 focus:ring-emerald-500 focus:outline-none cursor-pointer"
+                  className="w-full px-3 py-2 text-xs font-semibold bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none cursor-pointer"
                 >
                   <option value="">-- Auto-allocate FIFO across oldest unpaid bills --</option>
                   {bills
@@ -849,7 +857,7 @@ export default function CustomerKhataProfileModal({
                 <select
                   value={payMethod}
                   onChange={(e) => setPayMethod(e.target.value)}
-                  className="w-full px-3 py-2 text-xs font-semibold bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:ring-1 focus:ring-emerald-500 focus:outline-none cursor-pointer"
+                  className="w-full px-3 py-2 text-xs font-semibold bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none cursor-pointer"
                 >
                   <option value="Cash">Cash</option>
                   <option value="Bank Transfer">Bank Transfer / Online</option>
@@ -868,7 +876,7 @@ export default function CustomerKhataProfileModal({
                   value={payReference}
                   onChange={(e) => setPayReference(e.target.value)}
                   placeholder="e.g. TR-99482 or Cheque #1029"
-                  className="w-full px-3 py-2 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full px-3 py-2 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none"
                 />
               </div>
 
@@ -882,7 +890,7 @@ export default function CustomerKhataProfileModal({
                   value={payNotes}
                   onChange={(e) => setPayNotes(e.target.value)}
                   placeholder="e.g. Received installment at counter"
-                  className="w-full px-3 py-2 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:ring-1 focus:ring-emerald-500 focus:outline-none"
+                  className="w-full px-3 py-2 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none"
                 />
               </div>
 
@@ -890,14 +898,14 @@ export default function CustomerKhataProfileModal({
                 <button
                   type="button"
                   onClick={() => setIsPayModalOpen(false)}
-                  className="px-3.5 py-2 rounded-xl border border-theme-border text-xs font-semibold hover:bg-black/5 cursor-pointer"
+                  className="px-3.5 py-2 rounded-lg border border-theme-border text-xs font-semibold hover:bg-black/5 cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={isSubmittingPay}
-                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer"
+                  className="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white font-bold text-xs shadow-md transition flex items-center gap-1.5 cursor-pointer"
                 >
                   {isSubmittingPay ? "Recording..." : "Record Payment"}
                 </button>

@@ -15,7 +15,7 @@ export default function ConfirmModal({
 
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-theme-card border border-theme-border rounded-2xl shadow-2xl max-w-md w-full p-5 text-theme-textPrimary">
+      <div className="bg-theme-card border border-theme-border rounded-lg shadow-2xl max-w-md w-full p-5 text-theme-textPrimary">
         <div className="flex items-center justify-between pb-3 border-b border-theme-border">
           <div className="flex items-center gap-2 text-amber-500 font-bold">
             <AlertTriangle className="w-5 h-5 flex-shrink-0" />
@@ -33,12 +33,12 @@ export default function ConfirmModal({
           {message}
         </div>
 
-        <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-theme-border">
+        <div className="flex items-center justify-end gap-2 pt-3 border-t border-theme-border">
           <button
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="px-4 py-2 rounded-xl text-sm font-semibold border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 transition"
+            className="px-3 py-1.5 rounded-lg text-xs font-medium border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 transition cursor-pointer"
           >
             Cancel
           </button>
@@ -46,7 +46,7 @@ export default function ConfirmModal({
             type="button"
             onClick={onConfirm}
             disabled={loading}
-            className={`px-4 py-2 rounded-xl text-sm font-semibold text-white shadow-md transition ${confirmColor} ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium text-white shadow-2xs transition cursor-pointer ${confirmColor} ${
               loading ? "opacity-60 cursor-not-allowed" : ""
             }`}
           >

@@ -36,15 +36,15 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-teal-950 text-white">
-      <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl space-y-6">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-slate-900 via-slate-800 to-emerald-950 text-white">
+      <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-6 sm:p-8 rounded-2xl shadow-2xl space-y-6">
         {/* Header Branding */}
         <div className="text-center space-y-2">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-teal-500 to-emerald-400 mx-auto flex items-center justify-center shadow-lg transform -rotate-3 hover:rotate-0 transition duration-300">
+          <div className="w-16 h-16 rounded-lg bg-gradient-to-tr from-emerald-600 to-emerald-400 mx-auto flex items-center justify-center shadow-lg transform -rotate-3 hover:rotate-0 transition duration-300">
             <Calculator className="w-9 h-9 text-white" />
           </div>
           <h1 className="text-2xl font-bold tracking-tight mt-3">
-            {storeSettings?.storeName || "Universal Super Mart & POS"}
+            {storeSettings?.storeName || "Bizniz POS"}
           </h1>
           <p className="text-xs text-white/70">
             {storeSettings?.tagline || "Sign in to access your ERP Terminal & Inventory"}
@@ -66,7 +66,7 @@ export default function Login() {
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="e.g. admin or cashier"
                 autoFocus
-                className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+                className="w-full pl-11 pr-4 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               />
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function Login() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-11 pr-11 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-teal-400 transition"
+                className="w-full pl-11 pr-11 py-2.5 bg-white/10 border border-white/20 rounded-xl text-sm text-white placeholder-white/40 focus:outline-none focus:ring-2 focus:ring-emerald-400 transition"
               />
               <button
                 type="button"
@@ -99,7 +99,7 @@ export default function Login() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-bold text-sm shadow-lg shadow-teal-500/25 flex items-center justify-center gap-2 transition duration-200 active:scale-[0.98] disabled:opacity-60"
+            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-700 to-emerald-600 hover:from-emerald-800 hover:to-emerald-700 text-white font-bold text-sm shadow-lg shadow-emerald-700/25 flex items-center justify-center gap-2 transition duration-200 active:scale-[0.98] disabled:opacity-60 cursor-pointer"
           >
             {loading ? (
               <span>Authenticating...</span>

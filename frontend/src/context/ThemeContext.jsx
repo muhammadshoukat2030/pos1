@@ -4,36 +4,46 @@ import api from "../services/api";
 const ThemeContext = createContext();
 
 export const THEMES = [
-  { id: "bizcare-teal", name: "Bizcare Teal (ERP / Mart)", color: "#0D9488" },
-  { id: "eproduct-blue", name: "eProduct Royal Blue", color: "#2563EB" },
-  { id: "ixershop-navy", name: "IXERSHOP Navy POS", color: "#0F172A" },
-  { id: "slate-dark", name: "Slate Dark Mode", color: "#0284C7" },
+  { id: "light", name: "Light Mode", color: "#059669", icon: "sun" },
+  { id: "dark", name: "Dark Mode", color: "#10b981", icon: "moon" },
 ];
 
 export const ThemeProvider = ({ children }) => {
+  const normalizeTheme = (themeName) => {
+    if (themeName === "dark" || themeName === "slate-dark") return "dark";
+    return "light";
+  };
+
   const [theme, setThemeState] = useState(() => {
-    return localStorage.getItem("pos_theme") || "bizcare-teal";
+    const saved = localStorage.getItem("pos_theme");
+    return normalizeTheme(saved || "light");
   });
   const [storeSettings, setStoreSettings] = useState(null);
 
   const applyTheme = (themeName) => {
-    document.documentElement.setAttribute("data-theme", themeName);
-    if (themeName === "slate-dark") {
+    const normalized = normalizeTheme(themeName);
+    document.documentElement.setAttribute("data-theme", normalized);
+    if (normalized === "dark") {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-    localStorage.setItem("pos_theme", themeName);
-    setThemeState(themeName);
+    localStorage.setItem("pos_theme", normalized);
+    setThemeState(normalized);
   };
 
   const setTheme = async (newTheme) => {
-    applyTheme(newTheme);
+    const normalized = normalizeTheme(newTheme);
+    applyTheme(normalized);
     try {
-      await api.post("/settings/switch-theme", { theme: newTheme });
+      await api.post("/settings/switch-theme", { theme: normalized });
     } catch (e) {
       console.warn("Theme sync with backend skipped:", e.message);
     }
+  };
+
+  const toggleTheme = () => {
+    setTheme(theme === "dark" ? "light" : "dark");
   };
 
   // Fetch store settings on mount
@@ -57,7 +67,18 @@ export const ThemeProvider = ({ children }) => {
   }, []);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, changeTheme: setTheme, storeSettings, fetchSettings, themes: THEMES }}>
+    <ThemeContext.Provider
+      value={{
+        theme,
+        setTheme,
+        changeTheme: setTheme,
+        toggleTheme,
+        isDark: theme === "dark",
+        storeSettings,
+        fetchSettings,
+        themes: THEMES
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   );

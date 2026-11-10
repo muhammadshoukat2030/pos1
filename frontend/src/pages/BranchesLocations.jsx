@@ -369,7 +369,7 @@ export default function BranchesLocations() {
       {/* Toast Alert */}
       {toast && (
         <div
-          className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold border transition transform duration-200 ${
+          className={`fixed bottom-6 right-6 z-50 px-4 py-3 rounded-lg shadow-2xl flex items-center gap-3 text-sm font-bold border transition transform duration-200 ${
             toast.type === "success"
               ? "bg-emerald-600 text-white border-emerald-500 shadow-emerald-900/30"
               : toast.type === "error"
@@ -419,7 +419,7 @@ export default function BranchesLocations() {
       </div>
 
       {/* Top Executive KPI Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-stretch">
         <StatCard
           title="Retail Stores"
           value={totalStores}
@@ -446,8 +446,8 @@ export default function BranchesLocations() {
           title="Total Stock Units"
           value={totalStockUnits.toLocaleString()}
           icon={Boxes}
-          iconBg="bg-blue-500/10"
-          iconColor="text-blue-500"
+          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+          iconColor="text-emerald-700 dark:text-emerald-400"
           badgeText="All Locations"
           badgeType="neutral"
           subtitle="Aggregate Multi-Store Inventory"
@@ -457,8 +457,8 @@ export default function BranchesLocations() {
           title="Transfers Executed"
           value={transfers.length}
           icon={ArrowRightLeft}
-          iconBg="bg-purple-500/10"
-          iconColor="text-purple-500"
+          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+          iconColor="text-emerald-700 dark:text-emerald-400"
           badgeText="Audited"
           badgeType="warning"
           subtitle="Inter-Store Movements"
@@ -524,14 +524,14 @@ export default function BranchesLocations() {
             return (
               <div
                 key={b._id}
-                className="bg-theme-card border border-theme-border rounded-3xl p-5 shadow-card hover:shadow-dropdown transition duration-300 flex flex-col justify-between relative overflow-hidden group"
+                className="bg-theme-card border border-theme-border rounded-lg p-3.5 shadow-2xs hover:border-emerald-500/30 transition duration-200 flex flex-col justify-between relative overflow-hidden group"
               >
                 {/* Top Badge Strip */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <div className="flex items-center gap-2">
                       <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold ${
+                        className={`w-8 h-8 rounded-md flex items-center justify-center font-bold ${
                           isWarehouse
                             ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
                             : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
@@ -667,7 +667,7 @@ export default function BranchesLocations() {
       {activeTab === "stock" && (
         <div className="space-y-4">
           {/* Controls Bar */}
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3 w-full md:w-auto">
               <label className="text-xs font-bold text-theme-textMuted uppercase tracking-wider flex-shrink-0">
                 Active Location:
@@ -715,7 +715,7 @@ export default function BranchesLocations() {
           </div>
 
           {/* Inventory Table */}
-          <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+          <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="bg-black/5 dark:bg-white/5 text-theme-textMuted uppercase font-bold tracking-wider border-b border-theme-border">
@@ -815,23 +815,23 @@ export default function BranchesLocations() {
       {activeTab === "transfer" && (
         <form onSubmit={handleExecuteTransfer} className="space-y-6">
           {/* Location Routing Strip */}
-          <div className="bg-theme-card border border-theme-border rounded-3xl p-6 shadow-card space-y-4">
-            <h3 className="font-extrabold text-base text-theme-textPrimary flex items-center gap-2">
-              <ArrowRightLeft className="w-5 h-5 text-theme-primary" />
+          <div className="bg-theme-card border border-theme-border rounded-xl p-4 sm:p-5 shadow-2xs space-y-4">
+            <h3 className="font-bold text-sm sm:text-base text-theme-textPrimary flex items-center gap-2">
+              <ArrowRightLeft className="w-4 h-4 text-theme-primary" />
               Transfer Routing
             </h3>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
               {/* Source Location */}
-              <div className="space-y-1.5 p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-theme-border">
-                <label className="text-xs font-black uppercase tracking-wider text-rose-600 dark:text-rose-400 block">
+              <div className="space-y-1.5 p-3 rounded-lg bg-black/5 dark:bg-white/5 border border-theme-border">
+                <label className="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 block">
                   1. Source Location (Deduct From)
                 </label>
                 <select
                   value={sourceBranchId}
                   onChange={(e) => setSourceBranchId(e.target.value)}
                   required
-                  className="w-full px-3 py-2.5 rounded-xl bg-theme-card border border-theme-border text-xs font-extrabold text-theme-textPrimary focus:ring-2 focus:ring-theme-primary focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-card border border-theme-border text-xs font-semibold text-theme-textPrimary focus:ring-1 focus:ring-theme-primary focus:outline-none"
                 >
                   <option value="">Select Origin Branch / Warehouse</option>
                   {branches.map((b) => (
@@ -846,15 +846,15 @@ export default function BranchesLocations() {
               </div>
 
               {/* Destination Location */}
-              <div className="space-y-1.5 p-4 rounded-2xl bg-black/5 dark:bg-white/5 border border-theme-border">
-                <label className="text-xs font-black uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block">
+              <div className="space-y-1.5 p-3 rounded-lg bg-black/5 dark:bg-white/5 border border-theme-border">
+                <label className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 block">
                   2. Destination Location (Receive Into)
                 </label>
                 <select
                   value={destBranchId}
                   onChange={(e) => setDestBranchId(e.target.value)}
                   required
-                  className="w-full px-3 py-2.5 rounded-xl bg-theme-card border border-theme-border text-xs font-extrabold text-theme-textPrimary focus:ring-2 focus:ring-theme-primary focus:outline-none"
+                  className="w-full px-3 py-2 rounded-lg bg-theme-card border border-theme-border text-xs font-semibold text-theme-textPrimary focus:ring-1 focus:ring-theme-primary focus:outline-none"
                 >
                   <option value="">Select Destination Branch / Warehouse</option>
                   {branches.map((b) => (
@@ -871,7 +871,7 @@ export default function BranchesLocations() {
           </div>
 
           {/* Transfer Item Selection Table */}
-          <div className="bg-theme-card border border-theme-border rounded-3xl p-6 shadow-card space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-xl p-4 sm:p-5 shadow-2xs space-y-4">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-extrabold text-base text-theme-textPrimary flex items-center gap-2">
@@ -997,7 +997,7 @@ export default function BranchesLocations() {
                 <button
                   type="submit"
                   disabled={transferSubmitting}
-                  className="px-6 py-3 rounded-2xl bg-theme-primary hover:bg-theme-dark text-white font-extrabold text-sm shadow-xl shadow-theme-primary/25 transition flex items-center gap-2 active:scale-95 disabled:opacity-50"
+                  className="px-6 py-3 rounded-lg bg-theme-primary hover:bg-theme-dark text-white font-extrabold text-sm shadow-xl shadow-theme-primary/25 transition flex items-center gap-2 active:scale-95 disabled:opacity-50"
                 >
                   <ArrowRightLeft className={`w-4 h-4 ${transferSubmitting ? "animate-spin" : ""}`} />
                   {transferSubmitting ? "Executing Transfer..." : "Complete & Dispatch Stock Transfer"}
@@ -1010,7 +1010,7 @@ export default function BranchesLocations() {
 
       {/* TAB 4: TRANSFER AUDIT HISTORY */}
       {activeTab === "history" && (
-        <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
               <thead className="bg-black/5 dark:bg-white/5 text-theme-textMuted uppercase font-bold tracking-wider border-b border-theme-border">

@@ -168,7 +168,7 @@ export default function BrandManagement() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-theme-border">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-600 dark:text-teal-400">
+          <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
             <Bookmark className="w-6 h-6" />
           </div>
           <div>
@@ -203,16 +203,16 @@ export default function BrandManagement() {
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Total Brands</span>
-            <Bookmark className="w-5 h-5 text-teal-500" />
+            <Bookmark className="w-5 h-5 text-emerald-500" />
           </div>
           <div className="text-2xl font-black mt-2">{stats.total}</div>
           <div className="text-[11px] text-theme-textMuted mt-1">Registered manufacturers</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Active Brands</span>
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
@@ -221,7 +221,7 @@ export default function BrandManagement() {
           <div className="text-[11px] text-theme-textMuted mt-1">Ready for catalog assignment</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Linked Products</span>
             <Package className="w-5 h-5 text-indigo-500" />
@@ -232,7 +232,7 @@ export default function BrandManagement() {
           <div className="text-[11px] text-theme-textMuted mt-1">Total items in catalog</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Top Brand</span>
             <Layers className="w-5 h-5 text-amber-500" />
@@ -247,7 +247,7 @@ export default function BrandManagement() {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-theme-card border border-theme-border rounded-2xl p-3 shadow-card flex items-center gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-lg p-3 shadow-card flex items-center gap-3">
         <Search className="w-4 h-4 text-theme-textMuted ml-1 flex-shrink-0" />
         <input
           type="text"
@@ -267,7 +267,7 @@ export default function BrandManagement() {
       </div>
 
       {/* Brands Table */}
-      <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+      <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead className="bg-black/5 dark:bg-white/5 border-b border-theme-border text-xs uppercase font-extrabold text-theme-textMuted">
@@ -306,7 +306,7 @@ export default function BrandManagement() {
                 filteredBrands.map((b) => (
                   <tr key={b._id} className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition">
                     <td className="py-3.5 px-4 font-bold text-theme-textPrimary flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-600 dark:text-teal-400 font-extrabold text-xs">
+                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-extrabold text-xs">
                         {b.name.slice(0, 2).toUpperCase()}
                       </div>
                       <span>{b.name}</span>
@@ -380,7 +380,7 @@ export default function BrandManagement() {
       {/* Add / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-2xl shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <div className="flex items-center gap-2 font-bold text-base">
                 <Bookmark className="w-5 h-5 text-theme-primary" />

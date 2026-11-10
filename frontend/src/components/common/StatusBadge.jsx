@@ -9,7 +9,7 @@ export default function StatusBadge({ status, size = "sm", className = "" }) {
 
   const normalized = String(status).trim().toLowerCase();
 
-  let colorClasses = "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-700";
+  let colorClasses = "bg-slate-100 text-slate-800 dark:bg-white/5 dark:text-slate-200 border-slate-200 dark:border-white/10";
 
   // Order & Payment Statuses
   if (normalized === "completed" || normalized === "paid" || normalized === "delivered") {
@@ -19,9 +19,9 @@ export default function StatusBadge({ status, size = "sm", className = "" }) {
   } else if (normalized === "partially refunded" || normalized === "partial" || normalized === "low stock" || normalized === "pending") {
     colorClasses = "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border-amber-200 dark:border-amber-800";
   } else if (normalized === "held" || normalized === "draft") {
-    colorClasses = "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300 border-purple-200 dark:border-purple-800";
+    colorClasses = "bg-slate-100 text-slate-700 dark:bg-white/5 dark:text-slate-300 border-slate-200 dark:border-white/10";
   } else if (normalized === "dispatch" || normalized === "in transit" || normalized === "ar khata / credit" || normalized === "credit sale") {
-    colorClasses = "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border-blue-200 dark:border-blue-800";
+    colorClasses = "bg-emerald-50 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800";
   } else if (normalized === "in stock" || normalized === "healthy") {
     colorClasses = "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800";
   } else if (normalized === "unpaid" || normalized === "overdue") {

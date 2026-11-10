@@ -44,7 +44,7 @@ export default function MainLayout() {
       {/* Main Content Area */}
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
-          isCollapsed ? "lg:ml-[72px]" : "lg:ml-[240px]"
+          isCollapsed ? "lg:ml-[58px]" : "lg:ml-[204px]"
         }`}
       >
         <TopModuleBar

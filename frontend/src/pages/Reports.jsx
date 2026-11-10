@@ -83,15 +83,15 @@ export default function Reports() {
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-bold text-xs shadow-sm transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition cursor-pointer"
           >
-            <Printer className="w-4 h-4" /> Print Report
+            <Printer className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" /> Print Report
           </button>
         </div>
       </div>
 
       {/* Report Tabs */}
-      <div className="flex items-center gap-2 border-b border-theme-border pb-1">
+      <div className="flex items-center gap-1.5 border-b border-theme-border pb-1">
         {[
           { id: "profit-loss", label: "Profit & Loss Statement", icon: DollarSign },
           { id: "category", label: "Category-wise Sales Breakdown", icon: PieChart },
@@ -100,13 +100,13 @@ export default function Reports() {
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
               activeTab === t.id
-                ? "bg-theme-primary text-white shadow-sm"
-                : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5"
+                ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 dark:border-emerald-700/50 shadow-2xs"
+                : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 border border-transparent"
             }`}
           >
-            <t.icon className="w-4 h-4" />
+            <t.icon className={`w-3.5 h-3.5 ${activeTab === t.id ? "text-emerald-700 dark:text-emerald-400" : "text-theme-textMuted"}`} />
             <span>{t.label}</span>
           </button>
         ))}
@@ -114,7 +114,7 @@ export default function Reports() {
 
       {/* Date Filter Bar */}
       {activeTab === "profit-loss" && (
-        <div className="bg-theme-card border border-theme-border rounded-2xl p-4 shadow-card flex flex-wrap items-center justify-between gap-3">
+        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
             {[
               { id: "today", label: "Today" },
@@ -126,9 +126,9 @@ export default function Reports() {
               <button
                 key={p.id}
                 onClick={() => setPeriod(p.id)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition ${
+                className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition cursor-pointer ${
                   period === p.id
-                    ? "bg-theme-primary text-white font-bold"
+                    ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold"
                     : "bg-black/5 dark:bg-white/5 text-theme-textSecondary hover:text-theme-textPrimary"
                 }`}
               >
@@ -143,21 +143,21 @@ export default function Reports() {
               type="date"
               value={fromDate}
               onChange={(e) => setFromDate(e.target.value)}
-              className="px-2 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg text-xs"
+              className="px-2 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-md text-xs"
             />
-            <span>to</span>
+            <span className="text-theme-textMuted">to</span>
             <input
               type="date"
               value={toDate}
               onChange={(e) => setToDate(e.target.value)}
-              className="px-2 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg text-xs"
+              className="px-2 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-md text-xs"
             />
             <button
               onClick={() => {
                 setPeriod("custom");
                 fetchReports();
               }}
-              className="px-3 py-1 rounded-lg bg-theme-primary text-white font-bold text-xs"
+              className="px-2.5 py-1 rounded-md bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-xs shadow-2xs cursor-pointer transition"
             >
               Apply
             </button>
@@ -169,15 +169,15 @@ export default function Reports() {
       {activeTab === "profit-loss" && plData && (
         <div className="space-y-6">
           {/* Key Metrics Strip */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-stretch">
             <StatCard
               title="Gross Sales"
               value={`${currency} ${plData.metrics.grossSales.toLocaleString()}`}
               icon={DollarSign}
               badgeText={`${plData.metrics.totalBills} Bills`}
               badgeType="neutral"
-              iconBg="bg-blue-500/10 dark:bg-blue-950/40"
-              iconColor="text-blue-600 dark:text-blue-400"
+              iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+              iconColor="text-emerald-700 dark:text-emerald-400"
             />
 
             <StatCard
@@ -206,13 +206,13 @@ export default function Reports() {
               icon={Sparkles}
               badgeText={`Net: ${plData.metrics.netMargin}%`}
               badgeType="success"
-              iconBg="bg-teal-500/10 dark:bg-teal-950/40"
-              iconColor="text-teal-600 dark:text-teal-400"
+              iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+              iconColor="text-emerald-600 dark:text-emerald-400"
             />
           </div>
 
           {/* Statement Table */}
-          <div className="bg-theme-card border border-theme-border rounded-2xl p-6 shadow-card space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-lg p-6 shadow-card space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <div>
                 <h3 className="font-extrabold text-base text-theme-textPrimary">Statement of Profit & Loss</h3>
@@ -271,7 +271,7 @@ export default function Reports() {
               </div>
 
               {/* Net Profit Banner */}
-              <div className="flex justify-between py-3 px-3 bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-xl font-black text-base shadow-md mt-4">
+              <div className="flex justify-between py-3 px-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-xl font-black text-base shadow-md mt-4">
                 <span>NET PROFIT FOR THE PERIOD</span>
                 <span>{currency} {plData.metrics.netProfit.toLocaleString()}</span>
               </div>
@@ -282,7 +282,7 @@ export default function Reports() {
 
       {/* TAB 2: CATEGORY BREAKDOWN */}
       {activeTab === "category" && categoryData && (
-        <div className="bg-theme-card border border-theme-border rounded-2xl shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
           <div className="p-4 border-b border-theme-border flex items-center justify-between">
             <h3 className="font-bold text-sm text-theme-textPrimary">Category Sales & Profitability Analysis</h3>
             <span className="text-xs font-bold text-theme-primary">
@@ -329,15 +329,15 @@ export default function Reports() {
       {/* TAB 3: DAILY REGISTER RECONCILIATION */}
       {activeTab === "daily" && dailyData && (
         <div className="space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 items-stretch">
             <StatCard
               title="Daily Total Sales"
               value={`${currency} ${dailyData.metrics.totalSales.toLocaleString()}`}
               icon={Receipt}
               badgeText={`${dailyData.metrics.totalOrders} Orders`}
               badgeType="neutral"
-              iconBg="bg-teal-500/10 dark:bg-teal-950/40"
-              iconColor="text-teal-600 dark:text-teal-400"
+              iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+              iconColor="text-emerald-600 dark:text-emerald-400"
             />
 
             <StatCard
@@ -356,8 +356,8 @@ export default function Reports() {
               icon={TrendingUp}
               badgeText="Digital"
               badgeType="info"
-              iconBg="bg-blue-500/10 dark:bg-blue-950/40"
-              iconColor="text-blue-600 dark:text-blue-400"
+              iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
+              iconColor="text-emerald-700 dark:text-emerald-400"
             />
 
             <StatCard
