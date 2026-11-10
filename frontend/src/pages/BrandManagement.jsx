@@ -168,8 +168,8 @@ export default function BrandManagement() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-theme-border">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
-            <Bookmark className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-btn bg-theme-iconBg text-theme-iconColor border border-theme-border flex items-center justify-center">
+            <Bookmark className="w-5 h-5" />
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-black tracking-tight">Brand Management</h1>
@@ -183,7 +183,7 @@ export default function BrandManagement() {
           <button
             onClick={fetchBrands}
             disabled={loading}
-            className="p-2.5 rounded-xl border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted transition"
+            className="p-2.5 rounded-btn border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted transition"
             title="Refresh Brands"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -192,7 +192,7 @@ export default function BrandManagement() {
           {isAdminOrManager && (
             <button
               onClick={handleOpenAdd}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-theme-primary hover:bg-theme-primaryHover text-white font-bold text-sm shadow-md transition transform active:scale-95"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-bold text-sm shadow-card transition transform active:scale-95"
             >
               <Plus className="w-4 h-4" />
               <span>Add Brand</span>
@@ -203,16 +203,16 @@ export default function BrandManagement() {
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Total Brands</span>
-            <Bookmark className="w-5 h-5 text-emerald-500" />
+            <Bookmark className="w-5 h-5 text-theme-primary" />
           </div>
           <div className="text-2xl font-black mt-2">{stats.total}</div>
           <div className="text-[11px] text-theme-textMuted mt-1">Registered manufacturers</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Active Brands</span>
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
@@ -221,18 +221,18 @@ export default function BrandManagement() {
           <div className="text-[11px] text-theme-textMuted mt-1">Ready for catalog assignment</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Linked Products</span>
-            <Package className="w-5 h-5 text-indigo-500" />
+            <Package className="w-5 h-5 text-emerald-500" />
           </div>
-          <div className="text-2xl font-black mt-2 text-indigo-600 dark:text-indigo-400">
+          <div className="text-2xl font-black mt-2 text-emerald-600 dark:text-emerald-400">
             {stats.totalProductsLinked}
           </div>
           <div className="text-[11px] text-theme-textMuted mt-1">Total items in catalog</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Top Brand</span>
             <Layers className="w-5 h-5 text-amber-500" />
@@ -247,19 +247,19 @@ export default function BrandManagement() {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-theme-card border border-theme-border rounded-lg p-3 shadow-card flex items-center gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-card p-3 shadow-card flex items-center gap-3">
         <Search className="w-4 h-4 text-theme-textMuted ml-1 flex-shrink-0" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search brands by name, origin country, or description..."
-          className="bg-transparent w-full text-sm font-medium focus:outline-none placeholder:text-theme-textMuted"
+          className="bg-transparent w-full text-sm font-medium focus:outline-none placeholder:text-theme-placeholder"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery("")}
-            className="text-xs font-semibold px-2 py-1 rounded bg-black/5 dark:bg-white/10 hover:bg-black/10 transition"
+            className="text-xs font-semibold px-2 py-1 rounded-btn bg-black/5 dark:bg-white/10 hover:bg-black/10 transition"
           >
             Clear
           </button>
@@ -267,10 +267,10 @@ export default function BrandManagement() {
       </div>
 
       {/* Brands Table */}
-      <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
+      <div className="bg-theme-card border border-theme-border rounded-card shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-black/5 dark:bg-white/5 border-b border-theme-border text-xs uppercase font-extrabold text-theme-textMuted">
+            <thead className="bg-theme-tableHeader border-b border-theme-border text-xs uppercase font-extrabold text-theme-textMuted">
               <tr>
                 <th className="py-3.5 px-4">Brand Name</th>
                 <th className="py-3.5 px-4">Origin Country</th>
@@ -304,9 +304,9 @@ export default function BrandManagement() {
                 </tr>
               ) : (
                 filteredBrands.map((b) => (
-                  <tr key={b._id} className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition">
+                  <tr key={b._id} className="hover:bg-theme-tableHover transition">
                     <td className="py-3.5 px-4 font-bold text-theme-textPrimary flex items-center gap-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-extrabold text-xs">
+                      <div className="w-8 h-8 rounded-btn bg-theme-iconBg border border-theme-border flex items-center justify-center text-theme-iconColor font-extrabold text-xs">
                         {b.name.slice(0, 2).toUpperCase()}
                       </div>
                       <span>{b.name}</span>
@@ -322,9 +322,9 @@ export default function BrandManagement() {
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-badge text-xs font-bold ${
                           b.productCount > 0
-                            ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20"
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                             : "bg-slate-500/10 text-slate-500 border border-slate-500/20"
                         }`}
                       >
@@ -334,11 +334,11 @@ export default function BrandManagement() {
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       {b.isActive !== false ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-badge">
                           <CheckCircle2 className="w-3 h-3" /> Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-500 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-500 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded-badge">
                           <XCircle className="w-3 h-3" /> Inactive
                         </span>
                       )}
@@ -348,14 +348,14 @@ export default function BrandManagement() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenEdit(b)}
-                            className="p-1.5 rounded-lg border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted hover:text-theme-primary transition"
+                            className="p-1.5 rounded-btn border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted hover:text-theme-primary transition"
                             title="Edit Brand"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => setBrandToDelete(b)}
-                            className={`p-1.5 rounded-lg border border-theme-border hover:bg-rose-500/10 text-theme-textMuted hover:text-rose-600 transition ${
+                            className={`p-1.5 rounded-btn border border-theme-border hover:bg-rose-500/10 text-theme-textMuted hover:text-rose-600 transition ${
                               b.productCount > 0 ? "opacity-60 cursor-pointer" : ""
                             }`}
                             title={
@@ -380,7 +380,7 @@ export default function BrandManagement() {
       {/* Add / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-lg shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-card shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <div className="flex items-center gap-2 font-bold text-base">
                 <Bookmark className="w-5 h-5 text-theme-primary" />
@@ -388,7 +388,7 @@ export default function BrandManagement() {
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-theme-textMuted hover:text-theme-textPrimary p-1 rounded-lg"
+                className="text-theme-textMuted hover:text-theme-textPrimary p-1 rounded-btn"
               >
                 ✕
               </button>
@@ -405,7 +405,7 @@ export default function BrandManagement() {
                   value={brandForm.name}
                   onChange={(e) => setBrandForm({ ...brandForm, name: e.target.value })}
                   placeholder="e.g. Nestlé, National Foods, Unilever"
-                  className="w-full px-3 py-2 rounded-xl bg-black/5 dark:bg-white/5 border border-theme-border focus:ring-2 focus:ring-theme-primary focus:outline-none text-sm font-bold text-theme-textPrimary"
+                  className="w-full px-3 py-2 rounded-input bg-theme-inputBg border border-theme-inputBorder focus:ring-1 focus:ring-theme-primary focus:outline-none text-sm font-bold text-theme-textPrimary placeholder:text-theme-placeholder"
                 />
               </div>
 
@@ -418,7 +418,7 @@ export default function BrandManagement() {
                   value={brandForm.originCountry}
                   onChange={(e) => setBrandForm({ ...brandForm, originCountry: e.target.value })}
                   placeholder="e.g. Pakistan, USA, Switzerland"
-                  className="w-full px-3 py-2 rounded-xl bg-black/5 dark:bg-white/5 border border-theme-border focus:ring-2 focus:ring-theme-primary focus:outline-none text-xs font-semibold text-theme-textPrimary"
+                  className="w-full px-3 py-2 rounded-input bg-theme-inputBg border border-theme-inputBorder focus:ring-1 focus:ring-theme-primary focus:outline-none text-xs font-semibold text-theme-textPrimary placeholder:text-theme-placeholder"
                 />
               </div>
 
@@ -431,7 +431,7 @@ export default function BrandManagement() {
                   value={brandForm.description}
                   onChange={(e) => setBrandForm({ ...brandForm, description: e.target.value })}
                   placeholder="Short note about manufacturer or product category..."
-                  className="w-full px-3 py-2 rounded-xl bg-black/5 dark:bg-white/5 border border-theme-border focus:ring-2 focus:ring-theme-primary focus:outline-none text-xs font-medium text-theme-textPrimary"
+                  className="w-full px-3 py-2 rounded-input bg-theme-inputBg border border-theme-inputBorder focus:ring-1 focus:ring-theme-primary focus:outline-none text-xs font-medium text-theme-textPrimary placeholder:text-theme-placeholder"
                 />
               </div>
 
@@ -449,7 +449,7 @@ export default function BrandManagement() {
               </div>
 
               {modalMode === "edit" && editingBrand?.productCount > 0 && (
-                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs flex items-start gap-2">
+                <div className="p-3 rounded-btn bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs flex items-start gap-2">
                   <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <span>
                     Changing this brand name will automatically update all <strong>{editingBrand.productCount}</strong> linked product(s).
@@ -462,14 +462,14 @@ export default function BrandManagement() {
                   type="button"
                   onClick={() => setIsModalOpen(false)}
                   disabled={submitting}
-                  className="px-4 py-2 rounded-xl border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 font-bold transition"
+                  className="px-4 py-2 rounded-btn border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 font-bold transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 rounded-xl bg-theme-primary hover:bg-theme-primaryHover text-white font-bold shadow-md transition disabled:opacity-50"
+                  className="px-4 py-2 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-bold shadow-card transition disabled:opacity-50"
                 >
                   {submitting ? "Saving..." : modalMode === "add" ? "Create Brand" : "Save Changes"}
                 </button>

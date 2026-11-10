@@ -83,15 +83,15 @@ export default function Reports() {
         <div className="flex items-center gap-2">
           <button
             onClick={handlePrint}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-theme-border bg-theme-surface hover:bg-theme-card text-theme-textPrimary font-medium text-xs shadow-xs transition cursor-pointer"
           >
-            <Printer className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" /> Print Report
+            <Printer className="w-3.5 h-3.5 text-theme-primary" /> Print Report
           </button>
         </div>
       </div>
 
       {/* Report Tabs */}
-      <div className="flex items-center gap-1.5 border-b border-theme-border pb-1">
+      <div className="flex items-center gap-1.5 border-b border-theme-border pb-1 overflow-x-auto no-scrollbar">
         {[
           { id: "profit-loss", label: "Profit & Loss Statement", icon: DollarSign },
           { id: "category", label: "Category-wise Sales Breakdown", icon: PieChart },
@@ -100,13 +100,13 @@ export default function Reports() {
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-btn text-xs font-medium transition-all duration-theme cursor-pointer ${
               activeTab === t.id
-                ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 dark:border-emerald-700/50 shadow-2xs"
-                : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 border border-transparent"
+                ? "bg-[#14532D] text-white font-semibold shadow-xs"
+                : "text-theme-textSecondary hover:bg-theme-surface hover:text-theme-textPrimary border border-transparent"
             }`}
           >
-            <t.icon className={`w-3.5 h-3.5 ${activeTab === t.id ? "text-emerald-700 dark:text-emerald-400" : "text-theme-textMuted"}`} />
+            <t.icon className={`w-3.5 h-3.5 ${activeTab === t.id ? "text-white" : "text-theme-textSecondary"}`} />
             <span>{t.label}</span>
           </button>
         ))}
@@ -114,7 +114,7 @@ export default function Reports() {
 
       {/* Date Filter Bar */}
       {activeTab === "profit-loss" && (
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card flex flex-wrap items-center justify-between gap-3">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
             {[
               { id: "today", label: "Today" },
@@ -126,10 +126,10 @@ export default function Reports() {
               <button
                 key={p.id}
                 onClick={() => setPeriod(p.id)}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition cursor-pointer ${
+                className={`px-3 py-1 rounded-btn text-xs font-medium whitespace-nowrap transition cursor-pointer ${
                   period === p.id
-                    ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold"
-                    : "bg-black/5 dark:bg-white/5 text-theme-textSecondary hover:text-theme-textPrimary"
+                    ? "bg-[#14532D] text-white font-semibold shadow-xs"
+                    : "bg-theme-surface text-theme-textSecondary hover:text-theme-textPrimary"
                 }`}
               >
                 {p.label}

@@ -14,8 +14,8 @@ export default function ConfirmModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-      <div className="bg-theme-card border border-theme-border rounded-lg shadow-2xl max-w-md w-full p-5 text-theme-textPrimary">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-theme">
+      <div className="bg-theme-card border border-theme-border rounded-card shadow-card max-w-md w-full p-5 text-theme-textPrimary">
         <div className="flex items-center justify-between pb-3 border-b border-theme-border">
           <div className="flex items-center gap-2 text-amber-500 font-bold">
             <AlertTriangle className="w-5 h-5 flex-shrink-0" />
@@ -23,7 +23,7 @@ export default function ConfirmModal({
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted hover:text-theme-textPrimary transition"
+            className="p-1 rounded-btn hover:bg-theme-surface text-theme-textSecondary hover:text-theme-textPrimary transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -38,7 +38,7 @@ export default function ConfirmModal({
             type="button"
             onClick={onClose}
             disabled={loading}
-            className="px-3 py-1.5 rounded-lg text-xs font-medium border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 transition cursor-pointer"
+            className="px-3 py-1.5 rounded-btn text-xs font-medium border border-theme-border bg-theme-surface hover:bg-theme-card text-theme-textPrimary transition cursor-pointer"
           >
             Cancel
           </button>
@@ -46,7 +46,7 @@ export default function ConfirmModal({
             type="button"
             onClick={onConfirm}
             disabled={loading}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium text-white shadow-2xs transition cursor-pointer ${confirmColor} ${
+            className={`px-3.5 py-1.5 rounded-btn text-xs font-semibold text-white shadow-xs transition cursor-pointer ${confirmColor} ${
               loading ? "opacity-60 cursor-not-allowed" : ""
             }`}
           >

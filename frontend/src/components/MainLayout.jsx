@@ -43,8 +43,8 @@ export default function MainLayout() {
 
       {/* Main Content Area */}
       <div
-        className={`flex-1 flex flex-col transition-all duration-300 ease-in-out ${
-          isCollapsed ? "lg:ml-[58px]" : "lg:ml-[204px]"
+        className={`flex-1 flex flex-col transition-all duration-theme ease-in-out ${
+          isCollapsed ? "lg:ml-[80px]" : "lg:ml-[234px]"
         }`}
       >
         <TopModuleBar

@@ -9,21 +9,46 @@ export default {
     extend: {
       colors: {
         theme: {
-          primary: "var(--primary-color)",
-          dark: "var(--primary-dark)",
+          primary: "var(--primary)",
+          dark: "var(--primary-hover)",
           light: "var(--primary-light)",
-          body: "var(--body-bg)",
+          body: "var(--page-bg)",
           card: "var(--card-bg)",
-          border: "var(--card-border)",
+          surface: "var(--surface)",
+          border: "var(--border)",
           sidebar: "var(--sidebar-bg)",
           sidebarText: "var(--sidebar-text)",
-          sidebarActive: "var(--sidebar-active-bg)",
-          sidebarActiveText: "var(--sidebar-active-text)",
+          sidebarActive: "var(--active-menu-bg)",
+          sidebarActiveText: "var(--active-menu-text)",
           sidebarBorder: "var(--sidebar-border)",
           textPrimary: "var(--text-primary)",
           textSecondary: "var(--text-secondary)",
-          textMuted: "var(--text-muted)",
+          textMuted: "var(--text-secondary)",
+          iconBg: "var(--icon-bg)",
+          iconColor: "var(--icon-color)",
+          tableHeader: "var(--table-header)",
+          tableHover: "var(--table-row-hover)",
+          inputBg: "var(--input-bg)",
+          inputBorder: "var(--input-border)",
+          placeholder: "var(--placeholder)",
+          buttonPrimary: "var(--button-primary)",
+          buttonHover: "var(--button-hover)",
+          buttonText: "var(--button-text)",
         }
+      },
+      borderRadius: {
+        card: "var(--card-radius, 18px)",
+        btn: "var(--button-radius, 8px)",
+        input: "var(--input-radius, 8px)",
+        badge: "var(--badge-radius, 6px)",
+      },
+      boxShadow: {
+        card: "var(--shadow)",
+        bizniz: "var(--shadow)",
+        dropdown: "0 10px 30px rgba(0, 0, 0, 0.12)",
+      },
+      transitionDuration: {
+        theme: "var(--transition-speed, 180ms)",
       },
       fontFamily: {
         sans: [
@@ -36,11 +61,6 @@ export default {
           "Cantarell",
           "sans-serif"
         ]
-      },
-      boxShadow: {
-        subtle: "0 2px 10px rgba(0, 0, 0, 0.04)",
-        card: "0 4px 20px -2px rgba(0, 0, 0, 0.06)",
-        dropdown: "0 10px 30px rgba(0, 0, 0, 0.12)",
       }
     },
   },

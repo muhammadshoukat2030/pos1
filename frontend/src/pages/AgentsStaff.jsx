@@ -200,14 +200,14 @@ export default function AgentsStaff() {
           {user?.role === "admin" && (
             <button
               onClick={() => setIsUserModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-bold text-xs shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-btn border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-bold text-xs shadow-card"
             >
               <ShieldCheck className="w-4 h-4 text-theme-primary" /> + New Cashier / User
             </button>
           )}
           <button
             onClick={() => setIsAgentModalOpen(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-theme-primary hover:bg-theme-dark text-white font-bold text-xs shadow-md transition transform active:scale-95"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-bold text-xs shadow-card transition transform active:scale-95"
           >
             <UserPlus className="w-4 h-4" /> + Register Agent
           </button>
@@ -216,26 +216,26 @@ export default function AgentsStaff() {
 
       {/* KPI Stats Strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Registered Agents</span>
           <h3 className="text-xl font-black text-theme-textPrimary mt-0.5">{stats.totalAgents || agents.length} Agents</h3>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Total Commission Earned</span>
           <h3 className="text-xl font-black text-theme-textPrimary mt-0.5">
             {currency} {(stats.totalCommission || 0).toLocaleString()}
           </h3>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Commission Paid</span>
           <h3 className="text-xl font-black text-emerald-600 mt-0.5">
             {currency} {(stats.totalPaid || 0).toLocaleString()}
           </h3>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-sm">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <span className="text-[11px] font-bold text-theme-textMuted uppercase">Commission Payable</span>
           <h3 className="text-xl font-black text-amber-500 mt-0.5">
             {currency} {(stats.totalPayable || 0).toLocaleString()}
@@ -247,9 +247,9 @@ export default function AgentsStaff() {
       <div className="flex items-center gap-2 border-b border-theme-border pb-1">
         <button
           onClick={() => setActiveTab("agents")}
-          className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
+          className={`px-4 py-2 rounded-btn text-xs font-bold transition ${
             activeTab === "agents"
-              ? "bg-theme-primary text-white shadow-sm"
+              ? "bg-[#14532D] text-white shadow-xs"
               : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5"
           }`}
         >
@@ -258,9 +258,9 @@ export default function AgentsStaff() {
         {user?.role === "admin" && (
           <button
             onClick={() => setActiveTab("users")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
+            className={`px-4 py-2 rounded-btn text-xs font-bold transition ${
               activeTab === "users"
-                ? "bg-theme-primary text-white shadow-sm"
+                ? "bg-[#14532D] text-white shadow-xs"
                 : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5"
             }`}
           >
@@ -271,10 +271,10 @@ export default function AgentsStaff() {
 
       {/* TAB 1: AGENTS LIST */}
       {activeTab === "agents" && (
-        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-card shadow-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
+              <thead className="bg-theme-tableHeader text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
                 <tr>
                   <th className="p-3">Agent ID & Name</th>
                   <th className="p-3">Phone</th>
@@ -293,7 +293,7 @@ export default function AgentsStaff() {
                   </tr>
                 ) : (
                   agents.map((a) => (
-                    <tr key={a._id} className="hover:bg-black/5 dark:hover:bg-white/5 transition">
+                    <tr key={a._id} className="hover:bg-theme-tableHover transition">
                       <td className="p-3 font-bold text-theme-textPrimary">
                         <div>{a.name}</div>
                         <div className="text-[10px] text-theme-primary font-mono">{a.agentID}</div>
@@ -341,10 +341,10 @@ export default function AgentsStaff() {
 
       {/* TAB 2: SYSTEM CASHIERS / USERS */}
       {activeTab === "users" && (
-        <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
+        <div className="bg-theme-card border border-theme-border rounded-card shadow-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-black/5 dark:bg-white/5 text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
+              <thead className="bg-theme-tableHeader text-[11px] font-bold text-theme-textMuted uppercase border-b border-theme-border">
                 <tr>
                   <th className="p-3">Username</th>
                   <th className="p-3">System Role</th>
@@ -354,7 +354,7 @@ export default function AgentsStaff() {
               </thead>
               <tbody className="divide-y divide-theme-border">
                 {systemUsers.map((u) => (
-                  <tr key={u._id} className="hover:bg-black/5 dark:hover:bg-white/5 transition">
+                  <tr key={u._id} className="hover:bg-theme-tableHover transition">
                     <td className="p-3 font-bold text-theme-textPrimary flex items-center gap-2">
                       <div className="w-7 h-7 rounded-full bg-theme-primary/10 text-theme-primary font-bold flex items-center justify-center">
                         {u.username?.charAt(0).toUpperCase()}

@@ -1419,7 +1419,7 @@ export default function PosTerminal() {
 
           {/* Sticky Compact Totals & Customer Panel */}
           <div
-            className={`bg-theme-card border border-theme-border rounded-xl p-3 shadow-xs space-y-2.5 ${
+            className={`bg-theme-card border border-theme-border rounded-card p-3.5 shadow-card space-y-2.5 ${
               posMode === "barcode" ? "lg:col-span-4" : "w-full"
             }`}
           >
@@ -1434,7 +1434,7 @@ export default function PosTerminal() {
                     <button
                       type="button"
                       onClick={() => setIsKhataProfileOpen(true)}
-                      className="text-emerald-700 dark:text-emerald-400 hover:underline flex items-center gap-0.5 text-[10px] font-bold cursor-pointer transition"
+                      className="text-theme-primary hover:underline flex items-center gap-0.5 text-[10px] font-bold cursor-pointer transition"
                       title="View Customer Khata Profile"
                     >
                       <Eye className="w-3 h-3" /> View Khata
@@ -1443,7 +1443,7 @@ export default function PosTerminal() {
                   <button
                     type="button"
                     onClick={() => setIsCustomerModalOpen(true)}
-                    className="text-emerald-600 dark:text-emerald-400 hover:underline flex items-center gap-1 text-[10px] font-bold cursor-pointer transition"
+                    className="text-theme-primary hover:underline flex items-center gap-1 text-[10px] font-bold cursor-pointer transition"
                   >
                     <UserPlus className="w-3 h-3" /> + New Khata
                   </button>
@@ -1457,7 +1457,7 @@ export default function PosTerminal() {
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                   placeholder="Customer Name (Default: Walk-in Customer)"
-                  className="w-full px-2.5 py-1.5 text-xs font-semibold bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg focus:ring-1 focus:ring-emerald-500 focus:outline-none transition text-theme-textPrimary placeholder:text-theme-textMuted"
+                  className="w-full px-3 py-1.5 text-xs font-semibold bg-theme-inputBg border border-theme-inputBorder rounded-btn focus:ring-1 focus:ring-theme-primary focus:outline-none transition duration-theme text-theme-textPrimary placeholder:text-theme-placeholder"
                 />
                 {customerName && customerName !== "Walk-in Customer" && (
                   <button
@@ -1467,7 +1467,7 @@ export default function PosTerminal() {
                       setSelectedCustomerId("");
                       setCustomerPhone("");
                     }}
-                    className="absolute right-2 top-1.5 text-[10px] font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition cursor-pointer"
+                    className="absolute right-2 top-1.5 text-[10px] font-bold text-theme-textSecondary hover:text-theme-textPrimary transition cursor-pointer"
                     title="Reset to Walk-in Customer"
                   >
                     Reset
@@ -1515,10 +1515,10 @@ export default function PosTerminal() {
                           setSplitBank(grandTotal - half);
                         }
                       }}
-                      className={`py-1.5 px-1 rounded-lg text-xs font-bold transition text-center truncate cursor-pointer ${
+                      className={`py-1.5 px-1 rounded-btn text-xs font-bold transition text-center truncate cursor-pointer ${
                         isActive
-                          ? "bg-emerald-600 text-white shadow-xs"
-                          : "text-theme-textSecondary hover:text-theme-textPrimary hover:bg-black/5 dark:hover:bg-white/5"
+                          ? "bg-[#14532D] text-white shadow-xs"
+                          : "text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-surface"
                       }`}
                     >
                       {m.label}
@@ -1692,9 +1692,9 @@ export default function PosTerminal() {
                 type="button"
                 disabled={isSubmitting || cart.length === 0}
                 onClick={() => handleProcessSale("Completed", true)}
-                className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold text-xs shadow-md shadow-emerald-600/25 flex items-center justify-center gap-2 transition cursor-pointer"
+                className="w-full py-2.5 px-3 rounded-btn bg-[#14532D] hover:bg-[#104323] dark:hover:bg-[#1B6B3B] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed text-white font-extrabold text-xs shadow-card flex items-center justify-center gap-2 transition cursor-pointer"
               >
-                <Printer className="w-3.5 h-3.5" />
+                <Printer className="w-3.5 h-3.5 text-white" />
                 <span>{isSubmitting ? "Processing Sale..." : "Pay & Print 80mm (F3)"}</span>
               </button>
 
@@ -1703,7 +1703,7 @@ export default function PosTerminal() {
                   type="button"
                   disabled={isSubmitting || cart.length === 0}
                   onClick={() => handleProcessSale("Completed", false)}
-                  className="py-1.5 px-2 rounded-lg bg-emerald-700 hover:bg-emerald-800 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs transition cursor-pointer shadow-xs text-center"
+                  className="py-1.5 px-2 rounded-btn bg-[#14532D] hover:bg-[#104323] dark:hover:bg-[#1B6B3B] active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs transition cursor-pointer shadow-xs text-center"
                 >
                   {isSubmitting ? "Saving..." : "Save (F4)"}
                 </button>
@@ -1711,9 +1711,9 @@ export default function PosTerminal() {
                   type="button"
                   disabled={isSubmitting || cart.length === 0}
                   onClick={handleHoldBill}
-                  className="py-1.5 px-2 rounded-lg bg-amber-500 hover:bg-amber-600 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs transition flex items-center justify-center gap-1 cursor-pointer shadow-xs"
+                  className="py-1.5 px-2 rounded-btn bg-amber-600 hover:bg-amber-700 active:scale-98 disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-xs transition flex items-center justify-center gap-1 cursor-pointer shadow-xs"
                 >
-                  <PauseCircle className="w-3 h-3" /> Hold (F7)
+                  <PauseCircle className="w-3 h-3 text-white" /> Hold (F7)
                 </button>
               </div>
             </div>

@@ -257,7 +257,7 @@ export default function BatchManagement() {
           <button
             type="button"
             onClick={fetchData}
-            className="px-3.5 py-2 rounded-xl bg-theme-card border border-theme-border text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 text-xs font-bold transition flex items-center gap-1.5 shadow-sm"
+            className="px-3.5 py-2 rounded-btn bg-theme-card border border-theme-border text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 text-xs font-bold transition flex items-center gap-1.5 shadow-card"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
             Refresh
@@ -266,7 +266,7 @@ export default function BatchManagement() {
           <button
             type="button"
             onClick={openAddModal}
-            className="px-4 py-2 rounded-xl bg-theme-primary hover:bg-theme-dark text-white text-xs font-extrabold transition flex items-center gap-1.5 shadow-md shadow-theme-primary/20 active:scale-95"
+            className="px-4 py-2 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white text-xs font-extrabold transition flex items-center gap-1.5 shadow-card active:scale-95"
           >
             <Plus className="w-4 h-4" />
             Receive New Batch
@@ -323,7 +323,7 @@ export default function BatchManagement() {
 
       {/* Critical Expiry Alert Banner if Expired or Near Expiry Stock exists */}
       {(expiredCount > 0 || nearExpiryCount > 0) && (
-        <div className="p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start sm:items-center justify-between gap-3">
+        <div className="p-4 rounded-card bg-amber-500/10 border border-amber-500/30 flex items-start sm:items-center justify-between gap-3">
           <div className="flex items-center gap-3">
             <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
             <div className="text-xs text-amber-900 dark:text-amber-200">
@@ -338,7 +338,7 @@ export default function BatchManagement() {
           <button
             type="button"
             onClick={() => setFilterTab(expiredCount > 0 ? "expired" : "near-expiry")}
-            className="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs transition flex-shrink-0"
+            className="px-3 py-1.5 rounded-btn bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs transition flex-shrink-0"
           >
             Review Lots
           </button>
@@ -346,14 +346,14 @@ export default function BatchManagement() {
       )}
 
       {/* Filters & Search Control Strip */}
-      <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Quick Filter Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full md:w-auto">
           <button
             onClick={() => setFilterTab("all")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-btn text-xs font-bold transition whitespace-nowrap ${
               filterTab === "all"
-                ? "bg-theme-primary text-white shadow-sm"
+                ? "bg-[#14532D] text-white shadow-xs"
                 : "bg-black/5 dark:bg-white/5 text-theme-textSecondary hover:bg-black/10"
             }`}
           >
@@ -362,9 +362,9 @@ export default function BatchManagement() {
 
           <button
             onClick={() => setFilterTab("near-expiry")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-btn text-xs font-bold transition whitespace-nowrap flex items-center gap-1 ${
               filterTab === "near-expiry"
-                ? "bg-amber-600 text-white shadow-sm"
+                ? "bg-amber-600 text-white shadow-xs"
                 : "bg-amber-500/10 text-amber-700 dark:text-amber-300 hover:bg-amber-500/20"
             }`}
           >
@@ -374,9 +374,9 @@ export default function BatchManagement() {
 
           <button
             onClick={() => setFilterTab("expired")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap flex items-center gap-1 ${
+            className={`px-3 py-1.5 rounded-btn text-xs font-bold transition whitespace-nowrap flex items-center gap-1 ${
               filterTab === "expired"
-                ? "bg-rose-600 text-white shadow-sm"
+                ? "bg-rose-600 text-white shadow-xs"
                 : "bg-rose-500/10 text-rose-700 dark:text-rose-300 hover:bg-rose-500/20"
             }`}
           >
@@ -386,9 +386,9 @@ export default function BatchManagement() {
 
           <button
             onClick={() => setFilterTab("quarantined")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
+            className={`px-3 py-1.5 rounded-btn text-xs font-bold transition whitespace-nowrap ${
               filterTab === "quarantined"
-                ? "bg-slate-700 text-white shadow-sm"
+                ? "bg-slate-700 text-white shadow-xs"
                 : "bg-black/5 dark:bg-white/5 text-theme-textSecondary hover:bg-black/10"
             }`}
           >
@@ -402,7 +402,7 @@ export default function BatchManagement() {
             <select
               value={branchFilter}
               onChange={(e) => setBranchFilter(e.target.value)}
-              className="px-3 py-1.5 rounded-xl bg-black/5 dark:bg-white/5 border border-theme-border text-xs font-bold text-theme-textPrimary focus:outline-none"
+              className="px-3 py-1.5 rounded-input bg-theme-inputBg border border-theme-inputBorder text-xs font-bold text-theme-textPrimary focus:outline-none"
             >
               <option value="all">All Locations</option>
               {branches.map((b) => (
@@ -420,17 +420,17 @@ export default function BatchManagement() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search lot, SKU, item, supplier..."
-              className="w-full pl-9 pr-3 py-1.5 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:ring-2 focus:ring-theme-primary focus:outline-none"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-theme-inputBg border border-theme-inputBorder rounded-input focus:ring-1 focus:ring-theme-primary focus:outline-none placeholder:text-theme-placeholder"
             />
           </div>
         </div>
       </div>
 
       {/* Batches Data Table */}
-      <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
+      <div className="bg-theme-card border border-theme-border rounded-card shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-black/5 dark:bg-white/5 text-theme-textMuted uppercase font-bold tracking-wider border-b border-theme-border">
+            <thead className="bg-theme-tableHeader text-theme-textMuted uppercase font-bold tracking-wider border-b border-theme-border">
               <tr>
                 <th className="py-3 px-4">Item & Product SKU</th>
                 <th className="py-3 px-3">Batch / Lot #</th>
@@ -465,7 +465,7 @@ export default function BatchManagement() {
                   const isQuarantined = batch.status === "Quarantined";
 
                   return (
-                    <tr key={batch._id} className="hover:bg-black/5 dark:hover:bg-white/5 transition">
+                    <tr key={batch._id} className="hover:bg-theme-tableHover transition">
                       <td className="py-3 px-4">
                         <div className="font-extrabold text-theme-textPrimary">
                           {p?.itemName || "Unnamed Product"}
@@ -765,14 +765,14 @@ export default function BatchManagement() {
             <button
               type="button"
               onClick={() => setIsAddModalOpen(false)}
-              className="px-4 py-2 rounded-xl bg-black/5 dark:bg-white/5 text-theme-textSecondary text-xs font-bold hover:bg-black/10 transition"
+              className="px-4 py-2 rounded-btn bg-black/5 dark:bg-white/5 text-theme-textSecondary text-xs font-bold hover:bg-black/10 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={formSubmitting}
-              className="px-5 py-2 rounded-xl bg-theme-primary hover:bg-theme-dark text-white text-xs font-extrabold shadow-md transition disabled:opacity-50"
+              className="px-5 py-2 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white text-xs font-extrabold shadow-card transition disabled:opacity-50"
             >
               {formSubmitting ? "Receiving Batch..." : "Receive & Stock Batch"}
             </button>
@@ -790,7 +790,7 @@ export default function BatchManagement() {
         maxWidth="max-w-md"
       >
         <form onSubmit={handleConfirmQuarantine} className="space-y-4">
-          <div className="p-3 rounded-xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-xs text-rose-800 dark:text-rose-200 space-y-1">
+          <div className="p-3 rounded-card bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-xs text-rose-800 dark:text-rose-200 space-y-1">
             <strong>Warning:</strong> Quarantining will permanently remove the remaining{" "}
             <strong>
               {selectedBatchForQuarantine?.quantityRemaining} {selectedBatchForQuarantine?.productId?.unit || "pcs"}
@@ -808,7 +808,7 @@ export default function BatchManagement() {
               onChange={(e) => setQuarantineReason(e.target.value)}
               required
               placeholder="e.g. Past expiration date, packaging defect, manufacturer recall..."
-              className="w-full px-3 py-2 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:ring-2 focus:ring-theme-primary focus:outline-none"
+              className="w-full px-3 py-2 text-xs bg-theme-inputBg border border-theme-inputBorder rounded-input focus:ring-1 focus:ring-theme-primary focus:outline-none placeholder:text-theme-placeholder"
             />
           </div>
 
@@ -816,13 +816,13 @@ export default function BatchManagement() {
             <button
               type="button"
               onClick={() => setIsQuarantineModalOpen(false)}
-              className="px-4 py-2 rounded-xl bg-black/5 dark:bg-white/5 text-theme-textSecondary text-xs font-bold hover:bg-black/10 transition"
+              className="px-4 py-2 rounded-btn bg-black/5 dark:bg-white/5 text-theme-textSecondary text-xs font-bold hover:bg-black/10 transition"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold shadow-md transition"
+              className="px-5 py-2 rounded-btn bg-rose-600 hover:bg-rose-700 text-white text-xs font-extrabold shadow-card transition"
             >
               Confirm Quarantine
             </button>

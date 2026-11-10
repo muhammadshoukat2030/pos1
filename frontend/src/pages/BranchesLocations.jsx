@@ -524,17 +524,17 @@ export default function BranchesLocations() {
             return (
               <div
                 key={b._id}
-                className="bg-theme-card border border-theme-border rounded-lg p-3.5 shadow-2xs hover:border-emerald-500/30 transition duration-200 flex flex-col justify-between relative overflow-hidden group"
+                className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card hover:border-theme-primary/30 transition-all duration-theme flex flex-col justify-between relative overflow-hidden group"
               >
                 {/* Top Badge Strip */}
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <div className="flex items-center gap-2">
                       <div
-                        className={`w-8 h-8 rounded-md flex items-center justify-center font-bold ${
+                        className={`w-9 h-9 rounded-btn flex items-center justify-center font-bold ${
                           isWarehouse
                             ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400"
-                            : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                            : "bg-theme-iconBg text-theme-iconColor"
                         }`}
                       >
                         {isWarehouse ? <Warehouse className="w-4 h-4" /> : <Store className="w-4 h-4" />}

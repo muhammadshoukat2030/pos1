@@ -227,10 +227,10 @@ export default function DynamicSpecs() {
   return (
     <div className="space-y-6">
       {/* Header bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-theme-card p-5 rounded-xl border border-theme-border shadow-sm">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-theme-card p-5 rounded-card border border-theme-border shadow-card">
         <div>
           <h1 className="text-2xl font-bold text-theme-textPrimary flex items-center gap-2.5">
-            <Layers className="text-emerald-600" size={26} />
+            <Layers className="text-theme-primary" size={26} />
             Dynamic Item Specifications & Brands
           </h1>
           <p className="text-theme-textMuted text-sm mt-0.5">
@@ -240,14 +240,14 @@ export default function DynamicSpecs() {
         <div className="flex items-center gap-2">
           <button
             onClick={fetchDefinitions}
-            className="p-2 border border-theme-border rounded-lg text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 hover:text-theme-textPrimary transition"
+            className="p-2 border border-theme-border rounded-btn text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 hover:text-theme-textPrimary transition"
             title="Refresh"
           >
             <RefreshCw size={18} />
           </button>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg shadow-sm transition"
+            className="flex items-center gap-2 bg-[#14532D] hover:bg-[#104323] text-white font-medium px-4 py-2 rounded-btn shadow-card transition"
           >
             <FolderPlus size={18} />
             New Brand / Category
@@ -259,7 +259,7 @@ export default function DynamicSpecs() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left: Brand / Category Selector */}
         <div className="lg:col-span-4 space-y-4">
-          <div className="bg-theme-card p-4 rounded-xl border border-theme-border shadow-sm">
+          <div className="bg-theme-card p-4 rounded-card border border-theme-border shadow-card">
             <div className="relative mb-3">
               <Search className="absolute left-3 top-2.5 text-theme-textMuted" size={16} />
               <input
@@ -267,7 +267,7 @@ export default function DynamicSpecs() {
                 placeholder="Search brands or items..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-9 pr-3 py-2 text-sm border border-theme-border rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                className="w-full pl-9 pr-3 py-2 text-sm bg-theme-inputBg border border-theme-inputBorder rounded-input focus:outline-none focus:ring-1 focus:ring-theme-primary placeholder:text-theme-placeholder"
               />
             </div>
 
@@ -295,16 +295,16 @@ export default function DynamicSpecs() {
                     <div
                       key={brand._id}
                       onClick={() => setSelectedBrand(brand)}
-                      className={`p-3.5 rounded-xl border transition cursor-pointer flex items-center justify-between group ${
+                      className={`p-3.5 rounded-card border transition cursor-pointer flex items-center justify-between group ${
                         isSelected
-                          ? "bg-emerald-50/80 border-emerald-500 shadow-sm"
-                          : "bg-theme-card border-theme-border hover:border-theme-border hover:bg-black/5 dark:hover:bg-white/5"
+                          ? "bg-theme-primaryLight border-[#14532D] shadow-xs"
+                          : "bg-theme-card border-theme-border hover:border-theme-primary/40 hover:bg-black/5 dark:hover:bg-white/5"
                       }`}
                     >
                       <div className="min-w-0 pr-2">
                         <h4
                           className={`font-semibold text-sm truncate ${
-                            isSelected ? "text-emerald-900" : "text-theme-textPrimary"
+                            isSelected ? "text-theme-primary font-bold" : "text-theme-textPrimary"
                           }`}
                         >
                           {brand.brandName}
@@ -325,7 +325,7 @@ export default function DynamicSpecs() {
                         <ChevronRight
                           size={18}
                           className={`transition ${
-                            isSelected ? "text-emerald-600" : "text-theme-textMuted group-hover:translate-x-0.5"
+                            isSelected ? "text-theme-primary" : "text-theme-textMuted group-hover:translate-x-0.5"
                           }`}
                         />
                       </div>
@@ -340,15 +340,15 @@ export default function DynamicSpecs() {
         {/* Right: Selected Brand Spec Details */}
         <div className="lg:col-span-8">
           {selectedBrand ? (
-            <div className="bg-theme-card rounded-xl border border-theme-border shadow-sm overflow-hidden">
+            <div className="bg-theme-card rounded-card border border-theme-border shadow-card overflow-hidden">
               {/* Brand Header */}
-              <div className="p-6 border-b border-theme-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-gradient-to-r from-slate-50 to-white">
+              <div className="p-6 border-b border-theme-border flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-theme-surface">
                 <div>
                   <div className="flex items-center gap-3">
                     <h2 className="text-xl font-bold text-theme-textPrimary">
                       {selectedBrand.brandName}
                     </h2>
-                    <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-800 rounded-full">
+                    <span className="px-2.5 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300 rounded-badge">
                       {selectedBrand.products?.length || 0} Products
                     </span>
                   </div>
@@ -358,7 +358,7 @@ export default function DynamicSpecs() {
                       (u) => (
                         <span
                           key={u}
-                          className="px-2 py-0.5 text-xs bg-black/5 dark:bg-white/5 text-theme-textSecondary rounded-md border border-theme-border font-mono"
+                          className="px-2 py-0.5 text-xs bg-black/5 dark:bg-white/5 text-theme-textSecondary rounded-badge border border-theme-border font-mono"
                         >
                           {u}
                         </span>
@@ -377,13 +377,13 @@ export default function DynamicSpecs() {
                       });
                       setShowAddItemModal(true);
                     }}
-                    className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition"
+                    className="flex items-center gap-1.5 bg-[#14532D] hover:bg-[#104323] text-white text-xs font-semibold px-3 py-2 rounded-btn transition"
                   >
                     <Plus size={15} /> Add Products
                   </button>
                   <button
                     onClick={() => handleDeleteBrand(selectedBrand)}
-                    className="flex items-center gap-1.5 border border-red-200 text-red-600 hover:bg-red-50 text-xs font-medium px-3 py-2 rounded-lg transition"
+                    className="flex items-center gap-1.5 border border-red-200 dark:border-red-900/40 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-medium px-3 py-2 rounded-btn transition"
                     title="Delete Brand"
                   >
                     <Trash2 size={15} /> Delete Brand

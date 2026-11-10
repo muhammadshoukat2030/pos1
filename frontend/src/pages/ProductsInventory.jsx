@@ -491,30 +491,30 @@ export default function ProductsInventory() {
           <button
             type="button"
             onClick={handleExportCsv}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-theme-border bg-theme-surface hover:bg-theme-card text-theme-textPrimary font-medium text-xs shadow-xs transition"
             title="Download full inventory CSV"
           >
-            <Download className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" /> Export CSV
+            <Download className="w-3.5 h-3.5 text-theme-primary" /> Export CSV
           </button>
 
           {/* Import CSV */}
           <button
             type="button"
             onClick={() => setIsCsvModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-theme-border bg-theme-surface hover:bg-theme-card text-theme-textPrimary font-medium text-xs shadow-xs transition"
             title="Bulk import products from CSV"
           >
-            <Upload className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" /> Import CSV
+            <Upload className="w-3.5 h-3.5 text-theme-primary" /> Import CSV
           </button>
 
           {/* Barcode Stickers */}
           <button
             type="button"
             onClick={() => openBarcodeGenerator()}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 text-theme-textPrimary font-medium text-xs shadow-2xs transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-theme-border bg-theme-surface hover:bg-theme-card text-theme-textPrimary font-medium text-xs shadow-xs transition"
             title="Generate printable Code128 barcode labels"
           >
-            <Barcode className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" /> Barcode Stickers
+            <Barcode className="w-3.5 h-3.5 text-theme-primary" /> Barcode Stickers
           </button>
 
           <button
@@ -525,10 +525,10 @@ export default function ProductsInventory() {
               setAdjustReason("");
               setIsStockModalOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-emerald-200 dark:border-emerald-900/40 bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-300 font-medium text-xs hover:bg-emerald-100 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-theme-border bg-theme-surface hover:bg-theme-card text-theme-textPrimary font-medium text-xs shadow-xs transition"
             title="Adjust inventory stock count"
           >
-            <PlusCircle className="w-3.5 h-3.5" /> Adjust Stock
+            <PlusCircle className="w-3.5 h-3.5 text-theme-primary" /> Adjust Stock
           </button>
 
           <button
@@ -536,14 +536,14 @@ export default function ProductsInventory() {
               setRefundProduct(products[0] || null);
               setIsRefundModalOpen(true);
             }}
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-rose-200 dark:border-rose-900/40 bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-300 font-medium text-xs hover:bg-rose-100 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn border border-rose-500/20 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-medium text-xs hover:bg-rose-500/20 transition"
           >
             <Undo2 className="w-3.5 h-3.5" /> Company Refund
           </button>
 
           <button
             onClick={openAddProductModal}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-xs shadow-2xs transition active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-medium text-xs shadow-xs transition active:scale-95 cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" /> Add Product
           </button>
@@ -594,13 +594,13 @@ export default function ProductsInventory() {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="bg-theme-card border border-theme-border rounded-lg p-2.5 sm:p-3 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-card p-3 shadow-card flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Category & Status Filters */}
         <div className="flex flex-wrap items-center gap-1.5 w-full md:w-auto text-xs">
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg font-medium focus:outline-none"
+            className="px-3 py-1.5 bg-theme-inputBg border border-theme-inputBorder rounded-btn text-theme-textPrimary font-medium focus:outline-none focus:ring-1 focus:ring-theme-primary"
           >
             <option value="all">All Categories</option>
             {categories.map((c, idx) => (
@@ -613,7 +613,7 @@ export default function ProductsInventory() {
           <select
             value={stockFilter}
             onChange={(e) => setStockFilter(e.target.value)}
-            className="px-2.5 py-1 bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg font-medium focus:outline-none"
+            className="px-3 py-1.5 bg-theme-inputBg border border-theme-inputBorder rounded-btn text-theme-textPrimary font-medium focus:outline-none focus:ring-1 focus:ring-theme-primary"
           >
             <option value="all">All Stock Status</option>
             <option value="in">In Stock Only</option>
@@ -622,10 +622,10 @@ export default function ProductsInventory() {
 
           <button
             onClick={() => setLowStockOnly(!lowStockOnly)}
-            className={`px-2.5 py-1 rounded-lg font-medium flex items-center gap-1.5 transition ${
+            className={`px-3 py-1.5 rounded-btn font-medium flex items-center gap-1.5 transition ${
               lowStockOnly
-                ? "bg-amber-500 text-white shadow-2xs"
-                : "bg-black/5 dark:bg-white/5 text-theme-textSecondary hover:text-theme-textPrimary"
+                ? "bg-amber-500 text-white shadow-xs"
+                : "bg-theme-surface text-theme-textSecondary hover:text-theme-textPrimary border border-theme-border"
             }`}
           >
             <AlertTriangle className="w-3.5 h-3.5" /> Low Stock
@@ -635,18 +635,18 @@ export default function ProductsInventory() {
         {/* Search */}
         <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 w-full md:w-72">
           <div className="relative flex-1">
-            <Search className="w-4 h-4 absolute left-3 top-2.5 text-theme-textMuted" />
+            <Search className="w-4 h-4 absolute left-3 top-2.5 text-theme-textSecondary" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search barcode or name..."
-              className="w-full pl-9 pr-3 py-2 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-xl focus:outline-none focus:ring-2 focus:ring-theme-primary"
+              className="w-full pl-9 pr-3 py-1.5 text-xs bg-theme-inputBg border border-theme-inputBorder rounded-btn focus:outline-none focus:ring-1 focus:ring-theme-primary text-theme-textPrimary placeholder:text-theme-placeholder"
             />
           </div>
           <button
             type="submit"
-            className="px-3 py-2 rounded-xl bg-theme-primary text-white font-bold text-xs shadow-sm"
+            className="px-3.5 py-1.5 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-medium text-xs shadow-xs transition"
           >
             Search
           </button>

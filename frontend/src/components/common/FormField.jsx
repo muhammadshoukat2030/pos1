@@ -19,7 +19,7 @@ export default function FormField({
   ...inputProps
 }) {
   const baseInputStyles =
-    "w-full text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg px-2.5 py-1.5 text-theme-textPrimary placeholder:text-theme-textMuted focus:outline-none focus:ring-1 focus:ring-emerald-500/40 focus:border-emerald-600 transition disabled:opacity-50";
+    "w-full text-xs bg-theme-inputBg border border-theme-inputBorder rounded-input px-3 py-2 text-theme-textPrimary placeholder:text-theme-placeholder focus:outline-none focus:ring-1 focus:ring-theme-primary focus:border-theme-primary transition duration-theme disabled:opacity-50";
 
   return (
     <div className={`space-y-1 ${containerClassName}`}>

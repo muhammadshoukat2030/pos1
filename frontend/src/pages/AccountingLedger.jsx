@@ -379,7 +379,7 @@ export default function AccountingLedger() {
       </div>
 
       {/* Tabs Switcher */}
-      <div className="flex items-center gap-2 border-b border-theme-border pb-1">
+      <div className="flex items-center gap-1.5 border-b border-theme-border pb-1 overflow-x-auto no-scrollbar">
         {[
           { id: "customers", label: `Customer Khata (${Array.isArray(customers) ? customers.length : 0})` },
           { id: "transactions", label: `Ledger Log (${Array.isArray(transactions) ? transactions.length : 0})` },
@@ -388,10 +388,10 @@ export default function AccountingLedger() {
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
+            className={`px-3.5 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition-all duration-theme cursor-pointer ${
               activeTab === t.id
-                ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 dark:border-emerald-700/50 shadow-2xs"
-                : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 border border-transparent"
+                ? "bg-[#14532D] text-white font-semibold shadow-xs"
+                : "text-theme-textSecondary hover:bg-theme-surface hover:text-theme-textPrimary border border-transparent"
             }`}
           >
             {t.label}

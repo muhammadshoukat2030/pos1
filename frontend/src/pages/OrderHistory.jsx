@@ -215,7 +215,7 @@ export default function OrderHistory() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <h1 className="text-lg sm:text-xl font-bold text-theme-textPrimary flex items-center gap-2">
-            <Receipt className="w-5 h-5 text-emerald-700 dark:text-emerald-400" /> Orders & Sales Management
+            <Receipt className="w-5 h-5 text-theme-primary" /> Orders & Sales Management
           </h1>
           <p className="text-[11.5px] text-theme-textSecondary mt-0.5">
             Track customer transactions, reprint 80mm receipts, and process refunds.
@@ -229,10 +229,10 @@ export default function OrderHistory() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+            className={`px-3.5 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition-all duration-theme ${
               activeTab === tab.id
-                ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 dark:border-emerald-700/50 shadow-2xs"
-                : "text-theme-textSecondary hover:bg-black/5 dark:hover:bg-white/5 border border-transparent"
+                ? "bg-[#14532D] text-white font-semibold shadow-xs"
+                : "text-theme-textSecondary hover:bg-theme-surface hover:text-theme-textPrimary border border-transparent"
             }`}
           >
             {tab.label}
@@ -241,7 +241,7 @@ export default function OrderHistory() {
       </div>
 
       {/* 2. FILTERS & SEARCH BAR */}
-      <div className="bg-theme-card border border-theme-border rounded-lg p-2.5 sm:p-3 shadow-2xs flex flex-col md:flex-row items-center justify-between gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-card p-3 shadow-card flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Date Filter */}
         <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar w-full md:w-auto">
           {[
@@ -254,10 +254,10 @@ export default function OrderHistory() {
             <button
               key={d.id}
               onClick={() => setDateFilter(d.id)}
-              className={`px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap transition ${
+              className={`px-3 py-1 rounded-btn text-xs font-medium whitespace-nowrap transition duration-theme ${
                 dateFilter === d.id
-                  ? "bg-black/10 dark:bg-white/10 text-emerald-800 dark:text-emerald-300 font-semibold"
-                  : "text-theme-textMuted hover:text-theme-textPrimary"
+                  ? "bg-[#14532D] text-white font-semibold shadow-xs"
+                  : "text-theme-textSecondary hover:text-theme-textPrimary hover:bg-theme-surface"
               }`}
             >
               {d.label}
@@ -268,13 +268,13 @@ export default function OrderHistory() {
         {/* Search */}
         <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 w-full md:w-80">
           <div className="relative flex-1">
-            <Search className="w-3.5 h-3.5 absolute left-2.5 top-2 text-theme-textMuted pointer-events-none" />
+            <Search className="w-3.5 h-3.5 absolute left-2.5 top-2 text-theme-textSecondary pointer-events-none" />
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search by customer name, bill #..."
-              className="w-full pl-8 pr-7 py-1.5 text-xs bg-black/5 dark:bg-white/5 border border-theme-border rounded-lg focus:outline-none focus:ring-1 focus:ring-emerald-500/40 focus:border-emerald-600 text-theme-textPrimary placeholder:text-theme-textMuted transition"
+              className="w-full pl-8 pr-7 py-1.5 text-xs bg-theme-inputBg border border-theme-inputBorder rounded-btn focus:outline-none focus:ring-1 focus:ring-theme-primary text-theme-textPrimary placeholder:text-theme-placeholder transition duration-theme"
             />
             {search && (
               <button
@@ -284,7 +284,7 @@ export default function OrderHistory() {
                   setCurrentPage(1);
                   fetchHistory(1, "");
                 }}
-                className="absolute right-2 top-1.5 text-theme-textMuted hover:text-theme-textPrimary p-0.5 rounded cursor-pointer transition"
+                className="absolute right-2 top-1.5 text-theme-textSecondary hover:text-theme-textPrimary p-0.5 rounded cursor-pointer transition"
                 title="Clear search"
               >
                 <X className="w-3 h-3" />
@@ -293,7 +293,7 @@ export default function OrderHistory() {
           </div>
           <button
             type="submit"
-            className="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white font-medium text-xs shadow-2xs cursor-pointer transition"
+            className="px-3 py-1.5 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-medium text-xs shadow-xs cursor-pointer transition duration-theme"
           >
             Search
           </button>
@@ -315,11 +315,11 @@ export default function OrderHistory() {
             return (
               <div
                 key={bill._id}
-                className="group bg-theme-card border border-theme-border hover:border-emerald-600/40 rounded-lg p-3 shadow-2xs hover:shadow-xs transition duration-200 flex flex-col md:flex-row md:items-center justify-between gap-3"
+                className="group bg-theme-card border border-theme-border hover:border-theme-primary/40 rounded-card p-3.5 shadow-card transition-all duration-theme flex flex-col md:flex-row md:items-center justify-between gap-3"
               >
                 {/* Order ID & Customer */}
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold text-xs flex-shrink-0">
+                  <div className="w-9 h-9 rounded-btn bg-theme-iconBg text-theme-iconColor flex items-center justify-center font-bold text-xs flex-shrink-0">
                     <Receipt className="w-4 h-4" />
                   </div>
                   <div>
@@ -339,19 +339,19 @@ export default function OrderHistory() {
                 {/* Date & Payment Mode */}
                 <div className="flex items-center gap-5 text-xs text-theme-textSecondary">
                   <div>
-                    <span className="text-[10px] text-theme-textMuted uppercase font-medium block">Date & Time</span>
+                    <span className="text-[10px] text-theme-textSecondary uppercase font-medium block">Date & Time</span>
                     <span className="font-medium text-theme-textPrimary">
                       {bill.formattedDate || new Date(bill.createdAt).toLocaleDateString()} ({bill.formattedTime || new Date(bill.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })})
                     </span>
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-theme-textMuted uppercase font-medium block">Payment Mode</span>
+                    <span className="text-[10px] text-theme-textSecondary uppercase font-medium block">Payment Mode</span>
                     <span className="font-medium text-theme-textPrimary">{bill.paymentMethod || "Cash"}</span>
                   </div>
 
                   <div>
-                    <span className="text-[10px] text-theme-textMuted uppercase font-medium block">Items</span>
+                    <span className="text-[10px] text-theme-textSecondary uppercase font-medium block">Items</span>
                     <span className="font-medium text-theme-textPrimary">{itemCount} items</span>
                   </div>
                 </div>
@@ -359,7 +359,7 @@ export default function OrderHistory() {
                 {/* Amount & Actions */}
                 <div className="flex items-center justify-between md:justify-end gap-3 pt-2 md:pt-0 border-t md:border-t-0 border-theme-border">
                   <div className="text-left md:text-right">
-                    <span className="text-[10px] text-theme-textMuted uppercase font-medium block">Grand Total</span>
+                    <span className="text-[10px] text-theme-textSecondary uppercase font-medium block">Grand Total</span>
                     <span className="text-sm sm:text-base font-bold text-theme-textPrimary">
                       {currency} {(bill.grandTotal || 0).toLocaleString()}
                     </span>
@@ -368,28 +368,28 @@ export default function OrderHistory() {
                   <div className="flex items-center gap-1.5">
                     <button
                       onClick={() => openBillDetails(bill)}
-                      className="p-1.5 rounded-lg border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textSecondary hover:text-theme-textPrimary transition cursor-pointer"
+                      className="p-1.5 rounded-btn border border-theme-border bg-theme-surface hover:bg-theme-card text-theme-textSecondary hover:text-theme-textPrimary transition cursor-pointer"
                       title="View Details"
                     >
                       <Eye className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => openPrintModal(bill)}
-                      className="p-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 transition cursor-pointer"
+                      className="p-1.5 rounded-btn bg-theme-iconBg text-theme-iconColor hover:bg-theme-surface transition cursor-pointer"
                       title="Reprint 80mm Receipt"
                     >
                       <Printer className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => handleShareWhatsApp(bill)}
-                      className="p-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 dark:bg-emerald-950/30 dark:hover:bg-emerald-900/40 transition cursor-pointer"
+                      className="p-1.5 rounded-btn bg-theme-iconBg text-theme-iconColor hover:bg-theme-surface transition cursor-pointer"
                       title="Share Receipt via WhatsApp"
                     >
                       <Share2 className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => setBillToDelete(bill)}
-                      className="p-2 rounded-xl hover:bg-rose-50 dark:hover:bg-rose-950/30 text-rose-500 hover:text-rose-700 transition"
+                      className="p-1.5 rounded-btn hover:bg-rose-500/10 text-rose-500 hover:text-rose-700 transition cursor-pointer"
                       title="Delete Bill"
                     >
                       <Trash2 className="w-4 h-4" />

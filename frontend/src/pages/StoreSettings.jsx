@@ -407,12 +407,12 @@ export default function StoreSettings() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-theme-border bg-theme-card px-3 pt-2 rounded-t-xl gap-2 overflow-x-auto shadow-2xs">
+      <div className="flex border-b border-theme-border bg-theme-card px-3 pt-2 rounded-t-card gap-2 overflow-x-auto shadow-card">
         <button
           onClick={() => setActiveTab("store")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "store"
-              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              ? "border-[#14532D] text-[#14532D] dark:border-[#B7E0C3] dark:text-[#B7E0C3]"
               : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
@@ -424,7 +424,7 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("receipt")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "receipt"
-              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              ? "border-[#14532D] text-[#14532D] dark:border-[#B7E0C3] dark:text-[#B7E0C3]"
               : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
@@ -436,7 +436,7 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("rbac")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "rbac"
-              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              ? "border-[#14532D] text-[#14532D] dark:border-[#B7E0C3] dark:text-[#B7E0C3]"
               : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
@@ -448,7 +448,7 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("backup")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "backup"
-              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              ? "border-[#14532D] text-[#14532D] dark:border-[#B7E0C3] dark:text-[#B7E0C3]"
               : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >
@@ -460,7 +460,7 @@ export default function StoreSettings() {
           onClick={() => setActiveTab("theme")}
           className={`flex items-center gap-2 px-4 py-3 text-sm font-semibold border-b-2 transition whitespace-nowrap cursor-pointer ${
             activeTab === "theme"
-              ? "border-emerald-600 text-emerald-600 dark:text-emerald-400"
+              ? "border-[#14532D] text-[#14532D] dark:border-[#B7E0C3] dark:text-[#B7E0C3]"
               : "border-transparent text-theme-textSecondary hover:text-theme-textPrimary"
           }`}
         >

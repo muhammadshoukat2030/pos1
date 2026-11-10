@@ -77,7 +77,7 @@ export default function Dashboard() {
       {/* 1. COMPACT EXECUTIVE HEADER BANNER */}
       <div
         style={{ background: "var(--header-gradient)" }}
-        className="relative overflow-hidden rounded-xl p-3.5 sm:p-4 text-white shadow-xs"
+        className="relative overflow-hidden rounded-card p-4 sm:p-5 text-white shadow-card"
       >
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-3">
           <div className="space-y-0.5">
@@ -97,21 +97,21 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center gap-2">
             <Link
               to="/pos"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white text-emerald-800 font-semibold text-xs shadow-xs hover:bg-white/95 transition transform active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn bg-white text-[#14532D] font-semibold text-xs shadow-xs hover:bg-white/95 transition transform active:scale-95 cursor-pointer"
             >
-              <Calculator className="w-3.5 h-3.5 text-emerald-600" />
+              <Calculator className="w-3.5 h-3.5 text-[#14532D]" />
               <span>New POS Sale</span>
             </Link>
             <Link
               to="/products?tab=stock"
-              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-white/15 hover:bg-white/25 text-white font-medium text-xs backdrop-blur-md transition cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-btn bg-white/15 hover:bg-white/25 text-white font-medium text-xs backdrop-blur-md transition cursor-pointer"
             >
               <PlusCircle className="w-3.5 h-3.5" />
               <span>Add Stock</span>
             </Link>
             <button
               onClick={handleRefresh}
-              className="p-1.5 rounded-lg bg-white/15 hover:bg-white/25 text-white backdrop-blur-md transition cursor-pointer"
+              className="p-1.5 rounded-btn bg-white/15 hover:bg-white/25 text-white backdrop-blur-md transition cursor-pointer"
               title="Refresh Data"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${refreshing ? "animate-spin" : ""}`} />
@@ -129,15 +129,13 @@ export default function Dashboard() {
       </div>
 
       {/* 2. COMPACT 4-COLUMN PKR KPI CARDS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3 items-stretch">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-stretch">
         <StatCard
           title={`Total Revenue (${currency})`}
           value={`${currency} ${Number(stats.totalRevenue || 0).toLocaleString()}`}
           icon={TrendingUp}
           badgeText={`+${stats.profitMargin || "0.0"}% Margin`}
           badgeType="success"
-          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
-          iconColor="text-emerald-600 dark:text-emerald-400"
         />
 
         <StatCard
@@ -146,8 +144,6 @@ export default function Dashboard() {
           icon={TrendingDown}
           badgeText="Purchases / COGS"
           badgeType="danger"
-          iconBg="bg-rose-500/10 dark:bg-rose-950/40"
-          iconColor="text-rose-600 dark:text-rose-400"
         />
 
         <StatCard
@@ -156,8 +152,6 @@ export default function Dashboard() {
           icon={DollarSign}
           badgeText="Profitable"
           badgeType="success"
-          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
-          iconColor="text-emerald-600 dark:text-emerald-400"
         />
 
         <StatCard
@@ -166,23 +160,21 @@ export default function Dashboard() {
           icon={ShoppingCart}
           badgeText={`${stats.todayOrdersCount || 0} Bills Today`}
           badgeType="info"
-          iconBg="bg-emerald-500/10 dark:bg-emerald-950/40"
-          iconColor="text-emerald-700 dark:text-emerald-400"
         />
       </div>
 
       {/* 3. LIQUIDITY & WORKING CAPITAL STRIP */}
-      <div className="bg-theme-card border border-theme-border rounded-lg p-3 sm:p-3.5 shadow-2xs">
-        <div className="text-[10.5px] font-semibold uppercase tracking-wider text-theme-textMuted mb-2 flex items-center gap-2">
-          <Wallet className="w-3.5 h-3.5 text-emerald-700 dark:text-emerald-400" />
+      <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
+        <div className="text-[10.5px] font-semibold uppercase tracking-wider text-theme-textSecondary mb-2.5 flex items-center gap-2">
+          <Wallet className="w-3.5 h-3.5 text-theme-primary" />
           <span>Liquidity & Working Capital Strip</span>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3 divide-y sm:divide-y-0 sm:divide-x divide-theme-border">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3 divide-y sm:divide-y-0 sm:divide-x divide-theme-border">
           {/* Cash in Hand */}
           <div className="flex items-center gap-2.5 sm:px-3 py-1 sm:py-0">
-            <div className="w-7 h-7 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
-              <Wallet className="w-3.5 h-3.5" />
+            <div className="w-8 h-8 rounded-btn bg-theme-iconBg text-theme-iconColor flex items-center justify-center flex-shrink-0">
+              <Wallet className="w-4 h-4" />
             </div>
             <div>
               <p className="text-[10.5px] font-medium text-theme-textSecondary">Cash in Register</p>
@@ -194,8 +186,8 @@ export default function Dashboard() {
 
           {/* Cash in Bank / Online */}
           <div className="flex items-center gap-2.5 sm:px-3 py-1 sm:py-0">
-            <div className="w-7 h-7 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
-              <Building className="w-3.5 h-3.5" />
+            <div className="w-8 h-8 rounded-btn bg-theme-iconBg text-theme-iconColor flex items-center justify-center flex-shrink-0">
+              <Building className="w-4 h-4" />
             </div>
             <div>
               <p className="text-[10.5px] font-medium text-theme-textSecondary">Bank & Online / Card</p>
@@ -207,8 +199,8 @@ export default function Dashboard() {
 
           {/* Total Payables / Khata Due */}
           <div className="flex items-center gap-2.5 sm:px-3 py-1 sm:py-0">
-            <div className="w-7 h-7 rounded-md bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
-              <CreditCard className="w-3.5 h-3.5" />
+            <div className="w-8 h-8 rounded-btn bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center flex-shrink-0">
+              <CreditCard className="w-4 h-4" />
             </div>
             <div>
               <p className="text-[10.5px] font-medium text-theme-textSecondary">Total AR Khata / Credit Due</p>
@@ -221,9 +213,9 @@ export default function Dashboard() {
       </div>
 
       {/* 4. REVENUE TREND & ANALYTICS CHARTS (Left 65% / Right 35%) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 sm:gap-4 items-stretch">
         {/* Left Column (65%): Monthly Revenue Trend */}
-        <div className="lg:col-span-8 bg-theme-card border border-theme-border rounded-lg p-3.5 sm:p-4 shadow-2xs space-y-3">
+        <div className="lg:col-span-8 bg-theme-card border border-theme-border rounded-card p-4 sm:p-5 shadow-card space-y-3 flex flex-col justify-between min-h-[290px]">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="font-bold text-sm sm:text-base text-theme-textPrimary">Annual Revenue Trend ({new Date().getFullYear()})</h3>
@@ -231,17 +223,17 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center gap-3 text-xs font-semibold">
               <span className="flex items-center gap-1.5 text-xs text-theme-textSecondary">
-                <span className="w-2.5 h-2.5 rounded bg-emerald-600" /> Revenue
+                <span className="w-2.5 h-2.5 rounded bg-emerald-700" /> Revenue
               </span>
               <span className="flex items-center gap-1.5 text-xs text-theme-textSecondary">
-                <span className="w-2.5 h-2.5 rounded bg-emerald-400" /> Profit
+                <span className="w-2.5 h-2.5 rounded bg-emerald-500" /> Profit
               </span>
             </div>
           </div>
 
           {/* Visual Vertical Bar Chart */}
           <div className="pt-2 pb-1">
-            <div className="grid grid-cols-12 gap-1.5 sm:gap-2.5 items-end h-48 border-b border-theme-border pb-2">
+            <div className="grid grid-cols-12 gap-1.5 sm:gap-2.5 items-end h-44 border-b border-theme-border pb-2">
               {months.map((m, idx) => {
                 const rev = monthlyRevenue[idx] || 0;
                 const prof = monthlyProfit[idx] || 0;
@@ -251,7 +243,7 @@ export default function Dashboard() {
                 return (
                   <div key={idx} className="flex flex-col items-center justify-end h-full group relative">
                     {/* Tooltip on hover */}
-                    <div className="absolute bottom-full mb-2 hidden group-hover:block z-30 bg-slate-900 text-white text-[10px] p-2 rounded-lg shadow-xl whitespace-nowrap pointer-events-none">
+                    <div className="absolute bottom-full mb-2 hidden group-hover:block z-30 bg-slate-900 text-white text-[10px] p-2 rounded-btn shadow-xl whitespace-nowrap pointer-events-none">
                       <div className="font-bold">{m}</div>
                       <div>Rev: {currency} {rev.toLocaleString()}</div>
                       <div>Profit: {currency} {prof.toLocaleString()}</div>
@@ -260,16 +252,16 @@ export default function Dashboard() {
                     <div className="w-full flex items-end justify-center gap-0.5 sm:gap-1">
                       {/* Revenue Bar */}
                       <div
-                        className="w-1/2 bg-emerald-600/80 group-hover:bg-emerald-600 rounded-t transition-all duration-300"
+                        className="w-1/2 bg-[#14532D] group-hover:bg-[#104323] rounded-t transition-all duration-theme"
                         style={{ height: `${revHeight}%` }}
                       />
                       {/* Profit Bar */}
                       <div
-                        className="w-1/2 bg-emerald-400 group-hover:bg-emerald-500 rounded-t transition-all duration-300"
+                        className="w-1/2 bg-emerald-500 group-hover:bg-emerald-600 rounded-t transition-all duration-theme"
                         style={{ height: `${profHeight}%` }}
                       />
                     </div>
-                    <span className="text-[10px] font-medium text-theme-textMuted mt-1.5">{m}</span>
+                    <span className="text-[10px] font-medium text-theme-textSecondary mt-1.5">{m}</span>
                   </div>
                 );
               })}
@@ -278,38 +270,38 @@ export default function Dashboard() {
 
           {/* Bottom stats summary */}
           <div className="grid grid-cols-3 gap-2 pt-1 text-center text-xs">
-            <div className="p-2 rounded-lg bg-black/5 dark:bg-white/5">
-              <span className="text-[11px] text-theme-textMuted">Active Products</span>
+            <div className="p-2 rounded-btn bg-theme-surface">
+              <span className="text-[11px] text-theme-textSecondary">Active Products</span>
               <p className="font-bold text-xs sm:text-sm text-theme-textPrimary mt-0.5">{stats.totalStock || 0} Units</p>
             </div>
-            <div className="p-2 rounded-lg bg-black/5 dark:bg-white/5">
-              <span className="text-[11px] text-theme-textMuted">Stock Valuation</span>
+            <div className="p-2 rounded-btn bg-theme-surface">
+              <span className="text-[11px] text-theme-textSecondary">Stock Valuation</span>
               <p className="font-bold text-xs sm:text-sm text-theme-textPrimary mt-0.5">{currency} {Number(stats.remainingStockValue || 0).toLocaleString()}</p>
             </div>
-            <div className="p-2 rounded-lg bg-black/5 dark:bg-white/5">
-              <span className="text-[11px] text-theme-textMuted">Active Agents</span>
+            <div className="p-2 rounded-btn bg-theme-surface">
+              <span className="text-[11px] text-theme-textSecondary">Active Agents</span>
               <p className="font-bold text-xs sm:text-sm text-theme-textPrimary mt-0.5">{stats.activeAgents || 0} Staff</p>
             </div>
           </div>
         </div>
 
         {/* Right Column (35%): Alerts & Top Selling */}
-        <div className="lg:col-span-4 space-y-3">
+        <div className="lg:col-span-4 flex flex-col gap-3 min-h-[290px] justify-between">
           {/* Critical Stock Alerts */}
-          <div className="bg-theme-card border border-theme-border rounded-lg p-3 sm:p-3.5 shadow-2xs space-y-2">
+          <div className="bg-theme-card border border-theme-border rounded-card p-3.5 shadow-card flex-1 flex flex-col justify-between space-y-2">
             <div className="flex items-center justify-between border-b border-theme-border pb-2">
               <div className="flex items-center gap-1.5 font-bold text-xs sm:text-sm text-theme-textPrimary">
                 <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
                 <span>Critical Stock Alerts ({lowStockAlerts.length})</span>
               </div>
-              <Link to="/products?tab=stock" className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+              <Link to="/products?tab=stock" className="text-xs font-semibold text-theme-primary hover:underline">
                 Restock
               </Link>
             </div>
 
-            <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
               {lowStockAlerts.length === 0 ? (
-                <div className="py-4 text-center text-xs text-theme-textMuted">
+                <div className="py-4 text-center text-xs text-theme-textSecondary">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500 mx-auto mb-1" />
                   All products healthy! No low stock alerts.
                 </div>
@@ -317,14 +309,14 @@ export default function Dashboard() {
                 lowStockAlerts.map((it, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-2 rounded-md bg-amber-500/10 border border-amber-500/20 text-xs"
+                    className="flex items-center justify-between p-2 rounded-btn bg-amber-500/10 border border-amber-500/20 text-xs"
                   >
                     <div>
                       <p className="font-bold text-theme-textPrimary truncate max-w-[130px]">{it.itemName}</p>
-                      <p className="text-[10.5px] text-theme-textMuted">{it.brand} • Min: {it.minAlert}</p>
+                      <p className="text-[10.5px] text-theme-textSecondary">{it.brand} • Min: {it.minAlert}</p>
                     </div>
                     <div className="text-right">
-                      <span className="px-1.5 py-0.5 rounded-md bg-rose-500 text-white font-bold text-[10px]">
+                      <span className="px-1.5 py-0.5 rounded-badge bg-rose-500 text-white font-bold text-[10px]">
                         {it.remaining} left
                       </span>
                     </div>
@@ -335,37 +327,37 @@ export default function Dashboard() {
           </div>
 
           {/* Top Selling Products */}
-          <div className="bg-theme-card border border-theme-border rounded-lg p-3 sm:p-3.5 shadow-2xs space-y-2">
+          <div className="bg-theme-card border border-theme-border rounded-card p-3.5 shadow-card flex-1 flex flex-col justify-between space-y-2">
             <div className="flex items-center justify-between border-b border-theme-border pb-2">
               <h3 className="font-bold text-xs sm:text-sm text-theme-textPrimary">Top Selling Products</h3>
-              <Link to="/reports" className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+              <Link to="/reports" className="text-xs font-semibold text-theme-primary hover:underline">
                 View Reports
               </Link>
             </div>
 
-            <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
               {topSellingProducts.length === 0 ? (
-                <div className="py-5 text-center text-xs text-theme-textMuted">
+                <div className="py-4 text-center text-xs text-theme-textSecondary">
                   No sales recorded yet.
                 </div>
               ) : (
                 topSellingProducts.map((p, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 transition text-xs"
+                    className="flex items-center justify-between p-2 rounded-btn bg-theme-surface border border-theme-border text-xs"
                   >
                     <div className="flex items-center gap-2">
-                      <span className="w-4.5 h-4.5 rounded-full bg-emerald-500/10 text-emerald-600 font-bold text-[10px] flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-btn bg-[#14532D] text-white flex items-center justify-center font-bold text-[10px]">
                         {idx + 1}
-                      </span>
+                      </div>
                       <div>
-                        <p className="font-semibold text-theme-textPrimary truncate max-w-[120px]">{p.name}</p>
-                        <p className="text-[10px] text-theme-textMuted">{p.count} units sold</p>
+                        <p className="font-bold text-theme-textPrimary truncate max-w-[130px]">{p.itemName}</p>
+                        <p className="text-[10px] text-theme-textSecondary">{p.totalQty} sold</p>
                       </div>
                     </div>
-                    <span className="font-bold text-theme-textPrimary text-xs">
+                    <div className="text-right font-mono font-bold text-theme-textPrimary text-xs">
                       {currency} {Number(p.revenue || 0).toLocaleString()}
-                    </span>
+                    </div>
                   </div>
                 ))
               )}

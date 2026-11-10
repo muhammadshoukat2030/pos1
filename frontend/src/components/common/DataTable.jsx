@@ -22,7 +22,7 @@ export default function DataTable({
 
   if (!data || data.length === 0) {
     return (
-      <div className="bg-theme-card border border-theme-border rounded-lg p-12 text-center text-xs text-theme-textMuted shadow-card">
+      <div className="bg-theme-card border border-theme-border rounded-card p-12 text-center text-xs text-theme-textMuted shadow-card">
         <EmptyIcon className="w-10 h-10 mx-auto mb-2 text-theme-textMuted opacity-40" />
         <p className="font-semibold">{emptyMessage}</p>
       </div>
@@ -39,15 +39,15 @@ export default function DataTable({
   } = pagination || {};
 
   return (
-    <div className={`bg-theme-card border border-theme-border rounded-lg shadow-2xs overflow-hidden ${className}`}>
+    <div className={`bg-theme-card border border-theme-border rounded-card shadow-card overflow-hidden ${className}`}>
       <div className="overflow-x-auto">
         <table className="w-full text-left text-xs text-theme-textPrimary">
-          <thead className="bg-black/5 dark:bg-white/5 border-b border-theme-border text-[11px] font-semibold text-theme-textSecondary uppercase tracking-wider">
+          <thead className="bg-theme-tableHeader border-b border-theme-border text-[11.5px] font-semibold text-theme-textSecondary uppercase tracking-wider">
             <tr>
               {columns.map((col, idx) => (
                 <th
                   key={col.key || idx}
-                  className={`py-2 px-3 ${
+                  className={`py-2.5 px-3.5 ${
                     col.align === "right"
                       ? "text-right"
                       : col.align === "center"
@@ -64,7 +64,7 @@ export default function DataTable({
             {data.map((row, rowIdx) => (
               <tr
                 key={keyExtractor(row, rowIdx)}
-                className="hover:bg-emerald-500/[0.04] dark:hover:bg-emerald-500/[0.06] transition duration-150"
+                className="hover:bg-theme-tableHover transition-colors duration-theme"
               >
                 {columns.map((col, colIdx) => (
                   <td
@@ -88,7 +88,7 @@ export default function DataTable({
 
       {/* Pagination Footer */}
       {pagination && (
-        <div className="px-3 py-2 border-t border-theme-border flex flex-col sm:flex-row items-center justify-between gap-2 text-xs bg-black/[0.02] dark:bg-white/[0.02]">
+        <div className="px-3.5 py-2.5 border-t border-theme-border flex flex-col sm:flex-row items-center justify-between gap-2 text-xs bg-theme-surface">
           <div className="flex items-center gap-3 text-theme-textSecondary">
             <span>
               Showing <strong className="text-theme-textPrimary">{totalItems === 0 ? 0 : (currentPage - 1) * pageSize + 1}</strong> to{" "}
@@ -98,11 +98,11 @@ export default function DataTable({
 
             {onPageSizeChange && (
               <div className="flex items-center gap-1.5 ml-2">
-                <span className="text-slate-400">Rows:</span>
+                <span className="text-theme-textSecondary">Rows:</span>
                 <select
                   value={pageSize}
                   onChange={(e) => onPageSizeChange(Number(e.target.value))}
-                  className="bg-theme-card border border-theme-border rounded-lg px-2 py-1 text-xs font-semibold text-theme-textPrimary focus:outline-none"
+                  className="bg-theme-card border border-theme-border rounded-btn px-2 py-1 text-xs font-semibold text-theme-textPrimary focus:outline-none"
                 >
                   <option value={25}>25</option>
                   <option value={50}>50</option>
@@ -117,7 +117,7 @@ export default function DataTable({
               type="button"
               onClick={() => onPageChange?.(currentPage - 1)}
               disabled={currentPage <= 1}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none font-semibold transition"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-btn border border-theme-border bg-theme-card hover:bg-theme-surface disabled:opacity-40 disabled:pointer-events-none font-semibold transition"
             >
               <ChevronLeft className="w-3.5 h-3.5" /> Previous
             </button>
@@ -130,7 +130,7 @@ export default function DataTable({
               type="button"
               onClick={() => onPageChange?.(currentPage + 1)}
               disabled={currentPage >= totalPages}
-              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg border border-theme-border bg-theme-card hover:bg-black/5 dark:hover:bg-white/5 disabled:opacity-40 disabled:pointer-events-none font-semibold transition"
+              className="inline-flex items-center gap-1 px-3 py-1.5 rounded-btn border border-theme-border bg-theme-card hover:bg-theme-surface disabled:opacity-40 disabled:pointer-events-none font-semibold transition"
             >
               Next <ChevronRight className="w-3.5 h-3.5" />
             </button>

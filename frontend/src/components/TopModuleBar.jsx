@@ -93,13 +93,13 @@ export default function TopModuleBar({ isCollapsed, setIsCollapsed, setIsMobileO
             <Link
               key={idx}
               to={m.path}
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-btn text-xs font-medium whitespace-nowrap transition-all duration-theme ${
                 active
-                  ? "bg-emerald-50 dark:bg-[#133b2a] text-emerald-800 dark:text-emerald-300 font-semibold border border-emerald-300/60 dark:border-emerald-700/50 shadow-2xs"
-                  : "text-theme-textSecondary hover:bg-emerald-50/60 dark:hover:bg-emerald-950/20 hover:text-emerald-800 dark:hover:text-emerald-300 border border-transparent"
+                  ? "bg-[#14532D] text-white font-semibold shadow-xs"
+                  : "text-theme-textSecondary hover:bg-theme-surface hover:text-theme-textPrimary border border-transparent"
               }`}
             >
-              <m.icon className={`w-3.5 h-3.5 ${active ? "text-emerald-700 dark:text-emerald-400" : "text-theme-textMuted"}`} />
+              <m.icon className={`w-3.5 h-3.5 ${active ? "text-white" : "text-theme-textSecondary"}`} />
               <span>{m.label}</span>
             </Link>
           );
@@ -109,8 +109,8 @@ export default function TopModuleBar({ isCollapsed, setIsCollapsed, setIsMobileO
       {/* Right: Live Clock, Theme Toggle & User Badge */}
       <div className="flex items-center gap-2 flex-shrink-0">
         {/* Live Clock */}
-        <div className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-theme-textMuted bg-black/5 dark:bg-white/5 px-2.5 py-1 rounded-lg">
-          <Clock className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+        <div className="hidden sm:flex items-center gap-1.5 text-xs font-medium text-theme-textSecondary bg-theme-surface border border-theme-border px-2.5 py-1 rounded-btn">
+          <Clock className="w-3.5 h-3.5 text-theme-primary" />
           <span>{currentTime}</span>
         </div>
 
@@ -118,21 +118,21 @@ export default function TopModuleBar({ isCollapsed, setIsCollapsed, setIsMobileO
         <button
           type="button"
           onClick={toggleTheme}
-          className="p-1.5 rounded-lg border border-theme-border hover:bg-black/5 dark:hover:bg-white/10 text-theme-textSecondary transition cursor-pointer"
+          className="p-1.5 rounded-btn bg-theme-surface border border-theme-border hover:bg-theme-card text-theme-textSecondary transition cursor-pointer"
           title={theme === "dark" ? "Switch to Light Mode" : "Switch to Dark Mode"}
           aria-label="Toggle Theme"
         >
           {theme === "dark" ? (
             <Sun className="w-4 h-4 text-amber-400" />
           ) : (
-            <Moon className="w-4 h-4 text-indigo-500" />
+            <Moon className="w-4 h-4 text-indigo-400" />
           )}
         </button>
 
         {/* User Badge */}
         {user && (
-          <div className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20">
-            <div className="w-5 h-5 rounded-md bg-emerald-700 text-white flex items-center justify-center text-[10px] font-bold">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-btn bg-theme-iconBg text-theme-iconColor border border-theme-border">
+            <div className="w-5 h-5 rounded-md bg-[#14532D] text-white flex items-center justify-center text-[10px] font-bold">
               {user.username?.charAt(0).toUpperCase()}
             </div>
             <span className="text-xs font-semibold capitalize max-w-[70px] sm:max-w-[110px] truncate">

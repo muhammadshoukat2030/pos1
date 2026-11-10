@@ -199,8 +199,8 @@ export default function CategoryManagement() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-4 border-b border-theme-border">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-            <FolderTree className="w-6 h-6" />
+          <div className="w-10 h-10 rounded-btn bg-theme-iconBg text-theme-iconColor border border-theme-border flex items-center justify-center">
+            <FolderTree className="w-5 h-5" />
           </div>
           <div>
             <h1 className="text-xl sm:text-2xl font-black tracking-tight">Category Management</h1>
@@ -214,7 +214,7 @@ export default function CategoryManagement() {
           <button
             onClick={fetchCategories}
             disabled={loading}
-            className="p-2.5 rounded-xl border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted transition"
+            className="p-2.5 rounded-btn border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted transition"
             title="Refresh Categories"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
@@ -223,7 +223,7 @@ export default function CategoryManagement() {
           {isAdminOrManager && (
             <button
               onClick={handleOpenAdd}
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-theme-primary hover:bg-theme-primaryHover text-white font-bold text-sm shadow-md transition transform active:scale-95"
+              className="flex items-center gap-2 px-4 py-2.5 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-bold text-sm shadow-card transition transform active:scale-95"
             >
               <Plus className="w-4 h-4" />
               <span>Add Category</span>
@@ -234,16 +234,16 @@ export default function CategoryManagement() {
 
       {/* KPI Stats Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Total Categories</span>
-            <FolderTree className="w-5 h-5 text-indigo-500" />
+            <FolderTree className="w-5 h-5 text-theme-primary" />
           </div>
           <div className="text-2xl font-black mt-2">{stats.total}</div>
           <div className="text-[11px] text-theme-textMuted mt-1">Supermarket departments</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Active Categories</span>
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
@@ -252,7 +252,7 @@ export default function CategoryManagement() {
           <div className="text-[11px] text-theme-textMuted mt-1">Visible on POS Terminal</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Categorized Products</span>
             <Package className="w-5 h-5 text-emerald-500" />
@@ -263,7 +263,7 @@ export default function CategoryManagement() {
           <div className="text-[11px] text-theme-textMuted mt-1">Total items classified</div>
         </div>
 
-        <div className="bg-theme-card border border-theme-border rounded-lg p-4 shadow-card">
+        <div className="bg-theme-card border border-theme-border rounded-card p-4 shadow-card">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold uppercase tracking-wider text-theme-textMuted">Top Category</span>
             <Layers className="w-5 h-5 text-amber-500" />
@@ -278,19 +278,19 @@ export default function CategoryManagement() {
       </div>
 
       {/* Search Bar */}
-      <div className="bg-theme-card border border-theme-border rounded-lg p-3 shadow-card flex items-center gap-3">
+      <div className="bg-theme-card border border-theme-border rounded-card p-3 shadow-card flex items-center gap-3">
         <Search className="w-4 h-4 text-theme-textMuted ml-1 flex-shrink-0" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search categories by name or description..."
-          className="bg-transparent w-full text-sm font-medium focus:outline-none placeholder:text-theme-textMuted"
+          className="bg-transparent w-full text-sm font-medium focus:outline-none placeholder:text-theme-placeholder"
         />
         {searchQuery && (
           <button
             onClick={() => setSearchQuery("")}
-            className="text-xs font-semibold px-2 py-1 rounded bg-black/5 dark:bg-white/10 hover:bg-black/10 transition"
+            className="text-xs font-semibold px-2 py-1 rounded-btn bg-black/5 dark:bg-white/10 hover:bg-black/10 transition"
           >
             Clear
           </button>
@@ -298,10 +298,10 @@ export default function CategoryManagement() {
       </div>
 
       {/* Categories Table */}
-      <div className="bg-theme-card border border-theme-border rounded-lg shadow-card overflow-hidden">
+      <div className="bg-theme-card border border-theme-border rounded-card shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
-            <thead className="bg-black/5 dark:bg-white/5 border-b border-theme-border text-xs uppercase font-extrabold text-theme-textMuted">
+            <thead className="bg-theme-tableHeader border-b border-theme-border text-xs uppercase font-extrabold text-theme-textMuted">
               <tr>
                 <th className="py-3.5 px-4">Category Name</th>
                 <th className="py-3.5 px-4">Color & Badge</th>
@@ -335,10 +335,10 @@ export default function CategoryManagement() {
                 </tr>
               ) : (
                 filteredCategories.map((c) => (
-                  <tr key={c._id} className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition">
+                  <tr key={c._id} className="hover:bg-theme-tableHover transition">
                     <td className="py-3.5 px-4 font-bold text-theme-textPrimary flex items-center gap-2.5">
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-extrabold text-xs shadow-sm"
+                        className="w-8 h-8 rounded-btn flex items-center justify-center text-white font-extrabold text-xs shadow-xs"
                         style={{ backgroundColor: c.color || "#0d9488" }}
                       >
                         <Tag className="w-4 h-4" />
@@ -346,7 +346,7 @@ export default function CategoryManagement() {
                       <span>{c.name}</span>
                     </td>
                     <td className="py-3.5 px-4 text-theme-textSecondary">
-                      <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-black/5 dark:bg-white/5 border border-theme-border text-xs font-mono font-bold">
+                      <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-badge bg-black/5 dark:bg-white/5 border border-theme-border text-xs font-mono font-bold">
                         <span
                           className="w-3 h-3 rounded-full flex-shrink-0"
                           style={{ backgroundColor: c.color || "#0d9488" }}
@@ -359,7 +359,7 @@ export default function CategoryManagement() {
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       <span
-                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold ${
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-badge text-xs font-bold ${
                           c.productCount > 0
                             ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
                             : "bg-slate-500/10 text-slate-500 border border-slate-500/20"
@@ -371,11 +371,11 @@ export default function CategoryManagement() {
                     </td>
                     <td className="py-3.5 px-4 text-center">
                       {c.isActive !== false ? (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-2 py-0.5 rounded-badge">
                           <CheckCircle2 className="w-3 h-3" /> Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-500 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded-full">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-bold text-rose-500 bg-rose-500/10 border border-rose-500/20 px-2 py-0.5 rounded-badge">
                           <XCircle className="w-3 h-3" /> Inactive
                         </span>
                       )}
@@ -385,14 +385,14 @@ export default function CategoryManagement() {
                         <div className="flex items-center justify-end gap-1.5">
                           <button
                             onClick={() => handleOpenEdit(c)}
-                            className="p-1.5 rounded-lg border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted hover:text-theme-primary transition"
+                            className="p-1.5 rounded-btn border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 text-theme-textMuted hover:text-theme-primary transition"
                             title="Edit Category"
                           >
                             <Edit2 className="w-3.5 h-3.5" />
                           </button>
                           <button
                             onClick={() => setCategoryToDelete(c)}
-                            className={`p-1.5 rounded-lg border border-theme-border hover:bg-rose-500/10 text-theme-textMuted hover:text-rose-600 transition ${
+                            className={`p-1.5 rounded-btn border border-theme-border hover:bg-rose-500/10 text-theme-textMuted hover:text-rose-600 transition ${
                               c.productCount > 0 ? "opacity-60 cursor-pointer" : ""
                             }`}
                             title={
@@ -417,7 +417,7 @@ export default function CategoryManagement() {
       {/* Add / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="bg-theme-card border border-theme-border rounded-lg shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
+          <div className="bg-theme-card border border-theme-border rounded-card shadow-2xl max-w-md w-full p-6 text-theme-textPrimary space-y-4">
             <div className="flex items-center justify-between pb-3 border-b border-theme-border">
               <div className="flex items-center gap-2 font-bold text-base">
                 <FolderTree className="w-5 h-5 text-theme-primary" />
@@ -425,7 +425,7 @@ export default function CategoryManagement() {
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="text-theme-textMuted hover:text-theme-textPrimary p-1 rounded-lg"
+                className="text-theme-textMuted hover:text-theme-textPrimary p-1 rounded-btn"
               >
                 ✕
               </button>
@@ -442,7 +442,7 @@ export default function CategoryManagement() {
                   value={categoryForm.name}
                   onChange={(e) => setCategoryForm({ ...categoryForm, name: e.target.value })}
                   placeholder="e.g. Beverages, Dairy, Grocery, Snacks"
-                  className="w-full px-3 py-2 rounded-xl bg-black/5 dark:bg-white/5 border border-theme-border focus:ring-2 focus:ring-theme-primary focus:outline-none text-sm font-bold text-theme-textPrimary"
+                  className="w-full px-3 py-2 rounded-input bg-theme-inputBg border border-theme-inputBorder focus:ring-1 focus:ring-theme-primary focus:outline-none text-sm font-bold text-theme-textPrimary placeholder:text-theme-placeholder"
                 />
               </div>
 
@@ -455,7 +455,7 @@ export default function CategoryManagement() {
                   value={categoryForm.description}
                   onChange={(e) => setCategoryForm({ ...categoryForm, description: e.target.value })}
                   placeholder="Short note about items in this department..."
-                  className="w-full px-3 py-2 rounded-xl bg-black/5 dark:bg-white/5 border border-theme-border focus:ring-2 focus:ring-theme-primary focus:outline-none text-xs font-medium text-theme-textPrimary"
+                  className="w-full px-3 py-2 rounded-input bg-theme-inputBg border border-theme-inputBorder focus:ring-1 focus:ring-theme-primary focus:outline-none text-xs font-medium text-theme-textPrimary placeholder:text-theme-placeholder"
                 />
               </div>
 
@@ -471,7 +471,7 @@ export default function CategoryManagement() {
                       key={hex}
                       type="button"
                       onClick={() => setCategoryForm({ ...categoryForm, color: hex })}
-                      className={`w-7 h-7 rounded-xl transition transform hover:scale-110 flex items-center justify-center ${
+                      className={`w-7 h-7 rounded-btn transition transform hover:scale-110 flex items-center justify-center ${
                         categoryForm.color === hex ? "ring-2 ring-offset-2 ring-theme-primary scale-110" : ""
                       }`}
                       style={{ backgroundColor: hex }}
@@ -483,7 +483,7 @@ export default function CategoryManagement() {
                     type="color"
                     value={categoryForm.color}
                     onChange={(e) => setCategoryForm({ ...categoryForm, color: e.target.value })}
-                    className="w-7 h-7 rounded-xl border-0 cursor-pointer p-0 bg-transparent"
+                    className="w-7 h-7 rounded-btn border-0 cursor-pointer p-0 bg-transparent"
                     title="Custom color"
                   />
                 </div>
@@ -503,7 +503,7 @@ export default function CategoryManagement() {
               </div>
 
               {modalMode === "edit" && editingCategory?.productCount > 0 && (
-                <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs flex items-start gap-2">
+                <div className="p-3 rounded-btn bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs flex items-start gap-2">
                   <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
                   <span>
                     Changing this category name will automatically update all <strong>{editingCategory.productCount}</strong> linked product(s).
@@ -516,14 +516,14 @@ export default function CategoryManagement() {
                   type="button"
                   onClick={() => setIsModalOpen(false)}
                   disabled={submitting}
-                  className="px-4 py-2 rounded-xl border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 font-bold transition"
+                  className="px-4 py-2 rounded-btn border border-theme-border hover:bg-black/5 dark:hover:bg-white/5 font-bold transition"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 rounded-xl bg-theme-primary hover:bg-theme-primaryHover text-white font-bold shadow-md transition disabled:opacity-50"
+                  className="px-4 py-2 rounded-btn bg-[#14532D] hover:bg-[#104323] text-white font-bold shadow-card transition disabled:opacity-50"
                 >
                   {submitting ? "Saving..." : modalMode === "add" ? "Create Category" : "Save Changes"}
                 </button>
