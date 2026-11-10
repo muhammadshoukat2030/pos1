@@ -33,6 +33,7 @@ import { useToast } from "../context/ToastContext";
 import { useAuth } from "../context/AuthContext";
 import Receipt80mm from "../components/Receipt80mm";
 import CustomerKhataProfileModal from "../components/CustomerKhataProfileModal";
+import { ColorSwatchBadge, getColorHex, getDisplayColorCode, isSampleColorCode } from "../utils/colorSwatches";
 
 // Helper to extract product name and variant/size cleanly for the POS Cart display
 const parseCartItemDetails = (item) => {
@@ -190,7 +191,10 @@ export default function PosTerminal() {
         (p) =>
           p.itemName?.toLowerCase().includes(q) ||
           p.barcode?.toLowerCase().includes(q) ||
-          p.brandName?.toLowerCase().includes(q)
+          p.brandName?.toLowerCase().includes(q) ||
+          p.colorCode?.toLowerCase().includes(q) ||
+          p.colourName?.toLowerCase().includes(q) ||
+          p.shadeNumber?.toLowerCase().includes(q)
       );
     }
     return result;
@@ -207,13 +211,16 @@ export default function PosTerminal() {
       return;
     }
     const q = val.toLowerCase().trim();
-    // Fast match on barcode, SKU, packaging unit barcode, or name
+    // Fast match on barcode, SKU, packaging unit barcode, name, colour code or shade
     const matches = products.filter(
       (p) =>
         p.barcode?.toLowerCase() === q ||
         p.stockID?.toLowerCase() === q ||
         p.sku?.toLowerCase() === q ||
         p.itemName?.toLowerCase().includes(q) ||
+        p.colorCode?.toLowerCase().includes(q) ||
+        p.colourName?.toLowerCase().includes(q) ||
+        p.shadeNumber?.toLowerCase().includes(q) ||
         p.packagingUnits?.some((u) => u.barcode && u.barcode.toLowerCase() === q)
     );
     setSearchResults(matches.slice(0, 8));
@@ -278,6 +285,15 @@ export default function PosTerminal() {
       // 2. First search result if open
       if (!prod && searchResults.length > 0) {
         prod = searchResults[0];
+      }
+      // 2b. Match SKU or Colour Code or Shade Number
+      if (!prod) {
+        prod = products.find(
+          (p) =>
+            (p.sku && p.sku.toLowerCase() === clean) ||
+            (p.colorCode && p.colorCode.toLowerCase().includes(clean)) ||
+            (p.shadeNumber && p.shadeNumber.toLowerCase() === clean)
+        );
       }
       // 3. Fallback to name match
       if (!prod) {
@@ -374,7 +390,14 @@ export default function PosTerminal() {
             brandName: product.brandName || "General",
             category: product.category || "General",
             variant: product.variant || product.colourName || product.qty || "",
-            size: product.size || "",
+            size: product.size || product.paintSize || "",
+            colourName: product.colourName || "",
+            colorCode: product.colorCode || "",
+            shadeNumber: product.shadeNumber || "",
+            colorHex: product.colorHex || "",
+            paintSize: product.paintSize || "",
+            finish: product.finish || "",
+            isPaint: Boolean(product.isPaint || product.colourName || product.colorCode),
             baseUnit: product.unit || "pcs",
             unit: activeUnit,
             conversionFactor: activeFactor,
@@ -933,17 +956,27 @@ export default function PosTerminal() {
                     className="w-full px-3.5 py-2 text-left hover:bg-theme-primary/10 flex items-center justify-between border-b border-theme-border last:border-b-0 transition cursor-pointer"
                   >
                     <div className="flex-1 pr-3">
-                      <div className="font-bold text-xs sm:text-sm text-theme-textPrimary leading-snug break-words">
-                        {p.itemName}
+                      <div className="font-bold text-xs sm:text-sm text-theme-textPrimary leading-snug break-words flex items-center gap-1.5 flex-wrap">
+                        <span>{p.itemName}</span>
+                        {(p.colourName || p.colorCode) && (
+                          <ColorSwatchBadge product={p} size="sm" />
+                        )}
                       </div>
-                      <div className="text-[11px] text-theme-textMuted flex items-center gap-2 mt-0.5">
+                      <div className="text-[11px] text-theme-textMuted flex items-center gap-2 mt-0.5 flex-wrap">
                         <span>Barcode: {p.barcode || p.stockID}</span>
+                        {p.sku && p.sku !== p.barcode && <span>• SKU: {p.sku}</span>}
                         <span>•</span>
                         <span>Stock: <strong className="text-theme-textPrimary font-mono">{p.remaining} {p.unit || 'pcs'}</strong></span>
                         {p.category && (
                           <>
                             <span>•</span>
                             <span className="text-[10px] px-1 py-0.2 rounded bg-black/5 dark:bg-white/5">{p.category}</span>
+                          </>
+                        )}
+                        {p.paintSize && (
+                          <>
+                            <span>•</span>
+                            <span className="text-[10px] px-1 py-0.2 rounded bg-amber-500/10 text-amber-800 dark:text-amber-300 font-semibold">{p.paintSize}</span>
                           </>
                         )}
                       </div>
@@ -1094,16 +1127,26 @@ export default function PosTerminal() {
                           )}
                         </div>
 
-                        {/* 2. Selling Price Directly Below Image (8px, normal weight 400) */}
+                        {/* 2. Selling Price & Colour Code Swatch Directly Below Image */}
                         <div className="flex items-center justify-between gap-1 leading-none mt-1">
-                          <span className="text-[8px] font-normal text-emerald-600 dark:text-emerald-400 tracking-tight">
+                          <span className="text-[8px] font-bold text-emerald-600 dark:text-emerald-400 tracking-tight">
                             {currency} {(p.salePrice || p.rate || 0).toLocaleString()}
                           </span>
-                          {p.packagingUnits?.length > 0 && (
+                          {(p.colourName || p.colorCode) ? (
+                            <span className="inline-flex items-center gap-0.5 max-w-[55px] truncate" title={`${p.colourName || "Colour"} (${getDisplayColorCode(p.colorCode) || "No code"})`}>
+                              <span
+                                className="w-2 h-2 rounded-full border border-black/30 flex-shrink-0"
+                                style={{ backgroundColor: getColorHex(p) }}
+                              />
+                              <span className="text-[6.5px] font-mono font-bold text-slate-700 dark:text-slate-300 truncate">
+                                {getDisplayColorCode(p.colorCode) || p.colourName}
+                              </span>
+                            </span>
+                          ) : p.packagingUnits?.length > 0 ? (
                             <span className="text-[6.5px] px-1 py-0.2 rounded font-normal bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200/50 whitespace-nowrap">
                               +{p.packagingUnits.length}u
                             </span>
-                          )}
+                          ) : null}
                         </div>
 
                         {/* 3. Product Name (improved visibility, 8.5px, normal weight 400) */}
@@ -1282,14 +1325,36 @@ export default function PosTerminal() {
                                 {details.name || item.itemName}
                               </div>
 
-                              {/* Line 2: Variant / Size, Unit, Barcode */}
+                              {/* Line 2: Variant / Size, Colour Swatch & Code, Unit, Barcode */}
                               <div className="flex items-center flex-wrap gap-x-1.5 gap-y-0.5 text-[9px] text-slate-600 dark:text-slate-300 mt-0.5 leading-none font-mono">
-                                {details.variant && (
-                                  <span className="text-slate-800 dark:text-slate-200 font-normal">
-                                    {details.variant}
-                                  </span>
+                                {(item.colourName || item.colorCode) && (
+                                  <>
+                                    <span className="inline-flex items-center gap-1">
+                                      <span
+                                        className="w-2 h-2 rounded-full border border-black/30 flex-shrink-0"
+                                        style={{ backgroundColor: getColorHex(item) }}
+                                      />
+                                      <span className="font-semibold text-slate-800 dark:text-slate-200">
+                                        {item.colourName || item.colorCode}
+                                      </span>
+                                      {item.colorCode && (
+                                        <span className="font-mono text-[8px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-500/10 px-1 py-0.2 rounded">
+                                          {getDisplayColorCode(item.colorCode)}
+                                        </span>
+                                      )}
+                                    </span>
+                                    <span className="text-slate-400 dark:text-slate-500 font-sans text-[8px]">•</span>
+                                  </>
                                 )}
-                                {details.variant && <span className="text-slate-400 dark:text-slate-500 font-sans text-[8px]">•</span>}
+
+                                {details.variant && details.variant !== item.colourName && (
+                                  <>
+                                    <span className="text-slate-800 dark:text-slate-200 font-normal">
+                                      {details.variant}
+                                    </span>
+                                    <span className="text-slate-400 dark:text-slate-500 font-sans text-[8px]">•</span>
+                                  </>
+                                )}
 
                                 {/* Unit / Packaging switcher */}
                                 {item.packagingUnits && item.packagingUnits.length > 0 ? (

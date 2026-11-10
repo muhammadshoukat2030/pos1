@@ -92,8 +92,8 @@ const storeSettingsSchema = new mongoose.Schema(
     },
     activeTheme: {
       type: String,
-      enum: ["bizcare-teal", "eproduct-blue", "ixershop-navy", "slate-dark"],
-      default: "bizcare-teal"
+      enum: ["light", "dark", "theme-light", "theme-dark", "bizcare-teal", "eproduct-blue", "ixershop-navy", "slate-dark"],
+      default: "light"
     },
     backupSettings: {
       autoBackupEnabled: { type: Boolean, default: false },

@@ -30,7 +30,7 @@ const productBatchSchema = new mongoose.Schema(
     },
     expiryDate: {
       type: Date,
-      required: true,
+      default: null,
       index: true
     },
     costPrice: {
@@ -104,15 +104,26 @@ productBatchSchema.statics.allocateFEFO = async function (productId, requestedQt
     productId,
     quantityRemaining: { $gt: 0 },
     status: "Active",
-    expiryDate: { $gt: now } // Strictly filter out expired batches
+    $or: [
+      { expiryDate: { $gt: now } },
+      { expiryDate: null }
+    ]
   };
 
   if (branchId) {
-    query.$or = [{ branchId }, { branchId: null }];
+    query.$and = [{ $or: [{ branchId }, { branchId: null }] }];
   }
 
-  // Sort by expiryDate ASCENDING (Earliest expiry first)
-  const eligibleBatches = await this.find(query).sort({ expiryDate: 1 });
+  // Fetch and sort: Earliest expiring batches first; non-expiring batches FIFO
+  const eligibleBatches = await this.find(query);
+  eligibleBatches.sort((a, b) => {
+    if (a.expiryDate && b.expiryDate) {
+      return new Date(a.expiryDate) - new Date(b.expiryDate);
+    }
+    if (a.expiryDate && !b.expiryDate) return -1;
+    if (!a.expiryDate && b.expiryDate) return 1;
+    return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+  });
 
   const totalAvailable = eligibleBatches.reduce((acc, b) => acc + (b.quantityRemaining || 0), 0);
 

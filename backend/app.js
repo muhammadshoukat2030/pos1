@@ -27,6 +27,7 @@ import branchesApi from "./routes/api/branchesApi.js";
 import batchesApi from "./routes/api/batchesApi.js";
 import brandsApi from "./routes/api/brandsApi.js";
 import categoriesApi from "./routes/api/categoriesApi.js";
+import purchasesApi from "./routes/api/purchasesApi.js";
 
 // Automated Services
 import { initBackupScheduler } from "./services/backupScheduler.js";
@@ -140,6 +141,7 @@ app.use("/api/branches", branchesApi);
 app.use("/api/batches", batchesApi);
 app.use("/api/brands", brandsApi);
 app.use("/api/categories", categoriesApi);
+app.use("/api/purchases", purchasesApi);
 
 // =======================================================
 // 🖥️ REACT SPA CLIENT SERVING (Production & Built Dist)

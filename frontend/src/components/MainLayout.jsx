@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router-dom";
+import { Menu } from "lucide-react";
 import Sidebar from "./Sidebar";
-import TopModuleBar from "./TopModuleBar";
 
 export default function MainLayout() {
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -41,18 +41,22 @@ export default function MainLayout() {
         setIsMobileOpen={setIsMobileOpen}
       />
 
-      {/* Main Content Area */}
+      {/* Mobile Drawer Trigger (floating so mobile devices can open sidebar without a top bar) */}
+      <button
+        type="button"
+        onClick={() => setIsMobileOpen(true)}
+        className="lg:hidden fixed bottom-4 right-4 z-40 w-11 h-11 rounded-full bg-[#14532D] text-white shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#104323] transition-transform active:scale-95"
+        aria-label="Open Navigation Menu"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
+      {/* Main Content Area - Full Vertical Space Without Top Bar */}
       <div
         className={`flex-1 flex flex-col transition-all duration-theme ease-in-out ${
           isCollapsed ? "lg:ml-[80px]" : "lg:ml-[234px]"
         }`}
       >
-        <TopModuleBar
-          isCollapsed={isCollapsed}
-          setIsCollapsed={setIsCollapsed}
-          setIsMobileOpen={setIsMobileOpen}
-        />
-
         <main className="flex-1 p-3 sm:p-5 max-w-full overflow-x-hidden">
           <Outlet />
         </main>

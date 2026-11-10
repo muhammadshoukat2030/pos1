@@ -7,6 +7,11 @@ const supplierSchema = new mongoose.Schema(
       required: true,
       trim: true
     },
+    supplierCode: {
+      type: String,
+      trim: true,
+      default: ""
+    },
     companyName: {
       type: String,
       trim: true,
@@ -32,6 +37,10 @@ const supplierSchema = new mongoose.Schema(
       default: 0 // positive = store owes supplier (Accounts Payable)
     },
     totalPurchases: {
+      type: Number,
+      default: 0
+    },
+    totalPaid: {
       type: Number,
       default: 0
     },

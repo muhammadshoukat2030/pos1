@@ -20,9 +20,15 @@ const productSchema = new mongoose.Schema({
     default: "General",
     trim: true
   },
+  subcategory: {
+    type: String,
+    trim: true,
+    default: ""
+  },
   brandName: {
     type: String,
-    trim: true
+    trim: true,
+    index: true
   },
   brand: {
     type: String,
@@ -110,6 +116,72 @@ const productSchema = new mongoose.Schema({
     type: String,
     trim: true
   },
+  supplierId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Supplier",
+    default: null,
+    index: true
+  },
+  supplierName: {
+    type: String,
+    trim: true,
+    default: "",
+    index: true
+  },
+  lastPurchaseDate: {
+    type: Date,
+    default: null
+  },
+  lastPurchasePrice: {
+    type: Number,
+    default: 0
+  },
+  lastInvoiceNumber: {
+    type: String,
+    trim: true,
+    default: ""
+  },
+  // Paint Specialty Attributes
+  isPaint: {
+    type: Boolean,
+    default: false,
+    index: true
+  },
+  paintType: {
+    type: String,
+    trim: true,
+    default: ""
+  },
+  colorCode: {
+    type: String,
+    trim: true,
+    default: ""
+  },
+  shadeNumber: {
+    type: String,
+    trim: true,
+    default: ""
+  },
+  paintSize: {
+    type: String,
+    trim: true,
+    default: ""
+  },
+  finish: {
+    type: String,
+    trim: true,
+    default: ""
+  },
+  customColorInfo: {
+    type: String,
+    trim: true,
+    default: ""
+  },
+  colorHex: {
+    type: String,
+    trim: true,
+    default: ""
+  },
   refundQuantity: {
     type: Number,
     default: 0
@@ -119,6 +191,13 @@ const productSchema = new mongoose.Schema({
     default: "none"
   }
 }, { timestamps: true });
+
+// Virtual for availableStock (aliases remaining)
+productSchema.virtual("availableStock").get(function () {
+  return this.remaining !== undefined ? this.remaining : (this.totalProduct || 0);
+});
+productSchema.set("toJSON", { virtuals: true });
+productSchema.set("toObject", { virtuals: true });
 
 // Pre-save hook to synchronize rate & salePrice, and brandName & brand
 productSchema.pre("save", function (next) {

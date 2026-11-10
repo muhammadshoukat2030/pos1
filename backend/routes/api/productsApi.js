@@ -8,6 +8,11 @@ import ItemDefinition from "../../models/ItemDefinition.js";
 import StockAudit from "../../models/StockAudit.js";
 import Brand from "../../models/Brand.js";
 import Category from "../../models/Category.js";
+import Supplier from "../../models/Supplier.js";
+import Purchase from "../../models/Purchase.js";
+import ProductBatch from "../../models/ProductBatch.js";
+import LedgerTransaction from "../../models/LedgerTransaction.js";
+import Sale from "../../models/Sale.js";
 import { isLoggedIn } from "../../middleware/isLoggedIn.js";
 import { allowRoles } from "../../middleware/allowRoles.js";
 
@@ -45,9 +50,30 @@ const upload = multer({
 // GET /api/products
 router.get("/", isLoggedIn, async (req, res) => {
   try {
-    const { search, category, brand, stockStatus, lowStock, expiringSoon, limit, page, all } = req.query;
+    const {
+      search,
+      category,
+      brand,
+      supplier,
+      stockStatus,
+      lowStock,
+      expiringSoon,
+      minPrice,
+      maxPrice,
+      minCost,
+      maxCost,
+      from,
+      to,
+      sortBy = "createdAt",
+      sortOrder = "desc",
+      limit,
+      page,
+      all,
+      isAll: isAllParam
+    } = req.query;
 
     let query = {};
+    const now = new Date();
 
     if (search && search.trim() !== "") {
       const regex = new RegExp(escapeRegExp(search.trim()), "i");
@@ -57,6 +83,11 @@ router.get("/", isLoggedIn, async (req, res) => {
         { sku: regex },
         { brandName: regex },
         { category: regex },
+        { subcategory: regex },
+        { supplierName: regex },
+        { colourName: regex },
+        { colorCode: regex },
+        { shadeNumber: regex },
         { "packagingUnits.barcode": regex }
       ];
     }
@@ -69,23 +100,59 @@ router.get("/", isLoggedIn, async (req, res) => {
       query.brandName = new RegExp(`^${escapeRegExp(brand)}$`, "i");
     }
 
+    if (supplier && supplier !== "all" && supplier !== "All") {
+      if (supplier.match(/^[0-9a-fA-F]{24}$/)) {
+        query.supplierId = supplier;
+      } else {
+        query.supplierName = new RegExp(escapeRegExp(supplier), "i");
+      }
+    }
+
     if (stockStatus === "in") {
       query.remaining = { $gt: 0 };
     } else if (stockStatus === "out") {
       query.remaining = { $lte: 0 };
-    }
-
-    if (lowStock === "true") {
+    } else if (stockStatus === "low" || lowStock === "true") {
       query.$expr = { $lte: ["$remaining", { $ifNull: ["$minStockAlert", 5] }] };
+    } else if (stockStatus === "expired") {
+      query.expiryDate = { $lte: now, $ne: null };
+    } else if (stockStatus === "nearExpiry" || expiringSoon === "true") {
+      const thirtyDays = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+      query.expiryDate = { $gt: now, $lte: thirtyDays };
     }
 
-    if (expiringSoon === "true") {
-      const thirtyDays = new Date();
-      thirtyDays.setDate(thirtyDays.getDate() + 30);
-      query.expiryDate = { $lte: thirtyDays, $gte: new Date() };
+    if (minPrice || maxPrice) {
+      query.salePrice = {};
+      if (minPrice) query.salePrice.$gte = parseFloat(minPrice);
+      if (maxPrice) query.salePrice.$lte = parseFloat(maxPrice);
     }
 
-    const isAll = all === "true" || all === true;
+    if (minCost || maxCost) {
+      query.costPrice = {};
+      if (minCost) query.costPrice.$gte = parseFloat(minCost);
+      if (maxCost) query.costPrice.$lte = parseFloat(maxCost);
+    }
+
+    if (from || to) {
+      query.createdAt = {};
+      if (from) query.createdAt.$gte = new Date(from);
+      if (to) {
+        const toD = new Date(to);
+        toD.setHours(23, 59, 59, 999);
+        query.createdAt.$lte = toD;
+      }
+    }
+
+    // Dynamic Sorting
+    const sort = {};
+    const dir = sortOrder === "asc" ? 1 : -1;
+    if (sortBy === "name" || sortBy === "itemName") sort.itemName = dir;
+    else if (sortBy === "stock" || sortBy === "remaining") sort.remaining = dir;
+    else if (sortBy === "price" || sortBy === "salePrice") sort.salePrice = dir;
+    else if (sortBy === "cost" || sortBy === "costPrice") sort.costPrice = dir;
+    else sort.createdAt = dir;
+
+    const isAll = all === "true" || all === true || isAllParam === "true" || isAllParam === true;
     const pageNum = Math.max(1, parseInt(page) || 1);
     const limitNum = Math.max(1, Math.min(500, parseInt(limit) || 25));
     const skip = (pageNum - 1) * limitNum;
@@ -99,6 +166,7 @@ router.get("/", isLoggedIn, async (req, res) => {
       distinctBrands,
       dbCategories,
       dbBrands,
+      dbSuppliers,
       products
     ] = await Promise.all([
       Product.countDocuments(query),
@@ -109,15 +177,15 @@ router.get("/", isLoggedIn, async (req, res) => {
             _id: null,
             totalStock: { $sum: { $ifNull: ["$totalProduct", 0] } },
             totalRemaining: { $sum: { $ifNull: ["$remaining", 0] } },
-            totalValue: {
+            totalCostValue: {
               $sum: {
                 $multiply: [
-                  { $ifNull: ["$totalProduct", 0] },
-                  { $ifNull: ["$salePrice", { $ifNull: ["$rate", 0] }] }
+                  { $ifNull: ["$remaining", 0] },
+                  { $ifNull: ["$costPrice", 0] }
                 ]
               }
             },
-            remainingValue: {
+            totalRetailValue: {
               $sum: {
                 $multiply: [
                   { $ifNull: ["$remaining", 0] },
@@ -133,9 +201,10 @@ router.get("/", isLoggedIn, async (req, res) => {
       Product.distinct("brandName"),
       Category.find({ isActive: true }).sort({ name: 1 }).lean(),
       Brand.find({ isActive: true }).sort({ name: 1 }).lean(),
+      Supplier.find({}).sort({ name: 1 }).select("_id name companyName phone balanceDue totalPurchases").lean(),
       isAll
-        ? Product.find(query).sort({ createdAt: -1 }).lean()
-        : Product.find(query).sort({ createdAt: -1 }).skip(skip).limit(limitNum).lean()
+        ? Product.find(query).sort(sort).lean()
+        : Product.find(query).sort(sort).skip(skip).limit(limitNum).lean()
     ]);
 
     const statsData = statsAgg[0] || {};
@@ -183,6 +252,7 @@ router.get("/", isLoggedIn, async (req, res) => {
       },
       categories: categoriesList,
       brands: brandsList,
+      suppliers: dbSuppliers || [],
       categoryObjects: dbCategories || [],
       brandObjects: dbBrands || [],
       definitions,
@@ -190,8 +260,10 @@ router.get("/", isLoggedIn, async (req, res) => {
         totalProductsCount: totalCount,
         totalStock: statsData.totalStock || 0,
         totalRemaining: statsData.totalRemaining || 0,
-        totalValue: Math.round(statsData.totalValue || 0),
-        remainingValue: Math.round(statsData.remainingValue || 0)
+        totalCostValue: Math.round(statsData.totalCostValue || 0),
+        totalRetailValue: Math.round(statsData.totalRetailValue || statsData.remainingValue || 0),
+        totalValue: Math.round(statsData.totalRetailValue || statsData.totalValue || 0),
+        remainingValue: Math.round(statsData.totalRetailValue || statsData.remainingValue || 0)
       }
     });
   } catch (err) {
@@ -455,15 +527,17 @@ router.get("/:id", isLoggedIn, async (req, res) => {
   }
 });
 
-// POST /api/products (Create with image upload)
+// POST /api/products (Complete First-Time Product Entry with Supplier, Purchase & Batches)
 router.post("/", isLoggedIn, allowRoles("admin", "manager", "inventory"), upload.single("productImage"), async (req, res) => {
   try {
     const {
       itemName,
       barcode,
       sku,
-      brandName = "General",
+      brandName,
+      brand,
       category = "General",
+      subcategory = "",
       colourName = "",
       unit = "pcs",
       allowDecimal = false,
@@ -475,16 +549,37 @@ router.post("/", isLoggedIn, allowRoles("admin", "manager", "inventory"), upload
       description = "",
       packagingUnits,
       rate,
-      totalProduct = 1,
+      totalProduct,
+      initialStock,
       minStockAlert = 5,
       expiryDate,
-      imageUrl
+      imageUrl,
+      // Paint specialty fields
+      isPaint = false,
+      paintType = "",
+      colorCode = "",
+      shadeNumber = "",
+      paintSize = "",
+      finish = "",
+      customColorInfo = "",
+      colorHex = "",
+      // Supplier & Purchase replenishment fields
+      supplierId,
+      supplierName = "",
+      supplierPhone = "",
+      supplierCompany = "",
+      purchaseDate,
+      invoiceNumber = "",
+      paidAmount = 0,
+      paymentMethod = "Cash",
+      paymentReference = ""
     } = req.body;
 
     if (!itemName || itemName.trim() === "") {
       return res.status(400).json({ success: false, message: "Item Name is required." });
     }
-    if (!brandName || brandName.trim() === "") {
+    const resolvedBrand = (brandName || brand || "General").trim();
+    if (!resolvedBrand) {
       return res.status(400).json({ success: false, message: "Brand is required. Please select or add a brand." });
     }
     if (!category || category.trim() === "") {
@@ -493,10 +588,12 @@ router.post("/", isLoggedIn, allowRoles("admin", "manager", "inventory"), upload
 
     const priceRate = parseFloat(salePrice || rate || 0);
     const cost = parseFloat(costPrice || 0);
-    const totalQty = parseFloat(totalProduct || 1);
+    const rawStock = initialStock !== undefined ? initialStock : (totalProduct !== undefined ? totalProduct : 0);
+    const totalQty = parseFloat(rawStock) || 0;
 
-    const isWeightVolume = ["kg", "g", "l", "ml", "kilogram", "gram", "liter", "milliliter"].includes((unit || "").trim().toLowerCase());
+    const isWeightVolume = ["kg", "g", "l", "ml", "kilogram", "gram", "liter", "milliliter", "meter", "feet"].includes((unit || "").trim().toLowerCase());
     const effectiveAllowDecimal = (allowDecimal === "true" || allowDecimal === true) || isWeightVolume;
+    const effectiveIsPaint = (isPaint === "true" || isPaint === true) || /paint/i.test(category);
 
     // Parse packaging units if provided
     let parsedPackagingUnits = [];
@@ -529,14 +626,38 @@ router.post("/", isLoggedIn, allowRoles("admin", "manager", "inventory"), upload
       finalImage = imageUrl.trim();
     }
 
+    const pDate = purchaseDate ? new Date(purchaseDate) : new Date();
+    const expiry = expiryDate ? new Date(expiryDate) : null;
+
+    // 1. Resolve or Create Supplier if details supplied
+    let supplier = null;
+    if (supplierId && supplierId !== "none" && supplierId !== "") {
+      supplier = await Supplier.findById(supplierId);
+    } else if (supplierName && supplierName.trim() !== "") {
+      const cleanName = supplierName.trim();
+      supplier = await Supplier.findOne({ name: cleanName });
+      if (!supplier) {
+        supplier = await Supplier.create({
+          name: cleanName,
+          phone: supplierPhone ? supplierPhone.trim() : "",
+          companyName: supplierCompany ? supplierCompany.trim() : "",
+          balanceDue: 0,
+          totalPurchases: 0,
+          totalPaid: 0
+        });
+      }
+    }
+
+    // 2. Create the Product record
     const newProduct = await Product.create({
       itemName: itemName.trim(),
       barcode: finalBarcode,
       sku: sku ? sku.trim() : finalBarcode,
-      brandName: brandName.trim(),
-      brand: brandName.trim(),
+      brandName: resolvedBrand,
+      brand: resolvedBrand,
       category: category.trim(),
-      colourName: colourName.trim(),
+      subcategory: subcategory ? subcategory.trim() : "",
+      colourName: colourName ? colourName.trim() : (colorCode ? `${colorCode} - ${shadeNumber || ""}`.trim() : ""),
       unit: unit.trim(),
       qty: unit.trim(),
       allowDecimal: effectiveAllowDecimal,
@@ -551,19 +672,436 @@ router.post("/", isLoggedIn, allowRoles("admin", "manager", "inventory"), upload
       totalProduct: totalQty,
       remaining: totalQty,
       minStockAlert: parseInt(minStockAlert) || 5,
-      expiryDate: expiryDate ? new Date(expiryDate) : null,
+      expiryDate: expiry,
       stockID,
-      image: finalImage
+      image: finalImage,
+      supplierId: supplier ? supplier._id : null,
+      supplierName: supplier ? supplier.name : (supplierName ? supplierName.trim() : ""),
+      lastPurchaseDate: totalQty > 0 ? pDate : null,
+      lastPurchasePrice: cost,
+      lastInvoiceNumber: invoiceNumber ? invoiceNumber.trim() : "",
+      // Paint specialty attributes
+      isPaint: effectiveIsPaint,
+      paintType: paintType ? paintType.trim() : "",
+      colorCode: colorCode ? colorCode.trim() : "",
+      shadeNumber: shadeNumber ? shadeNumber.trim() : "",
+      paintSize: paintSize ? paintSize.trim() : "",
+      finish: finish ? finish.trim() : "",
+      customColorInfo: customColorInfo ? customColorInfo.trim() : "",
+      colorHex: colorHex ? colorHex.trim() : ""
     });
+
+    // 3. If initial stock > 0, generate batch, purchase history, and supplier balances
+    if (totalQty > 0) {
+      const itemTotalCost = Math.round(totalQty * cost * 100) / 100;
+      const numPaid = Math.max(0, parseFloat(paidAmount) || 0);
+      const remainingBal = Math.max(0, Math.round((itemTotalCost - numPaid) * 100) / 100);
+
+      const batchNum = `BAT-${(invoiceNumber ? invoiceNumber.trim().toUpperCase() : stockID)}-${Date.now().toString().slice(-4)}`;
+
+      // Create initial lot batch
+      const newBatch = await ProductBatch.create({
+        productId: newProduct._id,
+        batchNumber: batchNum,
+        expiryDate: expiry,
+        costPrice: cost,
+        salePrice: priceRate,
+        quantityReceived: totalQty,
+        quantityRemaining: totalQty,
+        supplierId: supplier ? supplier._id : null,
+        supplierName: supplier ? supplier.name : (supplierName || ""),
+        status: "Active",
+        notes: `Initial entry for ${newProduct.itemName} (Inv #${invoiceNumber || "N/A"})`
+      });
+
+      // Record audit history
+      await StockAudit.create({
+        productId: newProduct._id,
+        itemName: newProduct.itemName,
+        barcode: newProduct.barcode || stockID,
+        adjustmentType: "Restock / Addition",
+        previousQuantity: 0,
+        changeQuantity: totalQty,
+        newQuantity: totalQty,
+        reason: `First-time entry with initial stock (Inv #${invoiceNumber || "N/A"})`,
+        adjustedBy: req.user?.username || "Admin"
+      });
+
+      // Generate unique sequential Purchase order record
+      const count = await Purchase.countDocuments();
+      const dateStr = pDate.toISOString().slice(0, 10).replace(/-/g, "");
+      let purchaseNumber;
+      let isUnique = false;
+      let seq = count + 1;
+      while (!isUnique) {
+        const candidate = `PO-${dateStr}-${String(seq).padStart(4, "0")}`;
+        const exists = await Purchase.findOne({ purchaseNumber: candidate });
+        if (!exists) {
+          purchaseNumber = candidate;
+          isUnique = true;
+        } else {
+          seq++;
+        }
+      }
+
+      let paymentStatus = "Paid";
+      if (remainingBal > 0 && numPaid > 0) {
+        paymentStatus = "Partially Paid";
+      } else if (remainingBal > 0 && numPaid === 0) {
+        paymentStatus = "Unpaid";
+      }
+
+      const initialPayments = [];
+      if (numPaid > 0) {
+        initialPayments.push({
+          amount: numPaid,
+          paymentDate: pDate,
+          paymentMethod: paymentMethod || "Cash",
+          referenceNumber: paymentReference ? paymentReference.trim() : (invoiceNumber || ""),
+          notes: `Upfront payment on first product purchase ${purchaseNumber}`,
+          recordedBy: req.user?.username || "Admin"
+        });
+      }
+
+      await Purchase.create({
+        purchaseNumber,
+        invoiceNumber: invoiceNumber ? invoiceNumber.trim() : "",
+        supplierId: supplier ? supplier._id : null,
+        supplierName: supplier ? supplier.name : (supplierName ? supplierName.trim() : ""),
+        supplierPhone: supplier ? supplier.phone : (supplierPhone ? supplierPhone.trim() : ""),
+        purchaseDate: pDate,
+        items: [
+          {
+            productId: newProduct._id,
+            itemName: newProduct.itemName,
+            barcode: finalBarcode,
+            sku: sku ? sku.trim() : finalBarcode,
+            unit: unit.trim(),
+            quantity: totalQty,
+            purchasePrice: cost,
+            sellingPrice: priceRate,
+            totalCost: itemTotalCost,
+            expiryDate: expiry,
+            batchNumber: batchNum,
+            batchId: newBatch._id
+          }
+        ],
+        totalAmount: itemTotalCost,
+        paidAmount: numPaid,
+        balanceDue: remainingBal,
+        paymentStatus,
+        paymentMethod: paymentMethod || "Cash",
+        payments: initialPayments,
+        notes: `Initial stock purchase for ${newProduct.itemName}`,
+        recordedBy: req.user?.username || "Admin"
+      });
+
+      // Update Supplier balance & ledger transactions
+      if (supplier) {
+        const prevBal = supplier.balanceDue || 0;
+        supplier.totalPurchases = Math.round(((supplier.totalPurchases || 0) + itemTotalCost) * 100) / 100;
+        supplier.balanceDue = Math.round((prevBal + remainingBal) * 100) / 100;
+        supplier.totalPaid = Math.round(((supplier.totalPaid || 0) + numPaid) * 100) / 100;
+        await supplier.save();
+
+        if (remainingBal > 0) {
+          await LedgerTransaction.create({
+            transactionType: "Supplier Purchase",
+            amount: itemTotalCost,
+            supplierId: supplier._id,
+            supplierName: supplier.name,
+            previousBalance: prevBal,
+            newBalance: supplier.balanceDue,
+            referenceNumber: invoiceNumber || purchaseNumber,
+            paymentMethod: numPaid > 0 ? "Partial Cash / Credit" : "AP Khata / Credit",
+            notes: `Initial purchase ${purchaseNumber} for ${newProduct.itemName} (Inv #${invoiceNumber || "N/A"}). Total: PKR ${itemTotalCost.toLocaleString()}, Paid: PKR ${numPaid.toLocaleString()}, Remaining: PKR ${remainingBal.toLocaleString()}`,
+            recordedBy: req.user?.username || "Admin"
+          });
+        }
+
+        if (numPaid > 0) {
+          await LedgerTransaction.create({
+            transactionType: "Supplier Payment",
+            amount: numPaid,
+            supplierId: supplier._id,
+            supplierName: supplier.name,
+            previousBalance: prevBal + itemTotalCost,
+            newBalance: supplier.balanceDue,
+            referenceNumber: paymentReference || invoiceNumber || purchaseNumber,
+            paymentMethod: paymentMethod || "Cash",
+            notes: `Upfront payment on initial purchase ${purchaseNumber}`,
+            recordedBy: req.user?.username || "Admin"
+          });
+        }
+      }
+    }
 
     return res.status(201).json({
       success: true,
-      message: "Product created successfully!",
+      message: `Product "${newProduct.itemName}" created successfully! Available stock: ${newProduct.remaining} ${newProduct.unit}.`,
       product: newProduct
     });
   } catch (err) {
     console.error("Create Product Error:", err);
     return res.status(500).json({ success: false, message: "Failed to create product: " + err.message });
+  }
+});
+
+// POST /api/products/restock (Quick Stock Replenishment for Single Product)
+router.post("/restock", isLoggedIn, allowRoles("admin", "manager", "inventory"), async (req, res) => {
+  try {
+    const {
+      productId,
+      quantity,
+      purchasePrice,
+      sellingPrice,
+      supplierId,
+      supplierName = "",
+      supplierPhone = "",
+      purchaseDate,
+      invoiceNumber = "",
+      expiryDate,
+      paidAmount = 0,
+      paymentMethod = "Cash",
+      paymentReference = "",
+      notes = ""
+    } = req.body;
+
+    const numQty = parseFloat(quantity);
+    const numCost = parseFloat(purchasePrice);
+    if (!productId || isNaN(numQty) || numQty <= 0) {
+      return res.status(400).json({ success: false, message: "Valid product and positive quantity are required." });
+    }
+    if (isNaN(numCost) || numCost < 0) {
+      return res.status(400).json({ success: false, message: "Valid purchase price is required." });
+    }
+
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found." });
+    }
+
+    // 1. Resolve Supplier
+    let supplier = null;
+    if (supplierId && supplierId !== "none" && supplierId !== "") {
+      supplier = await Supplier.findById(supplierId);
+    } else if (supplierName && supplierName.trim() !== "") {
+      const cleanName = supplierName.trim();
+      supplier = await Supplier.findOne({ name: cleanName });
+      if (!supplier) {
+        supplier = await Supplier.create({
+          name: cleanName,
+          phone: supplierPhone ? supplierPhone.trim() : "",
+          balanceDue: 0,
+          totalPurchases: 0,
+          totalPaid: 0
+        });
+      }
+    }
+
+    const pDate = purchaseDate ? new Date(purchaseDate) : new Date();
+    const expiry = expiryDate ? new Date(expiryDate) : product.expiryDate;
+    const itemTotalCost = Math.round(numQty * numCost * 100) / 100;
+    const numPaid = Math.max(0, parseFloat(paidAmount) || 0);
+    const remainingBal = Math.max(0, Math.round((itemTotalCost - numPaid) * 100) / 100);
+
+    const prevRemaining = product.remaining;
+    product.totalProduct = Math.round(((product.totalProduct || 0) + numQty) * 1000) / 1000;
+    product.remaining = Math.round(((product.remaining || 0) + numQty) * 1000) / 1000;
+    product.costPrice = numCost;
+    product.lastPurchasePrice = numCost;
+    product.lastPurchaseDate = pDate;
+    product.lastInvoiceNumber = invoiceNumber ? invoiceNumber.trim() : "";
+
+    if (sellingPrice && parseFloat(sellingPrice) > 0) {
+      product.salePrice = parseFloat(sellingPrice);
+      product.rate = parseFloat(sellingPrice);
+    }
+    if (supplier) {
+      product.supplierId = supplier._id;
+      product.supplierName = supplier.name;
+    }
+    if (expiry) {
+      product.expiryDate = expiry;
+    }
+    await product.save();
+
+    // Create Batch
+    const batchNum = `BAT-${(invoiceNumber ? invoiceNumber.trim().toUpperCase() : product.stockID)}-${Date.now().toString().slice(-4)}`;
+    const newBatch = await ProductBatch.create({
+      productId: product._id,
+      batchNumber: batchNum,
+      expiryDate: expiry,
+      costPrice: numCost,
+      salePrice: product.salePrice,
+      quantityReceived: numQty,
+      quantityRemaining: numQty,
+      supplierId: supplier ? supplier._id : null,
+      supplierName: supplier ? supplier.name : (supplierName || ""),
+      status: "Active",
+      notes: `Restock replenishment (Inv #${invoiceNumber || "N/A"})`
+    });
+
+    // Record Stock Audit
+    await StockAudit.create({
+      productId: product._id,
+      itemName: product.itemName,
+      barcode: product.barcode || product.stockID,
+      adjustmentType: "Restock / Addition",
+      previousQuantity: prevRemaining,
+      changeQuantity: numQty,
+      newQuantity: product.remaining,
+      reason: `Replenishment Purchase (Inv #${invoiceNumber || "N/A"})`,
+      adjustedBy: req.user?.username || "Admin"
+    });
+
+    // Record Purchase Record
+    const count = await Purchase.countDocuments();
+    const dateStr = pDate.toISOString().slice(0, 10).replace(/-/g, "");
+    const purchaseNumber = `PO-${dateStr}-${String(count + 1).padStart(4, "0")}`;
+
+    let paymentStatus = "Paid";
+    if (remainingBal > 0 && numPaid > 0) {
+      paymentStatus = "Partially Paid";
+    } else if (remainingBal > 0 && numPaid === 0) {
+      paymentStatus = "Unpaid";
+    }
+
+    const initialPayments = [];
+    if (numPaid > 0) {
+      initialPayments.push({
+        amount: numPaid,
+        paymentDate: pDate,
+        paymentMethod: paymentMethod || "Cash",
+        referenceNumber: paymentReference ? paymentReference.trim() : (invoiceNumber || ""),
+        notes: `Upfront payment on restock purchase ${purchaseNumber}`,
+        recordedBy: req.user?.username || "Admin"
+      });
+    }
+
+    const purchase = await Purchase.create({
+      purchaseNumber,
+      invoiceNumber: invoiceNumber ? invoiceNumber.trim() : "",
+      supplierId: supplier ? supplier._id : null,
+      supplierName: supplier ? supplier.name : (supplierName ? supplierName.trim() : ""),
+      supplierPhone: supplier ? supplier.phone : (supplierPhone ? supplierPhone.trim() : ""),
+      purchaseDate: pDate,
+      items: [
+        {
+          productId: product._id,
+          itemName: product.itemName,
+          barcode: product.barcode || product.stockID,
+          sku: product.sku || product.stockID,
+          unit: product.unit || "pcs",
+          quantity: numQty,
+          purchasePrice: numCost,
+          sellingPrice: product.salePrice,
+          totalCost: itemTotalCost,
+          expiryDate: expiry,
+          batchNumber: batchNum,
+          batchId: newBatch._id
+        }
+      ],
+      totalAmount: itemTotalCost,
+      paidAmount: numPaid,
+      balanceDue: remainingBal,
+      paymentStatus,
+      paymentMethod: paymentMethod || "Cash",
+      payments: initialPayments,
+      notes: notes || `Restock replenishment for ${product.itemName}`,
+      recordedBy: req.user?.username || "Admin"
+    });
+
+    // Update Supplier Balance & Ledger
+    if (supplier) {
+      const prevBal = supplier.balanceDue || 0;
+      supplier.totalPurchases = Math.round(((supplier.totalPurchases || 0) + itemTotalCost) * 100) / 100;
+      supplier.balanceDue = Math.round((prevBal + remainingBal) * 100) / 100;
+      supplier.totalPaid = Math.round(((supplier.totalPaid || 0) + numPaid) * 100) / 100;
+      await supplier.save();
+
+      if (remainingBal > 0) {
+        await LedgerTransaction.create({
+          transactionType: "Supplier Purchase",
+          amount: itemTotalCost,
+          supplierId: supplier._id,
+          supplierName: supplier.name,
+          previousBalance: prevBal,
+          newBalance: supplier.balanceDue,
+          referenceNumber: invoiceNumber || purchaseNumber,
+          paymentMethod: numPaid > 0 ? "Partial Cash / Credit" : "AP Khata / Credit",
+          notes: `Restock purchase ${purchaseNumber} for ${product.itemName} (Inv #${invoiceNumber || "N/A"}). Total: PKR ${itemTotalCost.toLocaleString()}, Paid: PKR ${numPaid.toLocaleString()}, Remaining: PKR ${remainingBal.toLocaleString()}`,
+          recordedBy: req.user?.username || "Admin"
+        });
+      }
+
+      if (numPaid > 0) {
+        await LedgerTransaction.create({
+          transactionType: "Supplier Payment",
+          amount: numPaid,
+          supplierId: supplier._id,
+          supplierName: supplier.name,
+          previousBalance: prevBal + itemTotalCost,
+          newBalance: supplier.balanceDue,
+          referenceNumber: paymentReference || invoiceNumber || purchaseNumber,
+          paymentMethod: paymentMethod || "Cash",
+          notes: `Upfront payment on restock purchase ${purchaseNumber}`,
+          recordedBy: req.user?.username || "Admin"
+        });
+      }
+    }
+
+    return res.json({
+      success: true,
+      message: `Stock replenished for "${product.itemName}" (+${numQty} ${product.unit}). Current stock: ${product.remaining} ${product.unit}.`,
+      product,
+      purchase
+    });
+  } catch (err) {
+    console.error("Restock Product Error:", err);
+    return res.status(500).json({ success: false, message: "Failed to restock product: " + err.message });
+  }
+});
+
+// GET /api/products/:id/history (Comprehensive Audit, Purchases, Batches & Sales History)
+router.get("/:id/history", isLoggedIn, async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id)
+      .populate("supplierId", "name companyName phone email address balanceDue")
+      .lean();
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: "Product not found." });
+    }
+
+    const [purchases, batches, audits, sales] = await Promise.all([
+      Purchase.find({ "items.productId": product._id }).sort({ purchaseDate: -1, createdAt: -1 }).limit(50).lean(),
+      ProductBatch.find({ productId: product._id }).sort({ expiryDate: 1, createdAt: -1 }).lean(),
+      StockAudit.find({ productId: product._id }).sort({ createdAt: -1 }).limit(50).lean(),
+      Sale.find({
+        $or: [
+          { stockID: product.stockID },
+          { barcode: product.barcode },
+          { itemName: product.itemName }
+        ]
+      })
+        .sort({ date: -1 })
+        .limit(30)
+        .lean()
+    ]);
+
+    return res.json({
+      success: true,
+      product,
+      purchases,
+      batches,
+      audits,
+      recentSales: sales,
+      sales
+    });
+  } catch (err) {
+    console.error("Product History Error:", err);
+    return res.status(500).json({ success: false, message: err.message });
   }
 });
 
@@ -581,6 +1119,7 @@ router.put("/:id", isLoggedIn, allowRoles("admin", "manager", "inventory"), uplo
       sku,
       brandName,
       category,
+      subcategory,
       colourName,
       unit,
       allowDecimal,
@@ -595,7 +1134,17 @@ router.put("/:id", isLoggedIn, allowRoles("admin", "manager", "inventory"), uplo
       remaining,
       minStockAlert,
       expiryDate,
-      imageUrl
+      imageUrl,
+      supplierId,
+      supplierName,
+      isPaint,
+      paintType,
+      colorCode,
+      shadeNumber,
+      paintSize,
+      finish,
+      customColorInfo,
+      colorHex
     } = req.body;
 
     if (itemName) product.itemName = itemName.trim();
@@ -606,7 +1155,18 @@ router.put("/:id", isLoggedIn, allowRoles("admin", "manager", "inventory"), uplo
       product.brand = brandName.trim();
     }
     if (category) product.category = category.trim();
+    if (subcategory !== undefined) product.subcategory = subcategory.trim();
     if (colourName !== undefined) product.colourName = colourName.trim();
+    if (supplierId !== undefined) product.supplierId = supplierId || null;
+    if (supplierName !== undefined) product.supplierName = supplierName.trim();
+    if (isPaint !== undefined) product.isPaint = isPaint === "true" || isPaint === true;
+    if (paintType !== undefined) product.paintType = paintType.trim();
+    if (colorCode !== undefined) product.colorCode = colorCode.trim();
+    if (shadeNumber !== undefined) product.shadeNumber = shadeNumber.trim();
+    if (paintSize !== undefined) product.paintSize = paintSize.trim();
+    if (finish !== undefined) product.finish = finish.trim();
+    if (customColorInfo !== undefined) product.customColorInfo = customColorInfo.trim();
+    if (colorHex !== undefined) product.colorHex = colorHex.trim();
     if (unit) {
       product.unit = unit.trim();
       product.qty = unit.trim();
@@ -671,10 +1231,11 @@ router.delete("/:id", isLoggedIn, allowRoles("admin"), async (req, res) => {
   }
 });
 
-// POST /api/products/adjust-stock (Restock, Damaged, or Audit Correction)
-router.post("/adjust-stock", isLoggedIn, allowRoles("admin", "manager", "inventory"), async (req, res) => {
+// POST /api/products/adjust-stock and /api/products/:id/adjust-stock
+router.post(["/adjust-stock", "/:id/adjust-stock"], isLoggedIn, allowRoles("admin", "manager", "inventory"), async (req, res) => {
   try {
-    const { productId, adjustmentType, changeQuantity, quantity, qty, newTotalQuantity, reason } = req.body;
+    const { adjustmentType, type, changeQuantity, quantity, qty, newTotalQuantity, reason } = req.body;
+    const productId = req.params.id || req.body.productId;
     const effectiveChangeQty = changeQuantity !== undefined ? changeQuantity : (quantity !== undefined ? quantity : qty);
 
     const product = await Product.findById(productId);
@@ -686,26 +1247,27 @@ router.post("/adjust-stock", isLoggedIn, allowRoles("admin", "manager", "invento
     let newQty = previousQty;
     let actualChange = 0;
 
+    const typeStr = (adjustmentType || type || "").toString();
     let normType = "Restock / Addition";
-    if (/damage|expire/i.test(adjustmentType)) {
+    if (/damage|expire/i.test(typeStr)) {
       normType = "Damaged / Expired";
-    } else if (/audit|correct/i.test(adjustmentType)) {
+    } else if (/audit|correct/i.test(typeStr)) {
       normType = "Audit Correction";
-    } else if (/customer/i.test(adjustmentType)) {
+    } else if (/customer/i.test(typeStr)) {
       normType = "Returned from Customer";
-    } else if (/supplier|company/i.test(adjustmentType)) {
+    } else if (/supplier|company/i.test(typeStr)) {
       normType = "Supplier Return";
     }
 
     if (normType === "Restock / Addition") {
-      const addQty = parseFloat(effectiveChangeQty) || 0;
+      const addQty = Math.abs(parseFloat(effectiveChangeQty) || 0);
       if (addQty <= 0) return res.status(400).json({ success: false, message: "Quantity to add must be greater than zero." });
       newQty = previousQty + addQty;
       product.totalProduct += addQty;
       product.remaining = newQty;
       actualChange = addQty;
     } else if (normType === "Damaged / Expired") {
-      const deductQty = parseFloat(effectiveChangeQty) || 0;
+      const deductQty = Math.abs(parseFloat(effectiveChangeQty) || 0);
       if (deductQty <= 0) return res.status(400).json({ success: false, message: "Deduction quantity must be greater than zero." });
       if (deductQty > previousQty) {
         return res.status(400).json({ success: false, message: `Cannot deduct ${deductQty} items. Only ${previousQty} available in stock.` });
