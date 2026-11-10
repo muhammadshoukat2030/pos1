@@ -1,0 +1,135 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   4-THEME CSS VARIABLES ENGINE
+   ========================================================================== */
+
+:root,
+[data-theme="bizcare-teal"] {
+  --primary-color: #0D9488;
+  --primary-dark: #0F766E;
+  --primary-light: #CCFBF1;
+  --header-gradient: linear-gradient(135deg, #0F766E 0%, #0D9488 50%, #14B8A6 100%);
+  --sidebar-bg: #FFFFFF;
+  --sidebar-text: #475569;
+  --sidebar-active-bg: #E6FFFA;
+  --sidebar-active-text: #0D9488;
+  --sidebar-border: #E2E8F0;
+  --body-bg: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --card-border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+  --kpi-ring-color: rgba(13, 148, 136, 0.08);
+}
+
+[data-theme="eproduct-blue"] {
+  --primary-color: #2563EB;
+  --primary-dark: #1D4ED8;
+  --primary-light: #DBEAFE;
+  --header-gradient: linear-gradient(135deg, #1E40AF 0%, #2563EB 50%, #3B82F6 100%);
+  --sidebar-bg: #1D4ED8;
+  --sidebar-text: #BFDBFE;
+  --sidebar-active-bg: #FFFFFF;
+  --sidebar-active-text: #1D4ED8;
+  --sidebar-border: #1E40AF;
+  --body-bg: #F1F5F9;
+  --card-bg: #FFFFFF;
+  --card-border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --kpi-ring-color: rgba(37, 99, 235, 0.08);
+}
+
+[data-theme="ixershop-navy"] {
+  --primary-color: #0F172A;
+  --primary-dark: #020617;
+  --primary-light: #E2E8F0;
+  --header-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #1E3A8A 100%);
+  --sidebar-bg: #0F172A;
+  --sidebar-text: #94A3B8;
+  --sidebar-active-bg: #2563EB;
+  --sidebar-active-text: #FFFFFF;
+  --sidebar-border: #1E293B;
+  --body-bg: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --card-border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --kpi-ring-color: rgba(15, 23, 42, 0.06);
+}
+
+[data-theme="slate-dark"] {
+  --primary-color: #38BDF8;
+  --primary-dark: #0284C7;
+  --primary-light: #0C4A6E;
+  --header-gradient: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  --sidebar-bg: #0B1120;
+  --sidebar-text: #94A3B8;
+  --sidebar-active-bg: #1E293B;
+  --sidebar-active-text: #38BDF8;
+  --sidebar-border: #1E293B;
+  --body-bg: #0F172A;
+  --card-bg: #1E293B;
+  --card-border: #334155;
+  --text-primary: #F8FAFC;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --kpi-ring-color: rgba(56, 189, 248, 0.08);
+}
+
+/* Base Body Styles */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--body-bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Urdu Typography */
+.font-urdu {
+  font-family: 'Noto Nastaliq Urdu', 'Jameel Noori Nastaleeq', 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.45);
+}
+
+/* 80mm Thermal Receipt Print Rules */
+@media print {
+  @page {
+    size: 80mm auto;
+    margin: 0;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+}

@@ -1,0 +1,949 @@
+/* ==========================================================================
+   SUPER MART DUAL-MODE POS TERMINAL STYLESHEET
+   Faithfully matching Image 3 (IXERSHOP POS) + Image 1 (eProduct Picture Grid)
+   ========================================================================== */
+
+.pos-terminal-body {
+  background-color: var(--body-bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.pos-app-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  padding-bottom: 58px; /* space for sticky bottom function bar */
+}
+
+/* ==========================================================================
+   1. TOP POS HEADER
+   ========================================================================== */
+.pos-top-header {
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--card-border);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: var(--shadow-sm);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.pos-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.store-badge {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pos-screen-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.live-pill {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--body-bg);
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+}
+
+.pos-header-center {
+  display: flex;
+  align-items: center;
+}
+
+.pos-view-toggles {
+  display: flex;
+  background: var(--body-bg);
+  padding: 3px;
+  border-radius: 10px;
+  border: 1px solid var(--card-border);
+  gap: 4px;
+}
+
+.btn-toggle {
+  background: transparent;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.btn-toggle:hover {
+  color: var(--primary-color);
+}
+
+.btn-toggle.active {
+  background: var(--primary-color);
+  color: #FFFFFF !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.pos-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-held-bills {
+  background: #475569;
+  color: #FFFFFF;
+  border: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s ease;
+}
+
+.btn-held-bills:hover {
+  background: #334155;
+}
+
+.btn-held-bills #heldCountBadge {
+  background: #EF4444;
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 1px 6px;
+  font-size: 11px;
+}
+
+.btn-back-home {
+  background: var(--body-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  text-decoration: none;
+  padding: 7px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s ease;
+}
+
+.btn-back-home:hover {
+  background: var(--card-border);
+}
+
+/* ==========================================================================
+   MAIN WORKSPACE LAYOUT
+   ========================================================================== */
+.pos-main-workspace {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 55% 45%;
+  overflow: hidden;
+  height: calc(100vh - 118px);
+}
+
+/* Mode Variations */
+.pos-main-workspace[data-active-mode="barcode"] {
+  grid-template-columns: 1fr;
+}
+.pos-main-workspace[data-active-mode="barcode"] .catalog-section {
+  display: none !important;
+}
+.pos-main-workspace[data-active-mode="barcode"] .pos-main-workspace-content {
+  display: grid;
+  grid-template-columns: 65% 35%;
+}
+
+.pos-main-workspace[data-active-mode="grid"] {
+  grid-template-columns: 60% 40%;
+}
+.pos-main-workspace[data-active-mode="grid"] .barcode-entry-card {
+  display: none !important;
+}
+
+.pos-left-pane {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid var(--card-border);
+  overflow-y: auto;
+  padding: 14px;
+  gap: 14px;
+}
+
+.pos-right-pane {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 14px;
+  gap: 14px;
+  background: var(--card-bg);
+}
+
+/* ==========================================================================
+   2. BARCODE & QUICK ITEM ENTRY BAR (Match Image 3 IXERSHOP)
+   ========================================================================== */
+.barcode-entry-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.barcode-main-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: nowrap;
+}
+
+.qty-field-group {
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.qty-field-group label,
+.sku-search-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.input-qty {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-qty:focus {
+  border-color: var(--input-focus);
+}
+
+.sku-search-group {
+  flex: 1;
+  position: relative;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.scanner-icon {
+  position: absolute;
+  left: 12px;
+  color: var(--text-muted);
+  font-size: 16px;
+}
+
+.input-sku-search {
+  width: 100%;
+  padding: 10px 36px 10px 38px;
+  border: 2px solid var(--input-border);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-sku-search:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: none;
+}
+
+.entry-actions-group {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.pill-btn {
+  border: none;
+  padding: 10px 18px;
+  border-radius: 24px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.pill-btn:hover {
+  transform: translateY(-1px);
+}
+.pill-btn:active {
+  transform: translateY(1px);
+}
+
+/* Cancel: Red Pill Button */
+.btn-cancel {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+.btn-cancel:hover {
+  background: #DC2626;
+}
+
+/* Update / Add: Blue Pill Button */
+.btn-add-update {
+  background: #2563EB;
+  color: #FFFFFF;
+}
+.btn-add-update:hover {
+  background: #1D4ED8;
+}
+
+/* Autocomplete search results dropdown */
+.search-dropdown-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  margin-top: 4px;
+  max-height: 240px;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  z-index: 500;
+  display: none;
+}
+
+.search-dropdown-item {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-size: 13px;
+  transition: background 0.15s ease;
+}
+
+.search-dropdown-item:hover,
+.search-dropdown-item.active {
+  background: var(--primary-light);
+}
+
+.search-item-meta {
+  display: flex;
+  flex-direction: column;
+}
+.search-item-meta .item-title {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.search-item-meta .item-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.search-item-price {
+  font-weight: 700;
+  color: var(--primary-color);
+  font-size: 14px;
+}
+
+/* Sub-row with light blue TOTAL box */
+.barcode-sub-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1.4fr;
+  gap: 12px;
+  align-items: center;
+  border-top: 1px solid var(--card-border);
+  padding-top: 10px;
+}
+
+.sub-metric {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sub-metric .label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.sub-input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  outline: none;
+}
+
+/* Light-blue TOTAL display box (Image 3) */
+.sub-metric.total-highlight-box {
+  background: #E0F2FE;
+  border: 1px solid #BAE6FD;
+  border-radius: 8px;
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sub-metric.total-highlight-box .label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #0369A1;
+}
+
+.sub-metric.total-highlight-box .val-pkr {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0284C7;
+}
+
+/* ==========================================================================
+   3. PICTURE GRID SYSTEM (Image 1 Mobile/Catalog UI)
+   ========================================================================== */
+.catalog-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow: hidden;
+}
+
+.catalog-filter-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.promo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #FEE2E2;
+  color: #DC2626;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.categories-scroll-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  white-space: nowrap;
+}
+
+.categories-scroll-strip::-webkit-scrollbar {
+  height: 4px;
+}
+.categories-scroll-strip::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  border-radius: 4px;
+}
+
+.cat-pill {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.cat-pill:hover {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.cat-pill.active {
+  background: var(--primary-color);
+  color: #FFFFFF !important;
+  border-color: var(--primary-color);
+}
+
+.cat-pill.brand-pill {
+  border-style: dashed;
+}
+
+.catalog-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+  overflow-y: auto;
+  padding: 4px 2px 20px;
+  flex: 1;
+}
+
+/* ==========================================================================
+   4. ITEMIZED SALE TABLE (Match Image 3 IXERSHOP)
+   ========================================================================== */
+.itemized-table-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 260px;
+  overflow: hidden;
+}
+
+.table-card-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--body-bg);
+}
+
+.table-card-header h3 {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-items-counter {
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.table-responsive-wrapper {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.pos-sale-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.pos-sale-table thead th {
+  background: var(--table-header-bg);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--table-border);
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.pos-sale-table tbody td {
+  padding: 8px;
+  border-bottom: 1px solid var(--table-border);
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.pos-sale-table tbody tr:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+.table-qty-input {
+  width: 55px;
+  padding: 4px;
+  text-align: center;
+  border: 1px solid var(--input-border);
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.btn-remove-row {
+  background: none;
+  border: none;
+  color: #DC2626;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: background 0.15s ease;
+}
+
+.btn-remove-row:hover {
+  background: #FEE2E2;
+}
+
+.empty-cart-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
+
+.empty-cart-state i {
+  font-size: 36px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.empty-cart-state h4 {
+  font-size: 15px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.empty-cart-state p {
+  font-size: 12px;
+}
+
+/* ==========================================================================
+   5. RIGHT-SIDE SUMMARY & ORDER DETAILS PANEL (Match Image 3)
+   ========================================================================== */
+.order-summary-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 1200px) {
+  .order-summary-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pos-panel-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.panel-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 6px;
+}
+
+.summary-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.grand-total-banner {
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 4px 0;
+}
+
+.grand-label {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #1E3A8A;
+  text-transform: uppercase;
+}
+
+.grand-amount {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1D4ED8;
+}
+
+.cash-calc-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.cash-field label,
+.change-field label {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 3px;
+}
+
+.cash-field input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  outline: none;
+  background: var(--card-bg);
+  color: var(--text-primary);
+}
+
+.change-box {
+  background: var(--body-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #059669;
+}
+
+.form-group-compact {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.form-group-compact label {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.form-group-compact input,
+.form-group-compact select {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  font-size: 12.5px;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  outline: none;
+}
+
+.customer-input-row {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-new-cust {
+  background: #2563EB;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.form-row-compact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.input-readonly {
+  background: var(--body-bg) !important;
+  color: var(--text-muted) !important;
+}
+
+/* Modals */
+.pos-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.pos-modal-overlay.open {
+  display: flex;
+}
+
+.pos-modal-dialog {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 550px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: modalPop 0.2s ease-out;
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.close-modal-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.modal-body {
+  padding: 20px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.held-bill-item {
+  background: var(--body-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.held-bill-info h4 {
+  font-size: 13.5px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.held-bill-info p {
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.btn-recall {
+  background: #059669;
+  color: #FFF;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Mobile & Tablet Responsiveness */
+@media (max-width: 900px) {
+  .pos-main-workspace {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow-y: visible;
+  }
+  .pos-app-container {
+    height: auto;
+    overflow-y: visible;
+  }
+}
