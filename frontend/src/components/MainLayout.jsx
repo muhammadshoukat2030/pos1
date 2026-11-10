@@ -10,6 +10,8 @@ export default function MainLayout() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
 
+  const isPosPage = location.pathname === "/pos";
+
   useEffect(() => {
     localStorage.setItem("sidebar_collapsed", isCollapsed ? "true" : "false");
   }, [isCollapsed]);
@@ -33,31 +35,35 @@ export default function MainLayout() {
 
   return (
     <div className="min-h-screen bg-theme-body text-theme-textPrimary flex flex-col">
-      {/* Sidebar */}
-      <Sidebar
-        isCollapsed={isCollapsed}
-        setIsCollapsed={setIsCollapsed}
-        isMobileOpen={isMobileOpen}
-        setIsMobileOpen={setIsMobileOpen}
-      />
+      {/* Sidebar - Hidden completely on /pos for full-screen selling mode */}
+      {!isPosPage && (
+        <Sidebar
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+          isMobileOpen={isMobileOpen}
+          setIsMobileOpen={setIsMobileOpen}
+        />
+      )}
 
-      {/* Mobile Drawer Trigger (floating so mobile devices can open sidebar without a top bar) */}
-      <button
-        type="button"
-        onClick={() => setIsMobileOpen(true)}
-        className="lg:hidden fixed bottom-4 right-4 z-40 w-11 h-11 rounded-full bg-[#14532D] text-white shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#104323] transition-transform active:scale-95"
-        aria-label="Open Navigation Menu"
-      >
-        <Menu className="w-5 h-5" />
-      </button>
+      {/* Mobile Drawer Trigger (only shown when not in full-screen /pos mode) */}
+      {!isPosPage && (
+        <button
+          type="button"
+          onClick={() => setIsMobileOpen(true)}
+          className="lg:hidden fixed bottom-4 right-4 z-40 w-11 h-11 rounded-full bg-[#14532D] text-white shadow-lg flex items-center justify-center cursor-pointer hover:bg-[#104323] transition-transform active:scale-95"
+          aria-label="Open Navigation Menu"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      )}
 
-      {/* Main Content Area - Full Vertical Space Without Top Bar */}
+      {/* Main Content Area - Full Screen on /pos, with standard sidebar margins on all other pages */}
       <div
         className={`flex-1 flex flex-col transition-all duration-theme ease-in-out ${
-          isCollapsed ? "lg:ml-[80px]" : "lg:ml-[234px]"
+          isPosPage ? "ml-0" : (isCollapsed ? "lg:ml-[80px]" : "lg:ml-[234px]")
         }`}
       >
-        <main className="flex-1 p-3 sm:p-5 max-w-full overflow-x-hidden">
+        <main className={`flex-1 max-w-full overflow-x-hidden ${isPosPage ? "p-2 sm:p-2.5" : "p-3 sm:p-5"}`}>
           <Outlet />
         </main>
       </div>

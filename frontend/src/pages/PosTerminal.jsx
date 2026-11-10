@@ -25,7 +25,8 @@ import {
   X,
   Lock,
   Edit3,
-  Eye
+  Eye,
+  ArrowLeft
 } from "lucide-react";
 import api from "../services/api";
 import { useTheme } from "../context/ThemeContext";
@@ -848,6 +849,17 @@ export default function PosTerminal() {
       {/* 1. COMPACT TOP CONTROLS & DUAL-MODE SWITCHER */}
       <div className="bg-theme-card border border-theme-border rounded-xl px-3 py-2 shadow-xs flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
+          {/* Back Button to exit Full-Screen POS and return to Dashboard */}
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-theme-border bg-theme-surface hover:bg-[#14532D] hover:text-white text-theme-textPrimary transition cursor-pointer text-xs font-bold shadow-2xs group"
+            title="Exit POS & Return to Dashboard"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back</span>
+          </button>
+
           <div className="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
             <Calculator className="w-4 h-4" />
           </div>
